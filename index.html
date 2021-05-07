@@ -38,7 +38,6 @@
         let newY;
         function startGame() {
             player = playerConstructor(10, 120);
-            //player = new component(6, 8, "player.png", 10, 120, "image");
             myGameArea.start();
         }
         
@@ -75,12 +74,16 @@ let updateEntity = (entity) => {
         entity.height);
 }
 
+let wolf = wolfConstructor(99, 99);
+
 function updateGameArea() {
     myGameArea.clear();
     render(xOffset,yOffset);
     renderCrosshair();
     updateEntity(player);
+    updateEntity(wolf);
     player.update();
+    wolf.update();
 }
 
             let render = function (xOffset, yOffset) {
@@ -127,8 +130,8 @@ function updateGameArea() {
                 return Math.sqrt(Math.pow(xDist, 2) + Math.pow(yDist, 2));
             }
         
-            function getCursorPosition(canvas, event) {
-                const rect = canvas.getBoundingClientRect();
+            function getCursorPosition(event) {
+                const rect = myGameArea.canvas.getBoundingClientRect();
                 const x = Math.floor((event.clientX - rect.left) / SCALE);
                 const y = Math.floor((event.clientY - rect.top) / SCALE);
                 newX = x;
@@ -136,7 +139,7 @@ function updateGameArea() {
             }
 
             myGameArea.canvas.addEventListener("mousemove", function(e) {
-                getCursorPosition(myGameArea.canvas, e);
+                getCursorPosition(e);
             });
 
             $('html').keydown(function(e) {

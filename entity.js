@@ -1,8 +1,8 @@
 let playerConstructor = (x, y) => {
     let entity = {
         name: "Player",
-        description: "No flowers here yet.",
-        type: "na",
+        health: 20,
+        maxHealth: 20,
         x: x,
         y: y,
         speedX: 0,
@@ -30,4 +30,62 @@ let playerConstructor = (x, y) => {
     }
     entity.image.src = "player.png";
     return entity;
+}
+
+let wolfConstructor = (x, y) => {
+    let entity = {
+        name: "Wolf",
+        health: 24,
+        maxHealth: 24,
+        x: x,
+        y: y,
+        speedX: 0,
+        speedY: 0,
+        speedCap: 3,
+        width: 16,
+        height: 12,
+        image: new Image(),
+        aiState: "idle",
+        aiGoalX: x,
+        aiGoalY: y,
+        framesIdle: 120,
+        update: () => {
+            entity.updateAI();
+            entity.updatePosition();
+        },
+        updatePosition: () => {
+            entity.x += entity.speedX;
+            entity.y += entity.speedY;
+        },
+        updateAI: () => {
+            if (entity.aiGoalX == 0 || entity.aiGoalY == 0 
+                    || (entity.x == entity.aiGoalX && entity.y == entity.aiGoalY)) {
+                
+                if (entity.x == entity.aiGoalX && entity.y == entity.aiGoalY) {
+                    entity.framesIdle++;
+                }
+                if (entity.framesIdle == 150) {
+                    entity.aiGoalX = Math.floor((Math.random() * 60) - 30 + entity.x);
+                    entity.aiGoalY = Math.floor((Math.random() * 60) - 30 + entity.y);
+                    entity.framesIdle = 0;
+                }
+                
+            }
+            if (Math.abs(entity.x - entity.aiGoalX) <= 1) { 
+                entity.x = entity.aiGoalX; 
+                entity.speedX = 0;
+            }
+            if (Math.abs(entity.y - entity.aiGoalY) <= 1) { 
+                entity.y = entity.aiGoalY; 
+                entity.speedY = 0;
+            }
+            if (entity.x > entity.aiGoalX) { entity.speedX = -1; }
+            if (entity.y > entity.aiGoalY) { entity.speedY = -1; }
+            if (entity.x < entity.aiGoalX) { entity.speedX = 1; }
+            if (entity.y < entity.aiGoalY) { entity.speedY = 1; }
+            console.log
+        }
+    }
+    entity.image.src = "wolf.png";
+    return entity;   
 }
