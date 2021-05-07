@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <style>
+            canvas {
+                border: 1px solid #d3d3d3;
+                background-color: #f1f1f1;
+                cursor: none;
+            }
+        </style>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="entity.js"></script>
+    </head>
+    <body onload="startGame()">
+        <script>
+        let tileArray = [
+            1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+            1, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 1, 1,
+            2, 3, 3, 2, 2, 1, 1, 2, 1, 1, 1, 1, 2, 1, 1,
+            2, 3, 2, 2, 1, 1, 1, 2, 2, 1, 1, 1, 1, 1, 1,
+            1, 2, 2, 1, 1, 1, 2, 2, 1, 1, 1, 1, 1, 2, 1,
+            1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1,
+            1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 2, 2, 1, 1,
+            1, 1, 1, 2, 3, 2, 1, 1, 2, 2, 1, 2, 3, 2, 1,
+            1, 1, 2, 2, 3, 3, 2, 2, 3, 3, 2, 1, 2, 1, 1,
+            1, 1, 1, 2, 2, 2, 1, 1, 2, 2, 1, 1, 1, 1, 1,
+            1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+            1, 1, 2, 1, 1, 1, 1, 1, 2, 2, 3, 3, 1, 1, 1,
+            1, 1, 1, 1, 2, 2, 1, 2, 3, 3, 3, 2, 1, 1, 2,
+            1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 1, 1, 2, 3,
+            1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 3,
+        ];
+        let MAP_WIDTH = 15;
+        let SCALE = 2;
+        let player;
+        let newX;
+        let newY;
+        function startGame() {
+            player = playerConstructor(10, 120);
+            //player = new component(6, 8, "player.png", 10, 120, "image");
+            myGameArea.start();
+        }
+        
+        var myGameArea = {
+            canvas : document.createElement("canvas"),
+            start : function() {
+                this.canvas.width = 480;
+                this.canvas.height = 480;
+                newX = player.x;
+                newY = player.y;
+                this.context = this.canvas.getContext("2d");
+                this.context.scale(SCALE, SCALE);
+                document.body.insertBefore(this.canvas, document.body.childNodes[0]);
+                this.frameNo = 0;
+                this.interval = setInterval(updateGameArea, 20);
+            },
+        
+            clear : function() {
+                this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+            },
+            stop : function() {
+                clearInterval(this.interval);
+            }
+        }
+let xOffset = 0;
+let yOffset = 0;
+
+let updateEntity = (entity) => {
+    ctx = myGameArea.context;
+    ctx.drawImage(entity.image, 
+        entity.x, 
+        entity.y,
+        entity.width, 
+        entity.height);
+}
+
+function updateGameArea() {
+    myGameArea.clear();
+    render(xOffset,yOffset);
+    renderCrosshair();
+    updateEntity(player);
+    player.update();
+}
+
+            let render = function (xOffset, yOffset) {
+                let ctx = myGameArea.context;
+                for (let i = 0; i < MAP_WIDTH; i++) {
+                    for (let j = 0; j < MAP_WIDTH; j++) {
+                        let imagePath = "grass-tile-" + tileArray[j * MAP_WIDTH + i] + ".png";
+                        let image = new Image();
+                        image.src = imagePath;
+                        ctx.drawImage(image, 
+                            j * image.width + xOffset, 
+                            i * image.height + yOffset,
+                            image.width, 
+                            image.height);
+                    }
+                }
+
+                
+            }
+
+            let renderCrosshair = function () {
+                let ctx = myGameArea.context;
+                let imagePath = "crosshair.png";
+                let image = new Image();
+                image.src = imagePath;
+                ctx.drawImage(image, 
+                    newX, 
+                    newY,
+                    image.width, 
+                    image.height);
+            }
+        
+            function getCursorPosition(canvas, event) {
+                const rect = canvas.getBoundingClientRect();
+                const x = Math.floor((event.clientX - rect.left) / SCALE);
+                const y = Math.floor((event.clientY - rect.top) / SCALE);
+                console.log("x: " + x + " y: " + y);
+                newX = x;
+                newY = y;
+            }
+
+            myGameArea.canvas.addEventListener("mousemove", function(e) {
+                getCursorPosition(myGameArea.canvas, e);
+            });
+
+            $('html').keydown(function(e) {
+                let LEFT = 37, UP = 38, RIGHT = 39, DOWN = 40;
+            
+                if (e.keyCode == LEFT) {
+                    if (player.speedX > 1) {
+                        player.speedX -= 0.7;
+                    } else {
+                        player.speedX -= 0.3;
+                    }
+                    if (player.speedX < player.speedCap * -1) {
+                        player.speedX = player.speedCap * -1;
+                    }
+                }
+                if (e.keyCode == RIGHT) {
+                    if (player.speedX < -1) {
+                        player.speedX += 0.7;
+                    } else {
+                        player.speedX += 0.3;
+                    }
+                    if (player.speedX > player.speedCap) {
+                        player.speedX = player.speedCap;
+                    }
+                }
+                if (e.keyCode == UP) {
+                    if (player.speedY > 1) {
+                        player.speedY -= 0.7;
+                    } else {
+                        player.speedY -= 0.3;
+                    }
+                    if (player.speedY < player.speedCap * -1) {
+                        player.speedY = player.speedCap * -1;
+                    }
+                }
+                if (e.keyCode == DOWN) {
+                    if (player.speedY < -1) {
+                        player.speedY += 0.7;
+                    } else {
+                        player.speedY += 0.3;
+                    }
+                    if (player.speedY > player.speedCap) {
+                        player.speedY = player.speedCap;
+                    }
+                }
+            });
+        </script>        
+    </body>
+</html>
