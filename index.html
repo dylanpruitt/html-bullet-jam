@@ -101,9 +101,17 @@ function updateGameArea() {
                 
             }
 
-            let renderCrosshair = function () {
+            let renderCrosshair = () => {
+                let cursorDist = getCursorDistanceFromPlayer();
+                let imagePath;
+
+                if (cursorDist <= 150) {
+                    imagePath = "crosshair.png";
+                } else {
+                    imagePath = "crosshair_invalid.png";
+                }
+
                 let ctx = myGameArea.context;
-                let imagePath = "crosshair.png";
                 let image = new Image();
                 image.src = imagePath;
                 ctx.drawImage(image, 
@@ -112,12 +120,17 @@ function updateGameArea() {
                     image.width, 
                     image.height);
             }
+
+            let getCursorDistanceFromPlayer = () => {
+                let xDist = player.x - newX;
+                let yDist = player.y - newY;
+                return Math.sqrt(Math.pow(xDist, 2) + Math.pow(yDist, 2));
+            }
         
             function getCursorPosition(canvas, event) {
                 const rect = canvas.getBoundingClientRect();
                 const x = Math.floor((event.clientX - rect.left) / SCALE);
                 const y = Math.floor((event.clientY - rect.top) / SCALE);
-                console.log("x: " + x + " y: " + y);
                 newX = x;
                 newY = y;
             }
@@ -127,9 +140,12 @@ function updateGameArea() {
             });
 
             $('html').keydown(function(e) {
-                let LEFT = 37, UP = 38, RIGHT = 39, DOWN = 40;
+                let A = 65, a = 97;
+                let W = 87, w = 119;
+                let S = 83, s = 115;
+                let D = 68, d = 100;
             
-                if (e.keyCode == LEFT) {
+                if (e.keyCode == A || e.keyCode == a) {
                     if (player.speedX > 1) {
                         player.speedX -= 0.7;
                     } else {
@@ -139,7 +155,7 @@ function updateGameArea() {
                         player.speedX = player.speedCap * -1;
                     }
                 }
-                if (e.keyCode == RIGHT) {
+                if (e.keyCode == D || e.keyCode == d) {
                     if (player.speedX < -1) {
                         player.speedX += 0.7;
                     } else {
@@ -149,7 +165,7 @@ function updateGameArea() {
                         player.speedX = player.speedCap;
                     }
                 }
-                if (e.keyCode == UP) {
+                if (e.keyCode == W || e.keyCode == w) {
                     if (player.speedY > 1) {
                         player.speedY -= 0.7;
                     } else {
@@ -159,7 +175,7 @@ function updateGameArea() {
                         player.speedY = player.speedCap * -1;
                     }
                 }
-                if (e.keyCode == DOWN) {
+                if (e.keyCode == S || e.keyCode == s) {
                     if (player.speedY < -1) {
                         player.speedY += 0.7;
                     } else {
