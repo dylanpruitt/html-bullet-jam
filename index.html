@@ -11,6 +11,7 @@
         </style>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         <script src="entity.js"></script>
+        <script src="bullets.js"></script>
     </head>
     <body onload="startGame()">
         <script>
@@ -75,6 +76,21 @@ let updateEntity = (entity) => {
 }
 
 let wolf = wolfConstructor(99, 99);
+let bullets = [];
+
+let updateBullets = () => {
+    ctx = myGameArea.context;
+    for (let i = 0; i < bullets.length; i++) {
+        if (bullets[i].framesActive < bullets[i].maxFramesActive) {
+            ctx.drawImage(bullets[i].image, 
+                bullets[i].x, 
+                bullets[i].y,
+                bullets[i].width, 
+                bullets[i].height);
+            bullets[i].update();    
+        }
+    }
+}
 
 function updateGameArea() {
     myGameArea.clear();
@@ -84,6 +100,7 @@ function updateGameArea() {
     updateEntity(wolf);
     player.update();
     wolf.update();
+    updateBullets();
 }
 
             let render = function (xOffset, yOffset) {
