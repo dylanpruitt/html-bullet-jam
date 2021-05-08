@@ -90,6 +90,18 @@ let updateBullets = () => {
             bullets[i].update();    
         }
     }
+
+    removeDeadBullets();
+}
+
+let removeDeadBullets = () => {
+    let temp = [];
+    for (let i = 0; i < bullets.length; i++) {
+        if (bullets[i].framesActive < bullets[i].maxFramesActive) {
+            temp.push(bullets[i]);   
+        }
+    }
+    bullets = temp;
 }
 
 function updateGameArea() {
