@@ -15,6 +15,7 @@ let basicWeapon = (parent) => {
             let projectileSpeeds = weapon.getProjectileSpeed(cursorX, cursorY);
             let bullet = basicBullet(parent.x, parent.y, projectileSpeeds[0], projectileSpeeds[1], parent.name);
             bullets.push(bullet);
+            weapon.cooldownFrames = 45;
         },
         getProjectileSpeed: (cursorX, cursorY) => {
             let xDistance = cursorX - parent.x;

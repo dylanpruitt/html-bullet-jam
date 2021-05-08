@@ -78,6 +78,7 @@ let updateEntity = (entity) => {
 }
 
 let wolf = wolfConstructor(99, 99);
+let wolf2 = wolfConstructor(50, 30);
 
 let updateBullets = () => {
     ctx = myGameArea.context;
@@ -111,8 +112,10 @@ function updateGameArea() {
     renderCrosshair();
     updateEntity(player);
     updateEntity(wolf);
+    updateEntity(wolf2);
     player.update();
-    wolf.update();
+    wolf.update(player);
+    wolf2.update(player);
     updateBullets();
 }
 
@@ -173,7 +176,9 @@ function updateGameArea() {
             });
             myGameArea.canvas.addEventListener("click", function(e) {
                 getCursorPosition(e);
-                player.equippedWeapon.onFire(newX, newY);
+                if (player.equippedWeapon.cooldownFrames == 0) {
+                    player.equippedWeapon.onFire(newX, newY);
+                }
             });
 
             $('html').keydown(function(e) {
