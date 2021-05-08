@@ -58,9 +58,11 @@ let wolfConstructor = (x, y) => {
             entity.y += entity.speedY;
         },
         updateAI: () => {
+            entity.idleAI();
+        },
+        idleAI: () => {
             if (entity.aiGoalX == 0 || entity.aiGoalY == 0 
-                    || (entity.x == entity.aiGoalX && entity.y == entity.aiGoalY)) {
-                
+                || (entity.x == entity.aiGoalX && entity.y == entity.aiGoalY)) {     
                 if (entity.x == entity.aiGoalX && entity.y == entity.aiGoalY) {
                     entity.framesIdle++;
                 }
@@ -69,7 +71,6 @@ let wolfConstructor = (x, y) => {
                     entity.aiGoalY = Math.floor((Math.random() * 60) - 30 + entity.y);
                     entity.framesIdle = 0;
                 }
-                
             }
             if (Math.abs(entity.x - entity.aiGoalX) <= 1) { 
                 entity.x = entity.aiGoalX; 
@@ -83,8 +84,11 @@ let wolfConstructor = (x, y) => {
             if (entity.y > entity.aiGoalY) { entity.speedY = -1; }
             if (entity.x < entity.aiGoalX) { entity.speedX = 1; }
             if (entity.y < entity.aiGoalY) { entity.speedY = 1; }
-            console.log
+        },
+        chaseAI: () => {
+            
         }
+
     }
     entity.image.src = "wolf.png";
     return entity;   
