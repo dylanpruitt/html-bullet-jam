@@ -29,6 +29,7 @@ let playerConstructor = (x, y) => {
         }
     }
     entity.image.src = "player.png";
+    entity.equippedWeapon = basicWeapon(entity);
     return entity;
 }
 

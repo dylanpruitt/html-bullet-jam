@@ -1,3 +1,5 @@
+let bullets = [];
+
 let basicBullet = (x, y, speedX, speedY, creatorName) => {
     let bullet = {
         creatorName: creatorName,

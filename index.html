@@ -10,8 +10,9 @@
             }
         </style>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-        <script src="entity.js"></script>
         <script src="bullets.js"></script>
+        <script src="weapons.js"></script>
+        <script src="entity.js"></script>
     </head>
     <body onload="startGame()">
         <script>
@@ -76,7 +77,6 @@ let updateEntity = (entity) => {
 }
 
 let wolf = wolfConstructor(99, 99);
-let bullets = [];
 
 let updateBullets = () => {
     ctx = myGameArea.context;
@@ -125,7 +125,7 @@ function updateGameArea() {
                 let cursorDist = getCursorDistanceFromPlayer();
                 let imagePath;
 
-                if (cursorDist <= 150) {
+                if (cursorDist <= player.equippedWeapon.range) {
                     imagePath = "crosshair.png";
                 } else {
                     imagePath = "crosshair_invalid.png";
@@ -157,6 +157,10 @@ function updateGameArea() {
 
             myGameArea.canvas.addEventListener("mousemove", function(e) {
                 getCursorPosition(e);
+            });
+            myGameArea.canvas.addEventListener("click", function(e) {
+                getCursorPosition(e);
+                player.equippedWeapon.onFire(newX, newY);
             });
 
             $('html').keydown(function(e) {
