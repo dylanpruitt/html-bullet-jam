@@ -38,6 +38,7 @@
         let player;
         let newX;
         let newY;
+        let keys;
         function startGame() {
             player = playerConstructor(10, 120);
             myGameArea.start();
@@ -176,12 +177,15 @@ function updateGameArea() {
             });
 
             $('html').keydown(function(e) {
+                keys = (keys || []);
+                keys[e.keyCode] = true;
+
                 let A = 65, a = 97;
                 let W = 87, w = 119;
                 let S = 83, s = 115;
                 let D = 68, d = 100;
             
-                if (e.keyCode == A || e.keyCode == a) {
+                if (keys[A] || keys[a]) {
                     if (player.speedX > 1) {
                         player.speedX -= 0.7;
                     } else {
@@ -191,7 +195,7 @@ function updateGameArea() {
                         player.speedX = player.speedCap * -1;
                     }
                 }
-                if (e.keyCode == D || e.keyCode == d) {
+                if (keys[D] || keys[d]) {
                     if (player.speedX < -1) {
                         player.speedX += 0.7;
                     } else {
@@ -201,7 +205,7 @@ function updateGameArea() {
                         player.speedX = player.speedCap;
                     }
                 }
-                if (e.keyCode == W || e.keyCode == w) {
+                if (keys[W] || keys[w]) {
                     if (player.speedY > 1) {
                         player.speedY -= 0.7;
                     } else {
@@ -211,7 +215,7 @@ function updateGameArea() {
                         player.speedY = player.speedCap * -1;
                     }
                 }
-                if (e.keyCode == S || e.keyCode == s) {
+                if (keys[S] || keys[s]) {
                     if (player.speedY < -1) {
                         player.speedY += 0.7;
                     } else {
@@ -221,6 +225,10 @@ function updateGameArea() {
                         player.speedY = player.speedCap;
                     }
                 }
+            });
+
+            document.addEventListener("keyup", function (e) {
+                keys[e.keyCode] = false;
             });
         </script>        
     </body>
