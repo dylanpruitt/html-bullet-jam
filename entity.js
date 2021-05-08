@@ -1,3 +1,5 @@
+let entities = [];
+
 let playerConstructor = (x, y) => {
     let entity = {
         name: "Player",

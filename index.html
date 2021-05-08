@@ -68,7 +68,7 @@
 let xOffset = 0;
 let yOffset = 0;
 
-let updateEntity = (entity) => {
+let drawEntity = (entity) => {
     ctx = myGameArea.context;
     ctx.drawImage(entity.image, 
         entity.x, 
@@ -77,8 +77,30 @@ let updateEntity = (entity) => {
         entity.height);
 }
 
-let wolf = wolfConstructor(99, 99);
-let wolf2 = wolfConstructor(50, 30);
+entities.push(wolfConstructor(99, 99));
+entities.push(wolfConstructor(50, 30));
+
+let updateEntities = () => {
+    drawEntity(player);
+    player.update();
+
+    for (let i = 0; i < entities.length; i++) {
+        drawEntity(entities[i]);
+        entities[i].update(player);
+    }
+
+    removeDeadEntities();
+}
+
+let removeDeadEntities = () => {
+    let temp = [];
+    for (let i = 0; i < entities.length; i++) {
+        if (entities[i].health > 0) {
+            temp.push(entities[i]);   
+        }
+    }
+    entities = temp;
+}
 
 let updateBullets = () => {
     ctx = myGameArea.context;
@@ -91,10 +113,11 @@ let updateBullets = () => {
                 bullets[i].height);
             bullets[i].update();    
         }
-        if (wolf.collidingWith(bullets[i])) { 
-            bullets[i].onCollide(wolf);
-            bullets[i].framesActive = bullets[i].maxFramesActive;
-            console.log("!");
+
+        for (let j = 0; j < entities.length; j++) {
+            if (entities[j].collidingWith(bullets[i])) { 
+                bullets[i].onCollide(entities[j]);
+            }
         }
     }
 
@@ -115,12 +138,7 @@ function updateGameArea() {
     myGameArea.clear();
     render(xOffset,yOffset);
     renderCrosshair();
-    updateEntity(player);
-    updateEntity(wolf);
-    updateEntity(wolf2);
-    player.update();
-    wolf.update(player);
-    wolf2.update(player);
+    updateEntities();
     updateBullets();
 }
 
