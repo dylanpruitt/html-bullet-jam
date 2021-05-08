@@ -91,6 +91,11 @@ let updateBullets = () => {
                 bullets[i].height);
             bullets[i].update();    
         }
+        if (wolf.collidingWith(bullets[i])) { 
+            bullets[i].onCollide(wolf);
+            bullets[i].framesActive = bullets[i].maxFramesActive;
+            console.log("!");
+        }
     }
 
     removeDeadBullets();

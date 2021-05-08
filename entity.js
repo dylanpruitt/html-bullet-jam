@@ -27,6 +27,12 @@ let playerConstructor = (x, y) => {
             if (entity.speedY < 0) { entity.speedY += 0.05; }
             if (Math.abs(entity.speedX) < 0.1) { entity.speedX = 0; }
             if (Math.abs(entity.speedY) < 0.1) { entity.speedY = 0; }
+        },
+        collidingWith: (object) => {
+            return (entity.x < object.x < entity.x + entity.width 
+                || entity.x < object.x + object.width < entity.x + entity.width
+                || entity.y < object.y < entity.y + entity.height
+                || entity.y < object.y + object.height < entity.y + entity.height);
         }
     }
     entity.image.src = "player.png";
@@ -108,8 +114,13 @@ let wolfConstructor = (x, y) => {
             if (entity.equippedWeapon.cooldownFrames == 0) {
                 entity.equippedWeapon.onFire(player.x, player.y);
             }
+        },
+        collidingWith: (object) => {
+            return (((entity.x < object.x && object.x < (entity.x + entity.width)) 
+                || (entity.x < (object.x + object.width) && (object.x + object.width) < (entity.x + entity.width)))
+                && ((entity.y < object.y && object.y < (entity.y + entity.height))
+                || (entity.y < (object.y + object.height) && (object.y + object.height) < (entity.y + entity.height))));
         }
-
     }
     entity.image.src = "wolf.png";
     entity.equippedWeapon = basicWeapon(entity);
