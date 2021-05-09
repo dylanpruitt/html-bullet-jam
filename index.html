@@ -46,13 +46,17 @@
         
         var myGameArea = {
             canvas : document.createElement("canvas"),
+            maskCanvas : document.createElement("canvas"),
             start : function() {
                 this.canvas.width = 480;
                 this.canvas.height = 480;
+                this.maskCanvas.width = this.canvas.width / 2;
+                this.maskCanvas.height = this.canvas.height / 2;
                 newX = player.x;
                 newY = player.y;
                 this.context = this.canvas.getContext("2d");
                 this.context.scale(SCALE, SCALE);
+                this.maskContext = this.maskCanvas.getContext('2d');
                 document.body.insertBefore(this.canvas, document.body.childNodes[0]);
                 this.frameNo = 0;
                 this.interval = setInterval(updateGameArea, 20);
@@ -132,10 +136,15 @@ let removeDeadBullets = () => {
         }
     }
     bullets = temp;
-}
+}         
 
 function updateGameArea() {
+    myGameArea.frameNo++;
     myGameArea.clear();
+    if (myGameArea.frameNo == 50) {
+        drawMaskContext();
+        myGameArea.frameNo = 0;
+    }
     render(xOffset,yOffset);
     renderCrosshair();
     updateEntities();
@@ -144,21 +153,23 @@ function updateGameArea() {
 
             let render = function (xOffset, yOffset) {
                 let ctx = myGameArea.context;
-                for (let i = 0; i < MAP_WIDTH; i++) {
+                ctx.drawImage(myGameArea.maskCanvas, 0, 0);
+            }
+
+            let drawMaskContext = () => {
+            for (let i = 0; i < MAP_WIDTH; i++) {
                     for (let j = 0; j < MAP_WIDTH; j++) {
                         let imagePath = "grass-tile-" + tileArray[j * MAP_WIDTH + i] + ".png";
                         let image = new Image();
                         image.src = imagePath;
-                        ctx.drawImage(image, 
+                        myGameArea.maskContext.drawImage(image, 
                             j * image.width + xOffset, 
                             i * image.height + yOffset,
                             image.width, 
                             image.height);
                     }
                 }
-
-                
-            }
+        }
 
             let renderCrosshair = () => {
                 let cursorDist = getCursorDistanceFromPlayer();
