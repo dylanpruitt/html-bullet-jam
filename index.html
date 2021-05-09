@@ -81,8 +81,7 @@ let drawEntity = (entity) => {
         entity.height);
 }
 
-entities.push(wolfConstructor(99, 99));
-entities.push(wolfConstructor(50, 30));
+entities.push(wolfConstructor(150, 150));
 
 let updateEntities = () => {
     drawEntity(player);
@@ -149,6 +148,7 @@ function updateGameArea() {
     renderCrosshair();
     updateEntities();
     updateBullets();
+    updatePlayerMovement();
 }
 
             let render = function (xOffset, yOffset) {
@@ -205,20 +205,7 @@ function updateGameArea() {
                 newY = y;
             }
 
-            myGameArea.canvas.addEventListener("mousemove", function(e) {
-                getCursorPosition(e);
-            });
-            myGameArea.canvas.addEventListener("click", function(e) {
-                getCursorPosition(e);
-                if (player.equippedWeapon.cooldownFrames == 0) {
-                    player.equippedWeapon.onFire(newX, newY);
-                }
-            });
-
-            $('html').keydown(function(e) {
-                keys = (keys || []);
-                keys[e.keyCode] = true;
-
+            let updatePlayerMovement = () => {
                 let A = 65, a = 97;
                 let W = 87, w = 119;
                 let S = 83, s = 115;
@@ -264,6 +251,21 @@ function updateGameArea() {
                         player.speedY = player.speedCap;
                     }
                 }
+            }
+
+            myGameArea.canvas.addEventListener("mousemove", function(e) {
+                getCursorPosition(e);
+            });
+            myGameArea.canvas.addEventListener("click", function(e) {
+                getCursorPosition(e);
+                if (player.equippedWeapon.cooldownFrames == 0) {
+                    player.equippedWeapon.onFire(newX, newY);
+                }
+            });
+
+            $('html').keydown(function(e) {
+                keys = (keys || []);
+                keys[e.keyCode] = true;
             });
 
             document.addEventListener("keyup", function (e) {

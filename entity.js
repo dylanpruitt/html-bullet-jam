@@ -27,8 +27,8 @@ let playerConstructor = (x, y) => {
             if (entity.speedY > 0) { entity.speedY -= 0.05; }
             if (entity.speedX < 0) { entity.speedX += 0.05; }
             if (entity.speedY < 0) { entity.speedY += 0.05; }
-            if (Math.abs(entity.speedX) < 0.1) { entity.speedX = 0; }
-            if (Math.abs(entity.speedY) < 0.1) { entity.speedY = 0; }
+            if (Math.abs(entity.speedX) <= 0.05) { entity.speedX = 0; }
+            if (Math.abs(entity.speedY) <= 0.05) { entity.speedY = 0; }
         },
         collidingWith: (object) => {
             return (entity.x < object.x < entity.x + entity.width 
