@@ -154,11 +154,11 @@ function updateGameArea() {
     updateEntities();
     updateBullets();
     updatePlayerMovement();
-    if (player.x > 200) {
+    if (player.x > 200 && xOffset > (MAP_WIDTH * 16 - myGameArea.canvas.width) / 2) {
         xOffset -= 0.5;
         drawMaskContext();
     }
-    if (player.y > 200) {
+    if (player.y > 200 && yOffset > (MAP_WIDTH * 16 - myGameArea.canvas.height) / 2) {
         yOffset -= 0.5;
         drawMaskContext();
     }
@@ -244,6 +244,10 @@ function updateGameArea() {
                     if (player.speedX < player.speedCap * -1) {
                         player.speedX = player.speedCap * -1;
                     }
+                    if (player.x < 0) {
+                        player.x = 0;
+                        player.speedX = 0;
+                    }
                 }
                 if (keys[D] || keys[d]) {
                     if (player.speedX < -1) {
@@ -253,6 +257,10 @@ function updateGameArea() {
                     }
                     if (player.speedX > player.speedCap) {
                         player.speedX = player.speedCap;
+                    }
+                    if ((player.x - xOffset) > 16 * MAP_WIDTH - 6) {
+                        player.x = 16 * MAP_WIDTH - 6 + xOffset;
+                        player.speedX = 0;
                     }
                 }
                 if (keys[W] || keys[w]) {
@@ -264,6 +272,10 @@ function updateGameArea() {
                     if (player.speedY < player.speedCap * -1) {
                         player.speedY = player.speedCap * -1;
                     }
+                    if (player.y < 0) {
+                        player.y = 0;
+                        player.speedY = 0;
+                    }
                 }
                 if (keys[S] || keys[s]) {
                     if (player.speedY < -1) {
@@ -273,6 +285,10 @@ function updateGameArea() {
                     }
                     if (player.speedY > player.speedCap) {
                         player.speedY = player.speedCap;
+                    }
+                    if ((player.y - yOffset) > 16 * MAP_WIDTH - 8) {
+                        player.y = 16 * MAP_WIDTH - 8 + yOffset;
+                        player.speedY = 0;
                     }
                 }
             }
