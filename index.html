@@ -154,20 +154,25 @@ function updateGameArea() {
     updateEntities();
     updateBullets();
     updatePlayerMovement();
+
+    let updateMask = false;
     if (player.x > 200 && xOffset > (MAP_WIDTH * 16 - myGameArea.canvas.width) / 2) {
         xOffset -= 0.5;
-        drawMaskContext();
+        updateMask = true;
     }
     if (player.y > 200 && yOffset > (MAP_WIDTH * 16 - myGameArea.canvas.height) / 2) {
         yOffset -= 0.5;
-        drawMaskContext();
+        updateMask = true;
     }
     if (player.x < 40 && xOffset < 0) {
         xOffset += 0.5;
-        drawMaskContext();
+        updateMask = true;
     }
     if (player.y < 40 && yOffset < 0) {
         yOffset += 0.5;
+        updateMask = true;
+    }
+    if (updateMask) {
         drawMaskContext();
     }
 }
