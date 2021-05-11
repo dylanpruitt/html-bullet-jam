@@ -51,6 +51,10 @@ let manageEntityTileCollision = (entity) => {
     for (let i = 0; i < boundingBoxes.length; i++) {
         if (entityCollidingWithBounds(entity, boundingBoxes[i])) {
             console.log(i);
+            entity.x += entity.speedX * -1;
+            entity.y += entity.speedY * -1;
+            entity.speedX = 0;
+            entity.speedY = 0;
         }
     }
 }
