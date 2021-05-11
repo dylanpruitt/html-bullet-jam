@@ -22,6 +22,14 @@ let boundTest3 = [
     1, 1, 1, 1, 1,
 ]; // 1 group
 
+let boundTest4 = [
+    0, 0, 0, 0, 0,
+    0, 0, 0, 1, 0,
+    0, 1, 1, 1, 0,
+    0, 1, 1, 1, 0,
+    0, 0, 0, 0, 0,
+]; // 2 groups
+
 let TEST_WIDTH = 5;
 
 let generateBoundGroups = (collisionArray) => {
@@ -79,9 +87,23 @@ let generateBoundGroups = (collisionArray) => {
         boundGroups = temp;
     }
 
+    for (let i = 0; i < boundGroups.length; i++) {
+        boundGroups[i] = getUniqueIndices(boundGroups[i]);
+    }
+
     let t1 = performance.now();
     console.log("Took " + (t1 - t0) + "ms");
     return boundGroups;
+}
+
+let getUniqueIndices = (group) => {
+    let temp = [];
+    for (let i = 0; i < group.length; i++) {
+        if (!temp.includes(group[i])) {
+            temp.push(group[i]);
+        }
+    }
+    return temp;
 }
 
 let groupsCanBeMerged = (groups) => {
