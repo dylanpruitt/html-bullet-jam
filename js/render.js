@@ -18,12 +18,10 @@ let drawMaskContext = (game) => {
     game.maskContext.clearRect(0, 0, game.maskCanvas.width, game.maskCanvas.height);
     for (let i = 0; i < MAP_WIDTH; i++) {
         for (let j = 0; j < MAP_WIDTH; j++) {
-            let imagePath = "images/tiles/grass-tile-" + tileArray[j * MAP_WIDTH + i] + ".png";
-            let image = new Image();
-            image.src = imagePath;
+            let image = tileArray[i * MAP_WIDTH + j].image;
             game.maskContext.drawImage(image, 
-                j * image.width + xOffset, 
-                i * image.height + yOffset,
+                i * image.width + xOffset, 
+                j * image.height + yOffset,
                 image.width, 
                 image.height);
         }

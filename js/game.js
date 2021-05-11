@@ -4,6 +4,7 @@ let mouseY;
 let keys;
 
 let startGame = () => {
+    generateMap();
     player = playerConstructor(10, 120);
     game.start();
 }
@@ -33,11 +34,10 @@ let game = {
     }
 }
 
-entities.push(wolfConstructor(150, 150));
-
 let updateEntities = () => {
-    drawEntity(player, game.context);
     player.update();
+    manageEntityTileCollision(player);
+    drawEntity(player, game.context);
 
     for (let i = 0; i < entities.length; i++) {
         drawEntity(entities[i], game.context);
@@ -45,6 +45,14 @@ let updateEntities = () => {
     }
 
     removeDeadEntities();
+}
+
+let manageEntityTileCollision = (entity) => {
+    for (let i = 0; i < boundingBoxes.length; i++) {
+        if (entityCollidingWithBounds(entity, boundingBoxes[i])) {
+            console.log(i);
+        }
+    }
 }
 
 let removeDeadEntities = () => {
