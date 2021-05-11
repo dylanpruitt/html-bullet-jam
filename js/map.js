@@ -37,7 +37,9 @@ let entityCollidingWithBounds = (entity, bounds) => {
 
 let generateMap = () => {
     for (let i = 0; i < tileArray.length; i++) {
-        tileArray[i] = tileset[tileArray[i]]();
+        let x = i % MAP_WIDTH * TILE_SIZE;
+        let y = Math.floor(i / MAP_WIDTH) * TILE_SIZE;
+        tileArray[i] = tileset[tileArray[i]](x, y);
     }
     boundingBoxes = generateBoundGroups(tileArray);
 }
@@ -170,10 +172,10 @@ let createBoundingBox = (group) => {
     let box = {};
     let boundIndices = getMinAndMaxIndices(group);
     let min = group[boundIndices[0]], max = group[boundIndices[1]];
-    box.minX = Math.floor(min / MAP_WIDTH) * TILE_SIZE;
-    box.maxX = (Math.floor(max / MAP_WIDTH) + 1) * TILE_SIZE;
-    box.minY = min % MAP_WIDTH * TILE_SIZE;
-    box.maxY = (max % MAP_WIDTH + 1) * TILE_SIZE;
+    box.minX = min % MAP_WIDTH * TILE_SIZE;
+    box.maxX = (max % MAP_WIDTH + 1) * TILE_SIZE;
+    box.minY = Math.floor(min / MAP_WIDTH) * TILE_SIZE;
+    box.maxY = (Math.floor(max / MAP_WIDTH) + 1) * TILE_SIZE;
     box.width = box.maxX - box.minX;
     box.height = box.maxY - box.minY;
     return box;

@@ -16,14 +16,12 @@ let render = function (game) {
 
 let drawMaskContext = (game) => {
     game.maskContext.clearRect(0, 0, game.maskCanvas.width, game.maskCanvas.height);
-    for (let i = 0; i < MAP_WIDTH; i++) {
-        for (let j = 0; j < MAP_WIDTH; j++) {
-            let image = tileArray[i * MAP_WIDTH + j].image;
+    for (let i = 0; i < tileArray.length; i++) {
+        let image = tileArray[i].image;
             game.maskContext.drawImage(image, 
-                i * image.width + xOffset, 
-                j * image.height + yOffset,
+                tileArray[i].x + xOffset, 
+                tileArray[i].y + yOffset,
                 image.width, 
-                image.height);
-        }
+                image.height);    
     }
 }
