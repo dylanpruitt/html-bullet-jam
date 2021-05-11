@@ -49,19 +49,22 @@ let generateBoundGroups = (collisionArray) => {
             }
         }
     }
+    console.log(boundGroups);
+
     // cols
     for (let i = 0; i < TEST_WIDTH; i++) {
         for (let j = 0; j < TEST_WIDTH; j++) {
             let index = j * TEST_WIDTH + i;
             if (collisionArray[index] == 1) {
                 currentBounds.push(index);
-                if (j == TEST_WIDTH - 1 || collisionArray[index + 1] == 0) {
+                if (j == TEST_WIDTH - 1 || collisionArray[index + TEST_WIDTH] == 0) {
                     boundGroups.push(currentBounds);
                     currentBounds = [];
                 }
             }
         }
     }
+    console.log(boundGroups);
 
     // cleaning and merging
     while (groupsCanBeMerged(boundGroups)) {
@@ -83,12 +86,36 @@ let generateBoundGroups = (collisionArray) => {
                 }
             }
         }
-        console.log(boundGroups);
         boundGroups = temp;
+        console.log(boundGroups);
     }
+
+    
 
     for (let i = 0; i < boundGroups.length; i++) {
         boundGroups[i] = getUniqueIndices(boundGroups[i]);
+    }
+
+    while (redundantGroupsExist(boundGroups)) {
+        for (let i = 0; i < boundGroups.length; i++) {
+            for (let j = 0; j < boundGroups.length; j++) {
+                if (i != j) {
+                    if (groupsAreRedundant(boundGroups[i], boundGroups[j])) {
+                        boundGroups[i] = [];
+                        j = boundGroups.length;
+                    }
+                }
+            }
+        }
+
+        let temp = [];
+        for (let i = 0; i < boundGroups.length; i++) {
+            if (boundGroups[i].length > 0) { temp.push(boundGroups[i]); }
+        }
+
+        boundGroups = temp;
+        console.log("GROUPS:");
+        console.log(boundGroups);
     }
 
     let t1 = performance.now();
@@ -146,4 +173,18 @@ let groupsAreRedundant = (group1, group2) => {
     }
 
     return true;
+}
+
+let redundantGroupsExist = (groups) => {
+    for (let i = 0; i < groups.length; i++) {
+        for (let j = 0; j < groups.length; j++) {
+            if (i != j) {
+                if (groupsAreRedundant(groups[i], groups[j])) {
+                    return true;
+                }
+            }
+        }
+    }
+
+    return false;
 }
