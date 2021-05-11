@@ -37,7 +37,7 @@ let playerConstructor = (x, y) => {
                 || entity.y < object.y + object.height < entity.y + entity.height);
         }
     }
-    entity.image.src = "player.png";
+    entity.image.src = "images/entities/player.png";
     entity.equippedWeapon = basicWeapon(entity);
     return entity;
 }
@@ -124,7 +124,7 @@ let wolfConstructor = (x, y) => {
                 || (entity.y < (object.y + object.height) && (object.y + object.height) < (entity.y + entity.height))));
         }
     }
-    entity.image.src = "wolf.png";
+    entity.image.src = "images/entities/wolf.png";
     entity.equippedWeapon = basicWeapon(entity);
     return entity;   
 }

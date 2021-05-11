@@ -10,10 +10,10 @@
             }
         </style>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-        <script src="bullets.js"></script>
-        <script src="weapons.js"></script>
-        <script src="entity.js"></script>
-        <script src="tiles.js"></script>
+        <script src="js/bullets.js"></script>
+        <script src="js/weapons.js"></script>
+        <script src="js/entity.js"></script>
+        <script src="js/tiles.js"></script>
     </head>
     <body onload="startGame()">
         <script>
@@ -167,7 +167,7 @@ function updateGameArea() {
                 myGameArea.maskContext.clearRect(0, 0, myGameArea.maskCanvas.width, myGameArea.maskCanvas.height);
             for (let i = 0; i < MAP_WIDTH; i++) {
                     for (let j = 0; j < MAP_WIDTH; j++) {
-                        let imagePath = "grass-tile-" + tileArray[j * MAP_WIDTH + i] + ".png";
+                        let imagePath = "images/tiles/grass-tile-" + tileArray[j * MAP_WIDTH + i] + ".png";
                         let image = new Image();
                         image.src = imagePath;
                         myGameArea.maskContext.drawImage(image, 
@@ -207,9 +207,9 @@ function updateGameArea() {
                 let imagePath;
 
                 if (cursorDist <= player.equippedWeapon.range) {
-                    imagePath = "crosshair.png";
+                    imagePath = "images/crosshair.png";
                 } else {
-                    imagePath = "crosshair_invalid.png";
+                    imagePath = "images/crosshair_invalid.png";
                 }
 
                 let ctx = myGameArea.context;

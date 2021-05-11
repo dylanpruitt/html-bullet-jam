@@ -38,6 +38,6 @@ let basicBullet = (x, y, speedX, speedY, creatorName) => {
             }
         }
     }
-    bullet.image.src = "bullet.png";
+    bullet.image.src = "images/bullets/bullet.png";
     return bullet;
 }
