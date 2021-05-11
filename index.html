@@ -14,36 +14,14 @@
         <script src="js/weapons.js"></script>
         <script src="js/entity.js"></script>
         <script src="js/tiles.js"></script>
+        <script src="js/map.js"></script>
     </head>
     <body onload="startGame()">
         <script>
-        let tileArray = [
-            1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 3, 3, 3, 3, 3,
-            1, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 1, 1, 3, 3, 3, 3, 3, 
-            2, 3, 3, 2, 2, 1, 1, 2, 1, 1, 1, 1, 2, 1, 1, 3, 3, 3, 3, 3,
-            2, 3, 2, 2, 1, 1, 1, 2, 2, 1, 1, 1, 1, 1, 1, 3, 3, 3, 3, 3,
-            1, 2, 2, 1, 1, 1, 2, 2, 1, 1, 1, 1, 1, 2, 1, 3, 3, 3, 3, 3,
-            1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 3, 3, 3, 3, 3,
-            1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 2, 2, 1, 1, 3, 3, 3, 3, 3,
-            1, 1, 1, 2, 3, 2, 1, 1, 2, 2, 1, 2, 3, 2, 1, 3, 3, 3, 3, 3,
-            1, 1, 2, 2, 3, 3, 2, 2, 3, 3, 2, 1, 2, 1, 1, 3, 3, 3, 3, 3,
-            1, 1, 1, 2, 2, 2, 1, 1, 2, 2, 1, 1, 1, 1, 1, 3, 3, 3, 3, 3,
-            1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 3, 3, 3, 3, 3,
-            1, 1, 2, 1, 1, 1, 1, 1, 2, 2, 3, 3, 1, 1, 1, 3, 3, 3, 3, 3,
-            1, 1, 1, 1, 2, 2, 1, 2, 3, 3, 3, 2, 1, 1, 2, 3, 3, 3, 3, 3,
-            1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 1, 1, 2, 3, 3, 3, 3, 3, 3,
-            1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 3, 3, 3, 3, 3, 3,
-            3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3,
-            3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3,
-            3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3,
-            3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3,
-            3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3,
-        ];
-        let MAP_WIDTH = 20;
-        let SCALE = 2;
+        
         let player;
-        let newX;
-        let newY;
+        let mouseX;
+        let mouseY;
         let keys;
         function startGame() {
             player = playerConstructor(10, 120);
@@ -58,8 +36,8 @@
                 this.canvas.height = 480;
                 this.maskCanvas.width = this.canvas.width / 2;
                 this.maskCanvas.height = this.canvas.height / 2;
-                newX = player.x;
-                newY = player.y;
+                mouseX = player.x;
+                mouseY = player.y;
                 this.context = this.canvas.getContext("2d");
                 this.context.scale(SCALE, SCALE);
                 this.maskContext = this.maskCanvas.getContext('2d');
@@ -216,15 +194,15 @@ function updateGameArea() {
                 let image = new Image();
                 image.src = imagePath;
                 ctx.drawImage(image, 
-                    newX, 
-                    newY,
+                    mouseX, 
+                    mouseY,
                     image.width, 
                     image.height);
             }
 
             let getCursorDistanceFromPlayer = () => {
-                let xDist = player.x - newX;
-                let yDist = player.y - newY;
+                let xDist = player.x - mouseX;
+                let yDist = player.y - mouseY;
                 return Math.sqrt(Math.pow(xDist, 2) + Math.pow(yDist, 2));
             }
         
@@ -232,8 +210,8 @@ function updateGameArea() {
                 const rect = myGameArea.canvas.getBoundingClientRect();
                 const x = Math.floor((event.clientX - rect.left) / SCALE);
                 const y = Math.floor((event.clientY - rect.top) / SCALE);
-                newX = x;
-                newY = y;
+                mouseX = x;
+                mouseY = y;
             }
 
             let updatePlayerMovement = () => {
@@ -308,7 +286,7 @@ function updateGameArea() {
             myGameArea.canvas.addEventListener("click", function(e) {
                 getCursorPosition(e);
                 if (player.equippedWeapon.cooldownFrames == 0) {
-                    player.equippedWeapon.onFire(newX, newY);
+                    player.equippedWeapon.onFire(mouseX, mouseY);
                 }
             });
 
