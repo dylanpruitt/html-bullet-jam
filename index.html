@@ -81,8 +81,8 @@ let yOffset = 0;
 let drawEntity = (entity) => {
     ctx = myGameArea.context;
     ctx.drawImage(entity.image, 
-        entity.x, 
-        entity.y,
+        entity.x + xOffset, 
+        entity.y + yOffset,
         entity.width, 
         entity.height);
 }
@@ -116,8 +116,8 @@ let updateBullets = () => {
     for (let i = 0; i < bullets.length; i++) {
         if (bullets[i].framesActive < bullets[i].maxFramesActive) {
             ctx.drawImage(bullets[i].image, 
-                bullets[i].x, 
-                bullets[i].y,
+                bullets[i].x + xOffset, 
+                bullets[i].y + yOffset,
                 bullets[i].width, 
                 bullets[i].height);
             bullets[i].update();    
@@ -267,8 +267,8 @@ function updateGameArea() {
                     if (player.speedX > player.speedCap) {
                         player.speedX = player.speedCap;
                     }
-                    if ((player.x - xOffset) > 16 * MAP_WIDTH - 6) {
-                        player.x = 16 * MAP_WIDTH - 6 + xOffset;
+                    if (player.x > 16 * MAP_WIDTH - 6) {
+                        player.x = 16 * MAP_WIDTH - 6;
                         player.speedX = 0;
                     }
                 }
@@ -295,8 +295,8 @@ function updateGameArea() {
                     if (player.speedY > player.speedCap) {
                         player.speedY = player.speedCap;
                     }
-                    if ((player.y - yOffset) > 16 * MAP_WIDTH - 8) {
-                        player.y = 16 * MAP_WIDTH - 8 + yOffset;
+                    if (player.y > 16 * MAP_WIDTH - 8) {
+                        player.y = 16 * MAP_WIDTH - 8;
                         player.speedY = 0;
                     }
                 }

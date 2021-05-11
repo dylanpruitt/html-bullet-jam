@@ -1,44 +1,30 @@
-let boundTest1 = [
-    0, 0, 0, 0, 0,
-    0, 1, 0, 1, 0,
-    0, 0, 0, 0, 0,
-    0, 1, 0, 1, 0,
-    0, 0, 0, 0, 0,
-]; // 4 groups
 
-let boundTest2 = [
-    0, 0, 0, 0, 0,
-    0, 0, 0, 1, 0,
-    0, 1, 1, 1, 0,
-    0, 1, 0, 1, 0,
-    0, 0, 0, 1, 0,
-]; // 3 groups
-
-let boundTest3 = [
-    1, 1, 1, 1, 1,
-    1, 1, 1, 1, 1,
-    1, 1, 1, 1, 1,
-    1, 1, 1, 1, 1,
-    1, 1, 1, 1, 1,
-]; // 1 group
-
-let boundTest4 = [
-    0, 0, 0, 0, 0,
-    0, 0, 0, 1, 0,
-    0, 1, 1, 1, 0,
-    0, 1, 1, 1, 0,
-    0, 0, 0, 0, 0,
-]; // 2 groups
 
 let TEST_WIDTH = 5;
 let TILE_SIZE = 16;
 
+/**
+ * This function takes an array of collision values (0/false or 1/true) to create optimized
+ * bounding boxes for tile collision. The function creates basic bounding boxes, and then op-
+ * timizes them by merging adjacent bounds and removing redundant bounding boxes.
+ * @param {array} collisionArray 
+ * @returns optimized bounding boxes
+ */
 let generateBoundGroups = (collisionArray) => {
     let t0 = performance.now();
 
     let boundGroups = generateBasicBounds(collisionArray);
     let boundingBoxes = createBoundingBoxes(boundGroups);
 
+    boundingBoxes = optimizedMerge(boundingBoxes);
+    boundingBoxes = optimizedUnique(boundingBoxes);
+
+    let t1 = performance.now();
+    console.log("generating bounding boxes took " + (t1 - t0) + "ms");
+    return boundingBoxes;
+}
+
+let optimizedMerge = (boundingBoxes) => {
     while (groupsCanBeMerged(boundingBoxes)) {
         for (let i = 0; i < boundingBoxes.length; i++) {
             for (let j = 0; j < boundingBoxes.length; j++) {
@@ -67,19 +53,13 @@ let generateBoundGroups = (collisionArray) => {
             }
         }
     }
-    
-    let temp = [];
-    for (let i = 0; i < boundingBoxes.length; i++) {
-        if (boundingBoxes[i].width != -1) {
-            boundingBoxes[i].width = boundingBoxes[i].maxX - boundingBoxes[i].minX;
-            boundingBoxes[i].height = boundingBoxes[i].maxY - boundingBoxes[i].minY;
-            temp.push(boundingBoxes[i]);
-        }
-    }
-    boundingBoxes = temp;
 
+    boundingBoxes = updatedGroups(boundingBoxes);
+    return boundingBoxes;
+}
+
+let optimizedUnique = (boundingBoxes) => {
     while (redundantGroupsExist(boundingBoxes)) {
-        temp = [];
         for (let i = 0; i < boundingBoxes.length; i++) {
             for (let j = 0; j < boundingBoxes.length; j++) {
                 if (i != j && groupsAreRedundant(boundingBoxes[i], boundingBoxes[j])
@@ -89,19 +69,21 @@ let generateBoundGroups = (collisionArray) => {
             }
         }
 
-        for (let i = 0; i < boundingBoxes.length; i++) {
-            if (boundingBoxes[i].width != -1) {
-                boundingBoxes[i].width = boundingBoxes[i].maxX - boundingBoxes[i].minX;
-                boundingBoxes[i].height = boundingBoxes[i].maxY - boundingBoxes[i].minY;
-                temp.push(boundingBoxes[i]);
-            }
-        }
-        boundingBoxes = temp;
+        boundingBoxes = updatedGroups(boundingBoxes);
     }
-
-    let t1 = performance.now();
-    console.log("Took " + (t1 - t0) + "ms");
     return boundingBoxes;
+}
+
+let updatedGroups = (boundingBoxes) => {
+    let temp = [];
+    for (let i = 0; i < boundingBoxes.length; i++) {
+        if (boundingBoxes[i].width != -1) {
+            boundingBoxes[i].width = boundingBoxes[i].maxX - boundingBoxes[i].minX;
+            boundingBoxes[i].height = boundingBoxes[i].maxY - boundingBoxes[i].minY;
+            temp.push(boundingBoxes[i]);
+        }
+    }
+    return temp;
 }
 
 let generateBasicBounds = (collisionArray) => {
@@ -172,16 +154,6 @@ let getMinAndMaxIndices = (group) => {
         }
     }
     return [minIndex, maxIndex];
-}
-
-let getUniqueIndices = (group) => {
-    let temp = [];
-    for (let i = 0; i < group.length; i++) {
-        if (!temp.includes(group[i])) {
-            temp.push(group[i]);
-        }
-    }
-    return temp;
 }
 
 let groupsCanBeMerged = (groups) => {
