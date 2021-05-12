@@ -50,10 +50,22 @@ let updateEntities = () => {
 let manageEntityTileCollision = (entity) => {
     for (let i = 0; i < boundingBoxes.length; i++) {
         if (entityCollidingWithBounds(entity, boundingBoxes[i])) {
-            entity.x += entity.speedX * -1;
-            entity.y += entity.speedY * -1;
-            entity.speedX = 0;
-            entity.speedY = 0;
+            if (entity.x < boundingBoxes[i].minX + boundingBoxes[i].width / 2) {
+                entity.x = boundingBoxes[i].minX - entity.width;
+                entity.speedX = 0;
+            } 
+            if (entity.x >= boundingBoxes[i].minX + boundingBoxes[i].width / 2) {
+                entity.x = boundingBoxes[i].maxX;
+                entity.speedX = 0;
+            } 
+            if (entity.y < boundingBoxes[i].minY + boundingBoxes[i].height / 2) {
+                entity.y = boundingBoxes[i].minY - entity.height;
+                entity.speedY = 0;
+            } 
+            if (entity.y >= boundingBoxes[i].minY + boundingBoxes[i].height / 2) {
+                entity.y = boundingBoxes[i].maxY;
+                entity.speedY = 0;
+            } 
         }
     }
 }
