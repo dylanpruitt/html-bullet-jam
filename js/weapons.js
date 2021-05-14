@@ -1,7 +1,7 @@
 let basicWeapon = (parent) => {
     let weapon = {
         range: 60,
-        speedCap: 2.4,
+        speedCap: 3.2,
         cooldownFrames: 45,
         width: 4,
         height: 4,
@@ -12,6 +12,7 @@ let basicWeapon = (parent) => {
             }
         },
         onFire: (cursorX, cursorY) => {
+            console.log(cursorX + "/" + parent.x + " :: " + cursorY + "/" + parent.y);
             let projectileSpeeds = weapon.getProjectileSpeed(cursorX, cursorY);
             let bullet = basicBullet(parent.x, parent.y, projectileSpeeds[0], projectileSpeeds[1], parent.name);
             bullets.push(bullet);

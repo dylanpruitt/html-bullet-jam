@@ -24,10 +24,8 @@ let basicBullet = (x, y, speedX, speedY, creatorName) => {
             bullet.y += bullet.speedY;
         },
         updateSpeed: () => {
-            if (bullet.speedX > 0) { bullet.speedX -= 0.05; }
-            if (bullet.speedY > 0) { bullet.speedY -= 0.05; }
-            if (bullet.speedX < 0) { bullet.speedX += 0.05; }
-            if (bullet.speedY < 0) { bullet.speedY += 0.05; }
+            bullet.speedX *= 0.95;
+            bullet.speedY *= 0.95;
             if (Math.abs(bullet.speedX) < 0.1) { bullet.speedX = 0; }
             if (Math.abs(bullet.speedY) < 0.1) { bullet.speedY = 0; }
         },

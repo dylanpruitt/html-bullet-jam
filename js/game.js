@@ -69,6 +69,10 @@ let updateBullets = () => {
                 bullets[i].onCollide(entities[j]);
             }
         }
+
+        if (player.collidingWith(bullets[i])) { 
+            bullets[i].onCollide(player);
+        }
     }
 
     removeDeadBullets();
@@ -143,8 +147,8 @@ let renderCrosshair = () => {
 }
 
 let getCursorDistanceFromPlayer = () => {
-    let xDist = player.x - mouseX;
-    let yDist = player.y - mouseY;
+    let xDist = player.x - (mouseX - xOffset);
+    let yDist = player.y - (mouseY - yOffset);
     return Math.sqrt(Math.pow(xDist, 2) + Math.pow(yDist, 2));
 }           
         
@@ -228,7 +232,7 @@ game.canvas.addEventListener("mousemove", function(e) {
 game.canvas.addEventListener("click", function(e) {
     getCursorPosition(e);
     if (player.equippedWeapon.cooldownFrames == 0) {
-        player.equippedWeapon.onFire(mouseX, mouseY);
+        player.equippedWeapon.onFire(mouseX - xOffset, mouseY - yOffset);
     }
 });
 
