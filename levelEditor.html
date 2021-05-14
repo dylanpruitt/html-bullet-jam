@@ -69,11 +69,23 @@
                 if (updateMask) {
                     drawMaskContext(game);
                 }
-            }    
+            }
+
+            let getTileFromCursor = () => {
+                let index = getTileIndexFromCursor();
+                return tileArray[index];
+            }
+            
+            let getTileIndexFromCursor = () => {
+                let x = Math.floor(mouseX / 16);
+                let y = Math.floor(mouseY / 16);
+                let index = y * MAP_WIDTH + x;
+                return index;
+            }
 
             game.canvas.addEventListener("click", function(e) {
                 getCursorPosition(e);
-                console.log("Mouse @ " + mouseX + "," + mouseY);
+                console.log(getTileFromCursor());
             });
         </script>
     </head>
