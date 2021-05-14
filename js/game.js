@@ -73,6 +73,12 @@ let updateBullets = () => {
         if (player.collidingWith(bullets[i])) { 
             bullets[i].onCollide(player);
         }
+
+        for (let j = 0; j < boundingBoxes.length; j++) {
+            if (entityCollidingWithBounds(bullets[i], boundingBoxes[j])) {
+                bullets[i].framesActive = bullets[i].maxFramesActive;
+            }
+        }
     }
 
     removeDeadBullets();
