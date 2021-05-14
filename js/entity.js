@@ -19,8 +19,8 @@ let playerConstructor = (x, y) => {
             entity.equippedWeapon.update();
         },
         updatePosition: () => {
-            let entityX = player.x;
-            let entityY = player.y;
+            let entityX = entity.x;
+            let entityY = entity.y;
 
             entity.x += entity.speedX;
             entity.y += entity.speedY;
@@ -78,8 +78,8 @@ let wolfConstructor = (x, y) => {
             entity.equippedWeapon.update();
         },
         updatePosition: () => {
-            let entityX = player.x;
-            let entityY = player.y;
+            let entityX = entity.x;
+            let entityY = entity.y;
 
             entity.x += entity.speedX;
             entity.y += entity.speedY;
