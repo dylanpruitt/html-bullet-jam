@@ -14,13 +14,25 @@ let playerConstructor = (x, y) => {
         height: 8,
         image: new Image(),
         update: () => {
-            // entity.updatePosition();
+            entity.updatePosition();
             entity.updateSpeed();
             entity.equippedWeapon.update();
         },
         updatePosition: () => {
+            let entityX = player.x;
+            let entityY = player.y;
+
             entity.x += entity.speedX;
             entity.y += entity.speedY;
+
+            for (let i = 0; i < boundingBoxes.length; i++) {
+                if (entityCollidingWithBounds(entity, boundingBoxes[i])) {
+                    entity.x = entityX;
+                    entity.y = entityY;
+                    entity.speedX = 0;
+                    entity.speedY = 0;
+                }
+            }
         },
         updateSpeed: () => {
             if (entity.speedX > 0) { entity.speedX -= 0.05; }
@@ -66,8 +78,20 @@ let wolfConstructor = (x, y) => {
             entity.equippedWeapon.update();
         },
         updatePosition: () => {
+            let entityX = player.x;
+            let entityY = player.y;
+
             entity.x += entity.speedX;
             entity.y += entity.speedY;
+            
+            for (let i = 0; i < boundingBoxes.length; i++) {
+                if (entityCollidingWithBounds(entity, boundingBoxes[i])) {
+                    entity.x = entityX;
+                    entity.y = entityY;
+                    entity.speedX = 0;
+                    entity.speedY = 0;
+                }
+            }
         },
         updateAI: (player) => {
             let distanceFromPlayer = Math.sqrt(Math.pow(player.x - entity.x, 2) + Math.pow(player.y - entity.y, 2));

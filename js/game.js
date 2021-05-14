@@ -36,17 +36,6 @@ let game = {
 
 let updateEntities = () => {
     player.update();
-    let playerX = player.x;
-    let playerY = player.y;
-    player.updatePosition();
-    for (let i = 0; i < boundingBoxes.length; i++) {
-        if (entityCollidingWithBounds(player, boundingBoxes[i])) {
-            player.x = playerX;
-            player.y = playerY;
-            player.speedX = 0;
-            player.speedY = 0;
-        }
-    }
     drawEntity(player, game.context);
 
     for (let i = 0; i < entities.length; i++) {
@@ -55,29 +44,6 @@ let updateEntities = () => {
     }
 
     removeDeadEntities();
-}
-
-let manageEntityTileCollision = (entity) => {
-    for (let i = 0; i < boundingBoxes.length; i++) {
-        if (entityCollidingWithBounds(entity, boundingBoxes[i])) {
-            if (entity.x < boundingBoxes[i].minX + boundingBoxes[i].width / 2) {
-                entity.x = boundingBoxes[i].minX - entity.width;
-                entity.speedX = 0;
-            } 
-            if (entity.x >= boundingBoxes[i].minX + boundingBoxes[i].width / 2) {
-                entity.x = boundingBoxes[i].maxX;
-                entity.speedX = 0;
-            } 
-            if (entity.y < boundingBoxes[i].minY + boundingBoxes[i].height / 2) {
-                entity.y = boundingBoxes[i].minY - entity.height;
-                entity.speedY = 0;
-            } 
-            if (entity.y >= boundingBoxes[i].minY + boundingBoxes[i].height / 2) {
-                entity.y = boundingBoxes[i].maxY;
-                entity.speedY = 0;
-            } 
-        }
-    }
 }
 
 let removeDeadEntities = () => {
@@ -139,7 +105,7 @@ let updateMaskContext = () => {
         xOffset -= Math.abs(player.speedX);
         updateMask = true;
     }
-    if (player.y - yOffset > 160 && yOffset > (MAP_WIDTH * 16 - game.canvas.height) / 2) {
+    if (player.y + yOffset > 160 && yOffset > (MAP_WIDTH * 16 - game.canvas.height) / 2) {
         yOffset -= Math.abs(player.speedY);
         updateMask = true;
     }
