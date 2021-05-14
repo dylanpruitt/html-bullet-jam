@@ -30,6 +30,7 @@
         <script src="js/game.js"></script>
         <script>
             let selection = 0;
+            let mouseLock = false;
 
             let setupEditor = () => {
                 generateMap();
@@ -66,6 +67,10 @@
                 render(game);
                 renderCrosshair();
                 updateMaskContext();
+                if (mouseLock) {
+                    game.context.font = "8px Arial";
+                    game.context.fillText("MOUSE LOCK", 2, 235);
+                }
             }
 
             renderCrosshair = () => {
@@ -82,26 +87,29 @@
             }
 
             updateMaskContext = () => {
-                let updateMask = false;
-                if (mouseX + xOffset > 160 && xOffset > (MAP_WIDTH * 16 - game.canvas.width) / 2) {
-                    xOffset -= 2;
-                    updateMask = true;
+                if (!mouseLock) {
+                    let updateMask = false;
+                    if (mouseX + xOffset > 160 && xOffset > (MAP_WIDTH * 16 - game.canvas.width) / 2) {
+                        xOffset -= 2;
+                        updateMask = true;
+                    }
+                    if (mouseY + yOffset > 160 && yOffset > (MAP_WIDTH * 16 - game.canvas.height) / 2) {
+                        yOffset -= 2;
+                        updateMask = true;
+                    }
+                    if (mouseX + xOffset < 80 && xOffset < 0) {
+                        xOffset += 2;
+                        updateMask = true;
+                    }
+                    if (mouseY + yOffset < 80 && yOffset < 0) {
+                        yOffset += 2;
+                        updateMask = true;
+                    }
+                    if (updateMask) {
+                        drawMaskContext(game);
+                    }
                 }
-                if (mouseY + yOffset > 160 && yOffset > (MAP_WIDTH * 16 - game.canvas.height) / 2) {
-                    yOffset -= 2;
-                    updateMask = true;
-                }
-                if (mouseX + xOffset < 80 && xOffset < 0) {
-                    xOffset += 2;
-                    updateMask = true;
-                }
-                if (mouseY + yOffset < 80 && yOffset < 0) {
-                    yOffset += 2;
-                    updateMask = true;
-                }
-                if (updateMask) {
-                    drawMaskContext(game);
-                }
+                
             }
 
             let getTileFromCursor = () => {
@@ -122,6 +130,17 @@
                 let y = Math.floor((mouseY - yOffset) / 16) * 16;
                 tileArray[getTileIndexFromCursor()] = tileset[selection](x, y);
                 drawMaskContext(game);
+            });
+
+            $('html').keydown(function(e) {
+                keys = (keys || []);
+                keys[e.keyCode] = true;
+
+                let M = 77, m = 109;
+
+                if (keys[M] || keys[m]) {
+                    mouseLock = !mouseLock;
+                }
             });
         </script>
     </head>
