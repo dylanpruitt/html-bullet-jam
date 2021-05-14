@@ -50,4 +50,30 @@ let rockTile = (x, y) => {
     return tile;   
 }
 
-let tileset = [grassTile, grassTileShort, grassTileTall, rockTile];
+let blendGrassSandTile = (x, y) => {
+    let tile = {
+        x: x,
+        y: y,
+        width: 16,
+        height: 16,
+        collidable: false,
+        image: new Image(),
+    }
+    tile.image.src = "images/tiles/blend-grass-sand.png";
+    return tile;   
+}
+
+let sandTile = (x, y) => {
+    let tile = {
+        x: x,
+        y: y,
+        width: 16,
+        height: 16,
+        collidable: false,
+        image: new Image(),
+    }
+    tile.image.src = "images/tiles/sand-tile-1.png";
+    return tile;   
+}
+
+let tileset = [grassTile, grassTileShort, grassTileTall, rockTile, blendGrassSandTile, sandTile];

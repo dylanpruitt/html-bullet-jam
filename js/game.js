@@ -36,7 +36,17 @@ let game = {
 
 let updateEntities = () => {
     player.update();
-    manageEntityTileCollision(player);
+    let playerX = player.x;
+    let playerY = player.y;
+    player.updatePosition();
+    for (let i = 0; i < boundingBoxes.length; i++) {
+        if (entityCollidingWithBounds(player, boundingBoxes[i])) {
+            player.x = playerX;
+            player.y = playerY;
+            player.speedX = 0;
+            player.speedY = 0;
+        }
+    }
     drawEntity(player, game.context);
 
     for (let i = 0; i < entities.length; i++) {

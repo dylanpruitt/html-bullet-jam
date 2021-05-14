@@ -29,6 +29,6 @@ let basicWeapon = (parent) => {
             return [xSpeed, ySpeed];
         }
     }
-    weapon.image.src = "bullet.png";
+    weapon.image.src = "images/bullets/bullet.png";
     return weapon;
 }
