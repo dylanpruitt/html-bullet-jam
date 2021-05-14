@@ -29,6 +29,8 @@
         <script src="js/render.js"></script>
         <script src="js/game.js"></script>
         <script>
+            let selection = 0;
+
             let setupEditor = () => {
                 generateMap();
                 game.start();
@@ -46,6 +48,10 @@
                     tileSelector.className = "tile-selector";
                     let tileImageSource = tileset[i]().image.src;
                     let tileImage = $("<img></img>").attr("src", tileImageSource).width("20px").height("20px");
+                    tileImage.click(function () {
+                        console.log("Selected tile " + i);
+                        selection = i;
+                    });
                     tileImage.appendTo(tileSelector);
                     tileSelector.appendTo("#tile-picker");
                 }
@@ -104,15 +110,18 @@
             }
             
             let getTileIndexFromCursor = () => {
-                let x = Math.floor(mouseX / 16);
-                let y = Math.floor(mouseY / 16);
+                let x = Math.floor((mouseX - xOffset)  / 16);
+                let y = Math.floor((mouseY - yOffset) / 16);
                 let index = y * MAP_WIDTH + x;
                 return index;
             }
 
             game.canvas.addEventListener("click", function(e) {
                 getCursorPosition(e);
-                console.log(getTileFromCursor());
+                let x = Math.floor((mouseX - xOffset) / 16) * 16;
+                let y = Math.floor((mouseY - yOffset) / 16) * 16;
+                tileArray[getTileIndexFromCursor()] = tileset[selection](x, y);
+                drawMaskContext(game);
             });
         </script>
     </head>
