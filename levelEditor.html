@@ -8,6 +8,19 @@
                 background-color: #f1f1f1;
                 cursor: none;
             }
+            div {
+                border: 1px solid #d3d3d3;
+                background-color: #f1f1f1;
+            }
+            #tile-picker {
+                position: absolute;
+                top: 8px;
+                left: 490px;
+                overflow-y: auto;
+            }
+            .tile-selector {
+                position: absolute;
+            }
         </style>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         <script src="js/tiles.js"></script>
@@ -19,9 +32,23 @@
             let setupEditor = () => {
                 generateMap();
                 game.start();
+                setupTilePicker();
                 clearInterval(game.interval);
                 game.canvas.removeEventListener("click", fireWeapon);
                 game.interval = setInterval(updateMap, 20);
+            }
+
+            let setupTilePicker = () => {
+                $("#tile-picker").width("32px").height(game.canvas.height);
+                for (let i = 0; i < tileset.length; i++) {
+                    let tileSelector = $("<div></div>").width("20px").height("20px");
+                    tileSelector.id = "tile-selector-" + i;
+                    tileSelector.className = "tile-selector";
+                    let tileImageSource = tileset[i]().image.src;
+                    let tileImage = $("<img></img>").attr("src", tileImageSource).width("20px").height("20px");
+                    tileImage.appendTo(tileSelector);
+                    tileSelector.appendTo("#tile-picker");
+                }
             }
 
             let updateMap = () => {
@@ -89,5 +116,7 @@
             });
         </script>
     </head>
-    <body onload="setupEditor()"></body>
+    <body onload="setupEditor()">
+        <div id="tile-picker"></div>
+    </body>
 </html>
