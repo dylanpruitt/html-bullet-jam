@@ -1,8 +1,81 @@
 <html>
     <head>
         <title>The Game - Level Editor</title>
-    </head>
-    <body>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <style>
+            canvas {
+                border: 1px solid #d3d3d3;
+                background-color: #f1f1f1;
+                cursor: none;
+            }
+        </style>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="js/tiles.js"></script>
+        <script src="js/map.js"></script>
+        <script src="js/entity.js"></script>
+        <script src="js/render.js"></script>
+        <script src="js/game.js"></script>
+        <script>
+            let setupEditor = () => {
+                generateMap();
+                game.start();
+                clearInterval(game.interval);
+                game.canvas.removeEventListener("click", fireWeapon);
+                game.interval = setInterval(updateMap, 20);
+            }
 
-    </body>
+            let updateMap = () => {
+                game.clear();
+                if (game.frameNo == 50) {
+                    drawMaskContext(game);
+                    game.frameNo = 0;
+                }
+                render(game);
+                renderCrosshair();
+                updateMaskContext();
+            }
+
+            renderCrosshair = () => {
+                let imagePath = "images/crosshair.png";
+
+                let ctx = game.context;
+                let image = new Image();
+                image.src = imagePath;
+                ctx.drawImage(image, 
+                    mouseX, 
+                    mouseY,
+                    image.width, 
+                    image.height);
+            }
+
+            updateMaskContext = () => {
+                let updateMask = false;
+                if (mouseX + xOffset > 160 && xOffset > (MAP_WIDTH * 16 - game.canvas.width) / 2) {
+                    xOffset -= 2;
+                    updateMask = true;
+                }
+                if (mouseY + yOffset > 160 && yOffset > (MAP_WIDTH * 16 - game.canvas.height) / 2) {
+                    yOffset -= 2;
+                    updateMask = true;
+                }
+                if (mouseX + xOffset < 80 && xOffset < 0) {
+                    xOffset += 2;
+                    updateMask = true;
+                }
+                if (mouseY + yOffset < 80 && yOffset < 0) {
+                    yOffset += 2;
+                    updateMask = true;
+                }
+                if (updateMask) {
+                    drawMaskContext(game);
+                }
+            }    
+
+            game.canvas.addEventListener("click", function(e) {
+                getCursorPosition(e);
+                console.log("Mouse @ " + mouseX + "," + mouseY);
+            });
+        </script>
+    </head>
+    <body onload="setupEditor()"></body>
 </html>

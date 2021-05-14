@@ -17,8 +17,8 @@ let game = {
         this.canvas.height = 480;
         this.maskCanvas.width = this.canvas.width / 2;
         this.maskCanvas.height = this.canvas.height / 2;
-        mouseX = player.x;
-        mouseY = player.y;
+        mouseX = 0;
+        mouseY = 0;
         this.context = this.canvas.getContext("2d");
         this.context.scale(SCALE, SCALE);
         this.maskContext = this.maskCanvas.getContext('2d');
@@ -235,12 +235,15 @@ let updatePlayerMovement = () => {
 game.canvas.addEventListener("mousemove", function(e) {
     getCursorPosition(e);
 });
-game.canvas.addEventListener("click", function(e) {
+
+let fireWeapon = (e) => {
     getCursorPosition(e);
     if (player.equippedWeapon.cooldownFrames == 0) {
         player.equippedWeapon.onFire(mouseX - xOffset, mouseY - yOffset);
     }
-});
+}
+
+game.canvas.addEventListener("click", fireWeapon);
 
 $('html').keydown(function(e) {
     keys = (keys || []);
