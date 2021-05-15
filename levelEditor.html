@@ -21,6 +21,11 @@
             .tile-selector {
                 position: absolute;
             }
+            #selection-info {
+                position: absolute;
+                top: 8px;
+                left: 530px;
+            }
         </style>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         <script src="js/tiles.js"></script>
@@ -127,12 +132,18 @@
 
             game.canvas.addEventListener("click", function(e) {
                 getCursorPosition(e);
-                if (editorMode === "tileEdit") {
-                    let x = Math.floor((mouseX - xOffset) / 16) * 16;
-                    let y = Math.floor((mouseY - yOffset) / 16) * 16;
+            
+                let x = Math.floor((mouseX - xOffset) / 16) * 16;
+                let y = Math.floor((mouseY - yOffset) / 16) * 16;
+
+                if (editorMode === "selection") {
+                    let selection = tileArray[getTileIndexFromCursor()];
+                    let infoMessage = "SELECTED TILE:<br>X: " + selection.x + ", Y: " + selection.y + "<br>COLLIDABLE: " + selection.collidable;
+                    $("#selection-info").html(infoMessage);
+                } else if (editorMode === "tileEdit") {
                     tileArray[getTileIndexFromCursor()] = tileset[selection](x, y);
+                    drawMaskContext(game);
                 }
-                drawMaskContext(game);
             });
 
             $('html').keydown(function(e) {
@@ -156,5 +167,6 @@
         <button id="default-selector" onclick="setEditorMode('selection')">Selection Mode</button><nobr>
         </nobr><button id="tile-editor" onclick="setEditorMode('tileEdit')">Tile Edit Mode</button><nobr>
         </nobr><button id="entities-editor" onclick="setEditorMode('entityEdit')">Place Entity Mode</button>
+        <p id="selection-info"></p>
     </body>
 </html>
