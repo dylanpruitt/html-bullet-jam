@@ -28,6 +28,8 @@
             }
         </style>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="js/bullets.js"></script>
+        <script src="js/weapons.js"></script>
         <script src="js/tiles.js"></script>
         <script src="js/map.js"></script>
         <script src="js/entity.js"></script>
@@ -73,6 +75,7 @@
                 render(game);
                 renderCrosshair();
                 updateMaskContext();
+                renderEntities();
                 if (mouseLock) {
                     game.context.font = "8px Arial";
                     game.context.fillText("MOUSE LOCK", 2, 235);
@@ -90,6 +93,12 @@
                     mouseY,
                     image.width, 
                     image.height);
+            }
+
+            let renderEntities = () => {
+                for (let i = 0; i < entities.length; i++) {
+                    drawEntity(entities[i], game.context);
+                }
             }
 
             updateMaskContext = () => {
@@ -184,6 +193,10 @@
                 } else if (editorMode === "tileEdit") {
                     tileArray[getTileIndexFromCursor()] = tileset[selection](x, y);
                     drawMaskContext(game);
+                } else if (editorMode === "entityEdit") {
+                    x = mouseX - xOffset;
+                    y = mouseY - yOffset;
+                    entities.push(wolfConstructor(x, y));
                 }
             });
 
