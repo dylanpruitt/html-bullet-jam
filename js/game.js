@@ -115,7 +115,7 @@ let updateMaskContext = () => {
         xOffset -= Math.abs(player.speedX);
         updateMask = true;
     }
-    if (player.y + yOffset > 160 && yOffset > (MAP_WIDTH * 16 - game.canvas.height) / 2) {
+    if (player.y + yOffset > 160 && yOffset > (MAP_HEIGHT * 16 - game.canvas.height) / 2) {
         yOffset -= Math.abs(player.speedY);
         updateMask = true;
     }
@@ -225,8 +225,8 @@ let updatePlayerMovement = () => {
         if (player.speedY > player.speedCap) {
             player.speedY = player.speedCap;
         }
-        if (player.y > 16 * MAP_WIDTH - 8) {
-            player.y = 16 * MAP_WIDTH - 8;
+        if (player.y > 16 * MAP_HEIGHT - 8) {
+            player.y = 16 * MAP_HEIGHT - 8;
             player.speedY = 0;
         }
     }

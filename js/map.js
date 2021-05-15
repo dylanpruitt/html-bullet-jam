@@ -1,6 +1,6 @@
 let tileArray = [
     4, 4, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-    4, 4, 2, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 1, 1, 1, 1, 1, 1, 1, 
+    4, 4, 2, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 1, 1, 1, 1, 1, 1, 1,
     2, 3, 3, 2, 2, 1, 1, 2, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1,
     2, 3, 2, 2, 1, 1, 1, 2, 2, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1,
     1, 2, 2, 1, 1, 4, 2, 2, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1,
@@ -132,7 +132,7 @@ let generateBasicBounds = (tileArray) => {
     let boundGroups = [];
     let currentBounds = [];
 
-    for (let i = 0; i < MAP_WIDTH; i++) {
+    for (let i = 0; i < MAP_HEIGHT; i++) {
         for (let j = 0; j < MAP_WIDTH; j++) {
             let index = i * MAP_WIDTH + j;
             if (tileArray[index].collidable == 1) {
@@ -145,12 +145,12 @@ let generateBasicBounds = (tileArray) => {
         }
     }
 
-    for (let i = 0; i < MAP_WIDTH; i++) {
+    for (let i = 0; i < MAP_HEIGHT; i++) {
         for (let j = 0; j < MAP_WIDTH; j++) {
             let index = j * MAP_WIDTH + i;
             if (tileArray[index].collidable == 1) {
                 currentBounds.push(index);
-                if (j == MAP_WIDTH - 1 || tileArray[index + MAP_WIDTH].collidable == 0) {
+                if (j == MAP_HEIGHT - 1 || tileArray[index + MAP_WIDTH].collidable == 0) {
                     boundGroups.push(currentBounds);
                     currentBounds = [];
                 }
