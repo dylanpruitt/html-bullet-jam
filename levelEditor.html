@@ -30,6 +30,7 @@
         <script src="js/game.js"></script>
         <script>
             let selection = 0;
+            let editorMode = "selection";
             let mouseLock = false;
 
             let setupEditor = () => {
@@ -126,9 +127,11 @@
 
             game.canvas.addEventListener("click", function(e) {
                 getCursorPosition(e);
-                let x = Math.floor((mouseX - xOffset) / 16) * 16;
-                let y = Math.floor((mouseY - yOffset) / 16) * 16;
-                tileArray[getTileIndexFromCursor()] = tileset[selection](x, y);
+                if (editorMode === "tileEdit") {
+                    let x = Math.floor((mouseX - xOffset) / 16) * 16;
+                    let y = Math.floor((mouseY - yOffset) / 16) * 16;
+                    tileArray[getTileIndexFromCursor()] = tileset[selection](x, y);
+                }
                 drawMaskContext(game);
             });
 
@@ -142,9 +145,16 @@
                     mouseLock = !mouseLock;
                 }
             });
+
+            let setEditorMode = (mode) => {
+                editorMode = mode;
+            }
         </script>
     </head>
     <body onload="setupEditor()">
-        <div id="tile-picker"></div>
+        <div id="tile-picker"></div><br>
+        <button id="default-selector" onclick="setEditorMode('selection')">Selection Mode</button><nobr>
+        </nobr><button id="tile-editor" onclick="setEditorMode('tileEdit')">Tile Edit Mode</button><nobr>
+        </nobr><button id="entities-editor" onclick="setEditorMode('entityEdit')">Place Entity Mode</button>
     </body>
 </html>

@@ -76,4 +76,44 @@ let sandTile = (x, y) => {
     return tile;   
 }
 
-let tileset = [grassTile, grassTileShort, grassTileTall, rockTile, blendGrassSandTile, sandTile];
+let floorTile = (x, y) => {
+    let tile = {
+        x: x,
+        y: y,
+        width: 16,
+        height: 16,
+        collidable: false,
+        image: new Image(),
+    }
+    tile.image.src = "images/tiles/floor-tile-1.png";
+    return tile;   
+}
+
+let rockWallTile = (x, y) => {
+    let tile = {
+        x: x,
+        y: y,
+        width: 16,
+        height: 16,
+        collidable: true,
+        image: new Image(),
+    }
+    tile.image.src = "images/tiles/rock-wall-tile-1.png";
+    return tile;   
+}
+
+let wallTile = (x, y) => {
+    let tile = {
+        x: x,
+        y: y,
+        width: 16,
+        height: 16,
+        collidable: false,
+        image: new Image(),
+    }
+    tile.image.src = "images/tiles/wall-tile-1.png";
+    return tile;   
+}
+
+let tileset = [grassTile, grassTileShort, grassTileTall, rockTile, blendGrassSandTile, sandTile,
+                floorTile, rockWallTile, wallTile];
