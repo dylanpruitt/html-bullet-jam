@@ -130,6 +130,47 @@
                 return index;
             }
 
+            let enlargeMap = (newXSize, newYSize) => {
+                let temp = [];
+
+                for (let y = 0; y < MAP_HEIGHT; y++) {
+                    for (let x = 0; x < MAP_WIDTH; x++) {
+                        let index = y * MAP_WIDTH + x;
+                        temp.push(tileArray[index]);
+                    }
+                    for (let x = MAP_WIDTH; x < newXSize; x++) {
+                        let index = y * newXSize + x;
+                        temp.push(emptyTile(x * 16, y * 16));
+                    }
+                }
+
+                for (let y = MAP_HEIGHT; y < newYSize; y++) {
+                    for (let x = 0; x < newXSize; x++) {
+                        let index = y * newXSize + x;
+                        temp.push(emptyTile(x * 16, y * 16));
+                    }
+                }
+
+                tileArray = temp;
+                MAP_WIDTH = newXSize;
+                MAP_HEIGHT = newYSize;
+            }
+
+            let shrinkMap = (newXSize, newYSize) => {
+                let temp = [];
+
+                for (let y = 0; y < newYSize; y++) {
+                    for (let x = 0; x < newXSize; x++) {
+                        let index = y * MAP_WIDTH + x;
+                        temp.push(tileArray[index]);
+                    }
+                }
+
+                tileArray = temp;
+                MAP_WIDTH = newXSize;
+                MAP_HEIGHT = newYSize;
+            }
+
             game.canvas.addEventListener("click", function(e) {
                 getCursorPosition(e);
             

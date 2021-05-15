@@ -1,3 +1,16 @@
+let emptyTile = (x, y) => {
+    let tile = {
+        x: x,
+        y: y,
+        width: 16,
+        height: 16,
+        collidable: false,
+        image: new Image(),
+    }
+    tile.image.src = "images/tiles/empty.png";
+    return tile;   
+}
+
 let grassTile = (x, y) => {
     let tile = {
         x: x,
@@ -115,5 +128,5 @@ let wallTile = (x, y) => {
     return tile;   
 }
 
-let tileset = [grassTile, grassTileShort, grassTileTall, rockTile, blendGrassSandTile, sandTile,
+let tileset = [emptyTile, grassTile, grassTileShort, grassTileTall, rockTile, blendGrassSandTile, sandTile,
                 floorTile, rockWallTile, wallTile];
