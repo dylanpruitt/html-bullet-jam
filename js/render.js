@@ -26,12 +26,14 @@ let drawMaskContext = (game) => {
     for (let i = 0; i < renderBoxHeight; i++) {
         for (let j = 0; j < renderBoxWidth; j++) {
             let index = topLeftIndex + j + i * MAP_WIDTH;
-            let image = tileArray[index].image;
-            game.maskContext.drawImage(image, 
-                tileArray[index].x + xOffset, 
-                tileArray[index].y + yOffset,
-                image.width, 
-                image.height);  
+            if (index < tileArray.length) {
+                let image = tileArray[index].image;
+                game.maskContext.drawImage(image, 
+                    tileArray[index].x + xOffset, 
+                    tileArray[index].y + yOffset,
+                    image.width, 
+                    image.height);  
+            }
         }
     }
 
