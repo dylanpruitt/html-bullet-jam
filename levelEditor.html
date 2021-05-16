@@ -82,19 +82,19 @@
             updateMaskContext = () => {
                 if (!mouseLock) {
                     let updateMask = false;
-                    if (mouseX + xOffset > 160 && xOffset > (MAP_WIDTH * 16 - game.canvas.width) / 2) {
+                    if (mouseX > 180 && xOffset > -(MAP_WIDTH * TILE_SIZE * SCALE - game.canvas.width) / 2) {
                         xOffset -= 2;
                         updateMask = true;
                     }
-                    if (mouseY + yOffset > 160 && yOffset > (MAP_WIDTH * 16 - game.canvas.height) / 2) {
+                    if (mouseY > 180 && yOffset > -(MAP_HEIGHT * TILE_SIZE * SCALE - game.canvas.height) / 2) {
                         yOffset -= 2;
                         updateMask = true;
                     }
-                    if (mouseX + xOffset < 80 && xOffset < 0) {
+                    if (mouseX < 60 && xOffset < 0) {
                         xOffset += 2;
                         updateMask = true;
                     }
-                    if (mouseY + yOffset < 80 && yOffset < 0) {
+                    if (mouseY < 60 && yOffset < 0) {
                         yOffset += 2;
                         updateMask = true;
                     }

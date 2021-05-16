@@ -15,6 +15,7 @@ let render = function (game) {
 }
 
 let drawMaskContext = (game) => {
+    let t0 = performance.now();
     game.maskContext.clearRect(0, 0, game.maskCanvas.width, game.maskCanvas.height);
     for (let i = 0; i < tileArray.length; i++) {
         let image = tileArray[i].image;
@@ -24,4 +25,6 @@ let drawMaskContext = (game) => {
                 image.width, 
                 image.height);    
     }
+    let t1 = performance.now();
+    console.log("drawing mask context took " + (t1 - t0) + "ms");
 }
