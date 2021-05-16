@@ -26,6 +26,11 @@
                 top: 8px;
                 left: 530px;
             }
+            #selected-entity-info {
+                position: absolute;
+                top: 240px;
+                left: 530px;
+            }
         </style>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         <script src="js/bullets.js"></script>
@@ -190,6 +195,11 @@
                     let selection = tileArray[getTileIndexFromCursor()];
                     let infoMessage = "SELECTED TILE:<br>X: " + selection.x + ", Y: " + selection.y + "<br>COLLIDABLE: " + selection.collidable;
                     $("#selection-info").html(infoMessage);
+
+                    let entityIndex = getSelectedEntity();
+                    if (entityIndex > -1) {
+                        createEntitySelectionDIV(entityIndex);
+                    }
                 } else if (editorMode === "tileEdit") {
                     tileArray[getTileIndexFromCursor()] = tileset[selection](x, y);
                     drawMaskContext(game);
@@ -199,6 +209,40 @@
                     entities.push(wolfConstructor(x, y));
                 }
             });
+
+            let createEntitySelectionDIV = (entityIndex) => {
+                if (document.getElementById("selected-entity-info")) {
+                    document.body.removeChild(document.getElementById("selected-entity-info"));
+                }
+
+                let entityDIV = document.createElement("div");
+                entityDIV.id = "selected-entity-info";
+                document.body.appendChild(entityDIV);
+
+                let entityInfo = document.createElement("p");
+                let entity = entities[entityIndex];
+                entityInfo.innerHTML = entity.name + " @ " + entity.x + ", " + entity.y + "<br>Health: " + entity.health;
+                entityDIV.appendChild(entityInfo);
+
+                let deleteEntity = document.createElement("button");
+                deleteEntity.innerHTML = "Delete entity";
+                deleteEntity.onclick = function() { 
+                    entities.splice(entityIndex, 1);
+                    document.body.removeChild(document.getElementById("selected-entity-info"));
+                };
+                entityDIV.appendChild(deleteEntity);
+            }
+
+            let getSelectedEntity = () => {
+                let NONE_SELECTED = -1;
+                for (let i = 0; i < entities.length; i++) {
+                    if (mouseX - xOffset >= entities[i].x && mouseX - xOffset <= entities[i].x + entities[i].width
+                        && mouseY - yOffset >= entities[i].y && mouseY - yOffset <= entities[i].y + entities[i].height) {
+                            return i;
+                        }
+                }
+                return NONE_SELECTED;
+            }
 
             $('html').keydown(function(e) {
                 keys = (keys || []);
