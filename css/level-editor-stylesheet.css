@@ -1,0 +1,31 @@
+canvas {
+    border: 1px solid #d3d3d3;
+    background-color: #f1f1f1;
+    cursor: none;
+}
+div {
+    border: 1px solid #d3d3d3;
+    background-color: #f1f1f1;
+}
+#tile-picker {
+    position: absolute;
+    top: 8px;
+    left: 490px;
+    overflow-y: auto;
+}
+.tile-selector {
+    position: absolute;
+}
+#selection-info {
+    position: absolute;
+    top: 8px;
+    left: 530px;
+}
+#selected-entity-info {
+    position: absolute;
+    top: 240px;
+    left: 530px;
+}
+input {
+    width: 60px;
+}

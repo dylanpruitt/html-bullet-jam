@@ -2,36 +2,7 @@
     <head>
         <title>The Game - Level Editor</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-        <style>
-            canvas {
-                border: 1px solid #d3d3d3;
-                background-color: #f1f1f1;
-                cursor: none;
-            }
-            div {
-                border: 1px solid #d3d3d3;
-                background-color: #f1f1f1;
-            }
-            #tile-picker {
-                position: absolute;
-                top: 8px;
-                left: 490px;
-                overflow-y: auto;
-            }
-            .tile-selector {
-                position: absolute;
-            }
-            #selection-info {
-                position: absolute;
-                top: 8px;
-                left: 530px;
-            }
-            #selected-entity-info {
-                position: absolute;
-                top: 240px;
-                left: 530px;
-            }
-        </style>
+        <link rel="stylesheet" type="text/css" href="css/level-editor-stylesheet.css"/>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         <script src="js/bullets.js"></script>
         <script src="js/weapons.js"></script>
@@ -44,6 +15,8 @@
             let selection = 0;
             let editorMode = "selection";
             let mouseLock = false;
+
+            let MAX_SIZE = 100;
 
             let setupEditor = () => {
                 generateMap();
@@ -142,6 +115,30 @@
                 let y = Math.floor((mouseY - yOffset) / 16);
                 let index = y * MAP_WIDTH + x;
                 return index;
+            }
+
+            let resizeMap = () => {
+                let mapX = document.getElementById("map-size-x");
+                let mapY = document.getElementById("map-size-y");
+                let xSize = Number(mapX.value);
+                let ySize = Number(mapY.value);
+                
+                if (xSize > 0 && ySize > 0 && xSize <= MAX_SIZE && ySize <= MAX_SIZE) {
+                    if (xSize < MAP_WIDTH && ySize < MAP_HEIGHT) {
+                        shrinkMap(xSize, ySize);
+                    }
+                    if (xSize > MAP_WIDTH && ySize <= MAP_HEIGHT) {
+                        shrinkMap(MAP_WIDTH, ySize);
+                        enlargeMap(xSize, ySize);
+                    }
+                    if (xSize <= MAP_WIDTH && ySize > MAP_HEIGHT) {
+                        shrinkMap(xSize, MAP_HEIGHT);
+                        enlargeMap(xSize, ySize);
+                    }
+                    if (xSize > MAP_WIDTH && ySize > MAP_HEIGHT) {
+                        enlargeMap(xSize, ySize);
+                    }
+                }
             }
 
             let enlargeMap = (newXSize, newYSize) => {
@@ -266,5 +263,8 @@
         </nobr><button id="tile-editor" onclick="setEditorMode('tileEdit')">Tile Edit Mode</button><nobr>
         </nobr><button id="entities-editor" onclick="setEditorMode('entityEdit')">Place Entity Mode</button>
         <p id="selection-info"></p>
+        <p>Resize map to size </p>
+        <input id="map-size-x"></input> X <input id="map-size-y"></input>
+        <button id="resize-map" onclick="resizeMap()">Resize map</button>
     </body>
 </html>
