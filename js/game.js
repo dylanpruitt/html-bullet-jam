@@ -5,7 +5,7 @@ let keys;
 
 let startGame = () => {
     generateMap();
-    player = playerConstructor(10, 120);
+    player = playerConstructor(spawnX, spawnY);
     game.start();
 }
 

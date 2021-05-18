@@ -29,6 +29,7 @@ let MAX_SIZE = 255;
  */
 let setupEditor = () => {
     generateMap();
+    player = playerConstructor(spawnX, spawnY);
     game.start();
     setupTilePicker();
     clearInterval(game.interval);
@@ -103,6 +104,8 @@ let renderEntities = () => {
     for (let i = 0; i < entities.length; i++) {
         drawEntity(entities[i], game.context);
     }
+
+    drawEntity(player, game.context);
 }
 
 /**
@@ -236,11 +239,24 @@ game.canvas.addEventListener("click", function(e) {
     if (editorMode === "selection") {
         let selection = tileArray[getTileIndexFromCursor()];
         let infoMessage = "SELECTED TILE:<br>X: " + selection.x + ", Y: " + selection.y + "<br>COLLIDABLE: " + selection.collidable;
-        $("#selection-info").html(infoMessage);
+        $("#tile-info").html(infoMessage);
+        if (document.getElementById("set-spawn")) {
+            $("#set-spawn").remove();
+        }
+
+        let tileDIV = document.getElementById("selection-info");
+        let setSpawn = document.createElement("button");
+        setSpawn.id = "set-spawn";
+        setSpawn.innerHTML = "Set player spawn here";
+        setSpawn.onclick = function() { 
+            setSpawnTile(selection);
+            drawMaskContext(game);
+        };
+        tileDIV.appendChild(setSpawn);
 
         let entityIndex = getSelectedEntity();
         if (entityIndex > -1) {
-createEntitySelectionDIV(entityIndex);
+            createEntitySelectionDIV(entityIndex);
         }
     } else if (editorMode === "tileEdit") {
         tileArray[getTileIndexFromCursor()] = tileset[selection](x, y);
@@ -251,6 +267,17 @@ createEntitySelectionDIV(entityIndex);
         entities.push(wolfConstructor(x, y));
     }
 });
+
+/**
+ * Sets the player's spawn coordinates centered on this tile.
+ * @param {object} tile The tile where the player will spawn.
+ */
+let setSpawnTile = (tile) => {
+    spawnX = tile.x + (TILE_SIZE - player.width) / 2;
+    spawnY = tile.y + (TILE_SIZE - player.height) / 2;
+    player.x = spawnX;
+    player.y = spawnY;
+}
 
 /**
  * Creates a new HTML element containing information about the selected entity.

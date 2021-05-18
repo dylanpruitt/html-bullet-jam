@@ -26,6 +26,8 @@ let MAP_WIDTH = 20;
 let MAP_HEIGHT = 20;
 let TILE_SIZE = 16;
 let SCALE = 2;
+let spawnX = 64;
+let spawnY = 64;
 
 let entityCollidingWithBounds = (entity, bounds) => {
     let entityLeftOfBounds = (entity.x + entity.width) < bounds.minX;

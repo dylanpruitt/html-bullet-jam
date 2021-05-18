@@ -18,7 +18,9 @@
         <button id="default-selector" onclick="setEditorMode('selection')">Selection Mode</button><nobr>
         </nobr><button id="tile-editor" onclick="setEditorMode('tileEdit')">Tile Edit Mode</button><nobr>
         </nobr><button id="entities-editor" onclick="setEditorMode('entityEdit')">Place Entity Mode</button>
-        <p id="selection-info"></p>
+        <div id="selection-info">
+            <p id="tile-info"></p>
+        </div>
         <p>Resize map to size </p>
         <input id="map-size-x"></input> X <input id="map-size-y"></input>
         <button id="resize-map" onclick="resizeMap()">Resize map</button>
