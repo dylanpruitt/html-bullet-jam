@@ -80,6 +80,8 @@ let updateMap = () => {
     renderCrosshair();
     updateMaskContext();
     renderEntities();
+    game.context.font = "8px Arial";
+    game.context.fillText(editorMode, 205, 235);
     if (mouseLock) {
         game.context.font = "8px Arial";
         game.context.fillText("MOUSE LOCK", 2, 235);
