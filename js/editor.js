@@ -24,6 +24,12 @@ let mouseLock = false;
 let MAX_SIZE = 255;
 
 /**
+ * A variable storing marked tile indices.
+ * @type {array}
+ */
+let markedIndices = [];
+
+/**
  * This function sets up everything required for the map editor to function, 
  *  including the game loop and generating elements in HTML for user interface.
  */
@@ -193,14 +199,12 @@ let enlargeMap = (newXSize, newYSize) => {
             temp.push(tileArray[index]);
         }
         for (let x = MAP_WIDTH; x < newXSize; x++) {
-            let index = y * newXSize + x;
             temp.push(emptyTile(x * 16, y * 16));
         }
     }
 
     for (let y = MAP_HEIGHT; y < newYSize; y++) {
         for (let x = 0; x < newXSize; x++) {
-            let index = y * newXSize + x;
             temp.push(emptyTile(x * 16, y * 16));
         }
     }
@@ -262,7 +266,14 @@ game.canvas.addEventListener("click", function(e) {
         tileArray[getTileIndexFromCursor()] = tileset[selection](x, y);
         drawMaskContext(game);
     } else if (editorMode === "tileFill") {
+        markedIndices.push(getTileIndexFromCursor());
 
+        if (markedIndices.length == 2) {
+            tileFill(markedIndices[0], markedIndices[1], selection);
+            drawMaskContext(game);
+            markedIndices = [];
+            editorMode = "selection";
+        }
     } else if (editorMode === "entityEdit") {
         x = mouseX - xOffset;
         y = mouseY - yOffset;
