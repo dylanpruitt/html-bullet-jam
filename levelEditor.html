@@ -63,6 +63,14 @@
                         tileArray[i].image = new Image();
                         tileArray[i].image.src = tileArray[i].imagePath;
                     }
+                    entities = fileContent.entities;
+                    for (let i = 0; i < entities.length; i++) {
+                        let index = getEntityConstructorIndexFromName(entities[i].name);
+                        if (index !== -1) {
+                            entities[i] = entityConstructors[index](entities[i].x, entities[i].y);
+                        }
+                    }
+
                 };
                 reader.readAsText(importedFile);
             }

@@ -67,6 +67,7 @@ let wolfConstructor = (x, y) => {
         width: 16,
         height: 12,
         image: new Image(),
+        imagePath: "images/entities/wolf.png",
         aiState: "idle",
         aiGoalX: x,
         aiGoalY: y,
@@ -148,7 +149,22 @@ let wolfConstructor = (x, y) => {
                 || (entity.y < (object.y + object.height) && (object.y + object.height) < (entity.y + entity.height))));
         }
     }
-    entity.image.src = "images/entities/wolf.png";
+    entity.image.src = entity.imagePath;
     entity.equippedWeapon = basicWeapon(entity);
     return entity;   
+}
+
+let entityConstructors = [wolfConstructor];
+
+let getEntityConstructorIndexFromName = (name) => {
+    let NOT_FOUND = -1;
+
+    for (let i = 0; i < entityConstructors.length; i++) {
+        let temp = entityConstructors[i](0, 0);
+        if (temp.name === name) {
+            return i;
+        }
+    }
+
+    return NOT_FOUND;
 }
