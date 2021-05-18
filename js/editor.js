@@ -261,6 +261,8 @@ game.canvas.addEventListener("click", function(e) {
     } else if (editorMode === "tileEdit") {
         tileArray[getTileIndexFromCursor()] = tileset[selection](x, y);
         drawMaskContext(game);
+    } else if (editorMode === "tileFill") {
+
     } else if (editorMode === "entityEdit") {
         x = mouseX - xOffset;
         y = mouseY - yOffset;
@@ -277,6 +279,27 @@ let setSpawnTile = (tile) => {
     spawnY = tile.y + (TILE_SIZE - player.height) / 2;
     player.x = spawnX;
     player.y = spawnY;
+}
+
+/**
+ * Fills in a rectangle from topLeftIndex to bottomRightIndex with certain tiles, specified
+ *  by tilesetIndex.
+ * @param {number} topLeftIndex 
+ * @param {number} bottomRightIndex
+ * @param {number} tilesetIndex 
+ */
+let tileFill = (topLeftIndex, bottomRightIndex, tilesetIndex) => {
+    let xDifference = (tileArray[bottomRightIndex].x - tileArray[topLeftIndex].x) / 16 + 1;
+    let yDifference = (tileArray[bottomRightIndex].y - tileArray[topLeftIndex].y) / 16 + 1;
+
+    for (let i = 0; i < yDifference; i++) {
+        for (let j = 0; j < xDifference; j++) {
+            let index = topLeftIndex + (i * MAP_WIDTH) + j;
+            let x = index % MAP_WIDTH * TILE_SIZE;
+            let y = Math.floor(index / MAP_WIDTH) * TILE_SIZE;
+            tileArray[index] = tileset[tilesetIndex](x, y);
+        }
+    }
 }
 
 /**
@@ -328,8 +351,16 @@ $('html').keydown(function(e) {
     keys = (keys || []);
     keys[e.keyCode] = true;
 
+    let F = 70, f = 102;
     let M = 77, m = 109;
 
+    if (keys[F] || keys[f]) {
+        if (editorMode === "tileFill") {
+            setEditorMode("selection");
+        } else {
+            setEditorMode("tileFill");
+        }
+    }
     if (keys[M] || keys[m]) {
         mouseLock = !mouseLock;
     }
