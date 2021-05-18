@@ -12,6 +12,61 @@
         <script src="js/render.js"></script>
         <script src="js/game.js"></script>
         <script src="js/editor.js"></script>
+        <script>
+            // Function to download data to a file
+            function download(data, filename, type) {
+                var file = new Blob([data], {type: type});
+                if (window.navigator.msSaveOrOpenBlob) // IE10+
+                    window.navigator.msSaveOrOpenBlob(file, filename);
+                else { // Others
+                    var a = document.createElement("a"),
+                            url = URL.createObjectURL(file);
+                    a.href = url;
+                    a.download = filename;
+                    document.body.appendChild(a);
+                    a.click();
+                    setTimeout(function() {
+                        document.body.removeChild(a);
+                        window.URL.revokeObjectURL(url);  
+                    }, 0); 
+                }
+            }
+
+            let saveMap = () => {
+                let data = {
+                    MAP_WIDTH: MAP_WIDTH,
+                    MAP_HEIGHT: MAP_HEIGHT,
+                    spawnX: spawnX,
+                    spawnY: spawnY,
+                    tiles: tileArray,
+                    entities: entities,
+                };
+                let filename = prompt("Enter a map name:");
+                download(JSON.stringify(data), filename + ".json", "application/json");
+            }
+
+            let loadMap = () => {
+                let importedFile = document.getElementById('map-file').files[0];
+
+                let reader = new FileReader();
+                reader.onload = function() {
+                    let fileContent = JSON.parse(reader.result);
+                    console.log(fileContent);
+                    spawnX = fileContent.spawnX;
+                    player.x = spawnX;
+                    spawnY = fileContent.spawnY;
+                    player.y = spawnY;
+                    MAP_WIDTH = fileContent.MAP_WIDTH;
+                    MAP_HEIGHT = fileContent.MAP_HEIGHT;
+                    tileArray = fileContent.tiles;
+                    for (let i = 0; i < tileArray.length; i++) {
+                        tileArray[i].image = new Image();
+                        tileArray[i].image.src = tileArray[i].imagePath;
+                    }
+                };
+                reader.readAsText(importedFile);
+            }
+        </script>
     </head>
     <body onload="setupEditor()">
         <div id="tile-picker"></div><br>
@@ -23,6 +78,9 @@
         </div>
         <p>Resize map to size </p>
         <input id="map-size-x"></input> X <input id="map-size-y"></input>
-        <button id="resize-map" onclick="resizeMap()">Resize map</button>
+        <button id="resize-map" onclick="resizeMap()">Resize map</button><br>
+        <button id="save-map" onclick="saveMap()">Save map</button><br>
+        Load map from file <input id="map-file" type="file"></input><br>
+        <button id="load-map" onclick="loadMap()">Load map</button>
     </body>
 </html>

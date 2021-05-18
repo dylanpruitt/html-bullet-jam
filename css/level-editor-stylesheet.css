@@ -29,3 +29,6 @@ div {
 input {
     width: 60px;
 }
+#map-file {
+    width: auto;
+}
