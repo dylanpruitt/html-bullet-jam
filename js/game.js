@@ -122,10 +122,12 @@ let updateMaskContext = () => {
     if (player.x + xOffset < 80 && xOffset < 0) {
         xOffset += Math.abs(player.speedX);
         updateMask = true;
+        if (xOffset > 0) { xOffset = 0; }
     }
     if (player.y + yOffset < 80 && yOffset < 0) {
         yOffset += Math.abs(player.speedY);
         updateMask = true;
+        if (yOffset > 0) { yOffset = 0; }
     }
     if (updateMask) {
         drawMaskContext(game);

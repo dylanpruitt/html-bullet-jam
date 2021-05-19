@@ -27,6 +27,11 @@ let drawMaskContext = (game) => {
         for (let j = 0; j < renderBoxWidth; j++) {
             let index = topLeftIndex + j + i * MAP_WIDTH;
             if (index < tileArray.length) {
+                if (tileArray[index] === undefined) {
+                    console.log(topLeftIndex + " in");
+                    console.log(xOffset + '\n' + yOffset);
+                    console.log(index);
+                }
                 let image = tileArray[index].image;
                 game.maskContext.drawImage(image, 
                     tileArray[index].x + xOffset, 
