@@ -82,7 +82,7 @@ let updateMap = () => {
     updateMaskContext();
     renderEntities();
     game.context.font = "8px Arial";
-    game.context.fillText(editorMode, 205, 235);
+    game.context.fillText(editorMode, 195, 235);
     if (mouseLock) {
         game.context.font = "8px Arial";
         game.context.fillText("MOUSE LOCK", 2, 235);
@@ -311,6 +311,15 @@ game.canvas.addEventListener("click", function(e) {
             markedIndices = [];
             editorMode = "selection";
         }
+    } else if (editorMode === "collisionFill") {
+        markedIndices.push(getTileIndexFromCursor());
+
+        if (markedIndices.length == 2) {
+            tileCollisionFill(markedIndices[0], markedIndices[1], true);
+            drawMaskContext(game);
+            markedIndices = [];
+            editorMode = "selection";
+        }
     } else if (editorMode === "entityEdit") {
         x = mouseX - xOffset;
         y = mouseY - yOffset;
@@ -357,6 +366,31 @@ let tileFill = (topLeftIndex, bottomRightIndex, tilesetIndex) => {
 }
 
 /**
+ * Fills in a rectangle from topLeftIndex to bottomRightIndex with a collision value of
+ *  collidable (true or false).
+ * @param {number} topLeftIndex 
+ * @param {number} bottomRightIndex
+ * @param {boolean} collidable 
+ */
+ let tileCollisionFill = (topLeftIndex, bottomRightIndex, collidable) => {
+    if (topLeftIndex > bottomRightIndex) {
+        let temp = topLeftIndex;
+        topLeftIndex = bottomRightIndex;
+        bottomRightIndex = temp;
+    }
+
+    let xDifference = (tileArray[bottomRightIndex].x - tileArray[topLeftIndex].x) / 16 + 1;
+    let yDifference = (tileArray[bottomRightIndex].y - tileArray[topLeftIndex].y) / 16 + 1;
+
+    for (let i = 0; i < yDifference; i++) {
+        for (let j = 0; j < xDifference; j++) {
+            let index = topLeftIndex + (i * MAP_WIDTH) + j;
+            tileArray[index].collidable = collidable;
+        }
+    }
+}
+
+/**
  * Creates a new HTML element containing information about the selected entity.
  * @param {number} entityIndex 
  */
@@ -391,9 +425,9 @@ let getSelectedEntity = () => {
     let NONE_SELECTED = -1;
     for (let i = 0; i < entities.length; i++) {
         if (mouseX - xOffset >= entities[i].x && mouseX - xOffset <= entities[i].x + entities[i].width
-&& mouseY - yOffset >= entities[i].y && mouseY - yOffset <= entities[i].y + entities[i].height) {
-    return i;
-}
+            && mouseY - yOffset >= entities[i].y && mouseY - yOffset <= entities[i].y + entities[i].height) {
+            return i;
+        }
     }
     return NONE_SELECTED;
 }
@@ -406,8 +440,16 @@ $('html').keydown(function(e) {
     keys[e.keyCode] = true;
 
     let F = 70, f = 102;
+    let C = 67, c = 99;
     let M = 77, m = 109;
 
+    if (keys[C] || keys[c]) {
+        if (editorMode === "collisionFill") {
+            setEditorMode("selection");
+        } else {
+            setEditorMode("collisionFill");
+        }
+    }
     if (keys[F] || keys[f]) {
         if (editorMode === "tileFill") {
             setEditorMode("selection");
