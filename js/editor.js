@@ -337,6 +337,12 @@ let setSpawnTile = (tile) => {
  * @param {number} tilesetIndex 
  */
 let tileFill = (topLeftIndex, bottomRightIndex, tilesetIndex) => {
+    if (topLeftIndex > bottomRightIndex) {
+        let temp = topLeftIndex;
+        topLeftIndex = bottomRightIndex;
+        bottomRightIndex = temp;
+    }
+
     let xDifference = (tileArray[bottomRightIndex].x - tileArray[topLeftIndex].x) / 16 + 1;
     let yDifference = (tileArray[bottomRightIndex].y - tileArray[topLeftIndex].y) / 16 + 1;
 
