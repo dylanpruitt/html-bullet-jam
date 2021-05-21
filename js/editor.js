@@ -78,6 +78,7 @@ let updateMap = () => {
     }
     render(game);
     renderCrosshair();
+    renderTileMarkers();
     updateMaskContext();
     renderEntities();
     game.context.font = "8px Arial";
@@ -103,6 +104,26 @@ renderCrosshair = () => {
         mouseY,
         image.width, 
         image.height);
+}
+
+/**
+ * This function renders a marker to the screen to show the user which tiles they have 
+ *  marked (used in fill functions).
+ */
+let renderTileMarkers = () => {
+    let imagePath = "images/editor/marker.png";
+
+    for (let i = 0; i < markedIndices.length; i++) {
+        let index = markedIndices[i];
+        let ctx = game.context;
+        let image = new Image();
+        image.src = imagePath;
+        ctx.drawImage(image, 
+            tileArray[index].x + xOffset, 
+            tileArray[index].y + yOffset,
+            image.width, 
+            image.height);
+    }
 }
 
 /**
