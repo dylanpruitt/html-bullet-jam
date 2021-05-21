@@ -249,8 +249,22 @@ game.canvas.addEventListener("click", function(e) {
         if (document.getElementById("set-spawn")) {
             $("#set-spawn").remove();
         }
+        if (document.getElementById("toggle-collision")) {
+            $("#toggle-collision").remove();
+        }
 
         let tileDIV = document.getElementById("selection-info");
+
+        let toggleCollision = document.createElement("button");
+        toggleCollision.id = "toggle-collision";
+        toggleCollision.innerHTML = "Toggle Collision";
+        toggleCollision.onclick = function() { 
+            selection.collidable = !selection.collidable;
+            infoMessage = "SELECTED TILE:<br>X: " + selection.x + ", Y: " + selection.y + "<br>COLLIDABLE: " + selection.collidable;
+            $("#tile-info").html(infoMessage);
+        };
+        tileDIV.appendChild(toggleCollision);
+
         let setSpawn = document.createElement("button");
         setSpawn.id = "set-spawn";
         setSpawn.innerHTML = "Set player spawn here";
