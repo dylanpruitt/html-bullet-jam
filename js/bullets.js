@@ -11,7 +11,7 @@ let basicBullet = (x, y, speedX, speedY, creatorName) => {
         speedCap: 2,
         width: 4,
         height: 4,
-        image: new Image(),
+        image: assets.get("images/bullets/bullet.png"),
         imagePath: "images/bullets/bullet.png",
         framesActive: 0,
         maxFramesActive: 60,
@@ -37,7 +37,6 @@ let basicBullet = (x, y, speedX, speedY, creatorName) => {
             }
         }
     }
-    bullet.image.src = "images/bullets/bullet.png";
     return bullet;
 }
 
@@ -52,7 +51,7 @@ let grassTrapBullet = (x, y, speedX, speedY, creatorName) => {
         speedCap: 2,
         width: 5,
         height: 5,
-        image: new Image(),
+        image: assets.get("images/bullets/trap-bullet.png"),
         imagePath: "images/bullets/trap-bullet.png",
         framesActive: 0,
         maxFramesActive: 75,
@@ -78,7 +77,6 @@ let grassTrapBullet = (x, y, speedX, speedY, creatorName) => {
             }
         }
     }
-    bullet.image.src = "images/bullets/trap-bullet.png";
     return bullet;
 }
 

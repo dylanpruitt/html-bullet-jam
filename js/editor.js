@@ -34,13 +34,22 @@ let markedIndices = [];
  *  including the game loop and generating elements in HTML for user interface.
  */
 let setupEditor = () => {
-    generateMap();
-    player = playerConstructor(spawnX, spawnY);
-    game.start();
-    setupTilePicker();
-    clearInterval(game.interval);
-    game.canvas.removeEventListener("click", fireWeapon);
-    game.interval = setInterval(updateMap, 20);
+    loadAssets();
+    let interval = setInterval(() => {
+        if (imagesLoaded < totalImages) {
+            console.log(" >> " + imagesLoaded + "/" + totalImages);
+        } else {
+            clearInterval(interval);
+            generateMap();
+            player = playerConstructor(spawnX, spawnY);
+            game.start();
+            setupTilePicker();
+            clearInterval(game.interval);
+            game.canvas.removeEventListener("click", fireWeapon);
+            game.interval = setInterval(updateMap, 20);
+            drawMaskContext(game);
+        }
+    }, 20);
 }
 
 /**

@@ -66,7 +66,7 @@ let wolfConstructor = (x, y) => {
         speedCap: 3,
         width: 16,
         height: 12,
-        image: new Image(),
+        image: assets.get("images/entities/wolf.png"),
         imagePath: "images/entities/wolf.png",
         aiState: "idle",
         aiGoalX: x,
@@ -149,7 +149,6 @@ let wolfConstructor = (x, y) => {
                 || (entity.y < (object.y + object.height) && (object.y + object.height) < (entity.y + entity.height))));
         }
     }
-    entity.image.src = entity.imagePath;
     entity.equippedWeapon = basicWeapon(entity);
     return entity;   
 }
@@ -165,7 +164,7 @@ let grassTrapConstructor = (x, y) => {
         speedY: 0,
         width: 7,
         height: 7,
-        image: new Image(),
+        image: assets.get("images/entities/grass-trap.png"),
         imagePath: "images/entities/grass-trap.png",
         aiState: "idle",
         aiGoalX: x,
@@ -190,7 +189,6 @@ let grassTrapConstructor = (x, y) => {
                 || (entity.y < (object.y + object.height) && (object.y + object.height) < (entity.y + entity.height))));
         }
     }
-    entity.image.src = entity.imagePath;
     entity.equippedWeapon = grassTrapWeapon(entity);
     return entity;   
 }

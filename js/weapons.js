@@ -5,7 +5,7 @@ let basicWeapon = (parent) => {
         cooldownFrames: 45,
         width: 4,
         height: 4,
-        image: new Image(),
+        image: assets.get("images/bullets/bullet.png"),
         imagePath: "images/bullets/bullet.png",
         update: () => {
             if (weapon.cooldownFrames > 0) {
@@ -30,7 +30,6 @@ let basicWeapon = (parent) => {
             return [xSpeed, ySpeed];
         }
     }
-    weapon.image.src = "images/bullets/bullet.png";
     return weapon;
 }
 
@@ -41,7 +40,7 @@ let grassTrapWeapon = (parent) => {
         cooldownFrames: 0,
         width: 5,
         height: 5,
-        image: new Image(),
+        image: assets.get("images/bullets/trap-bullet.png"),
         imagePath: "images/bullets/trap-bullet.png",
         update: () => {
             if (weapon.cooldownFrames > 0) {
@@ -70,7 +69,6 @@ let grassTrapWeapon = (parent) => {
             return [xSpeed, ySpeed];
         }
     }
-    weapon.image.src = "images/bullets/trap-bullet.png";
     return weapon;    
 }
 

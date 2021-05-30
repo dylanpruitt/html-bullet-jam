@@ -13,6 +13,7 @@ let startGame = () => {
             generateMap();
             player = playerConstructor(spawnX, spawnY);
             game.start();
+            drawMaskContext(game);
         }
     }, 20);
 }
@@ -103,19 +104,21 @@ let removeDeadBullets = () => {
 }         
 
 function updateGame() {
-    game.frameNo++;
-    game.clear();
-    if (game.frameNo == 50) {
-        drawMaskContext(game);
-        game.frameNo = 0;
+    if (imagesLoaded == totalImages) {
+        game.frameNo++;
+        game.clear();
+        if (game.frameNo == 50) {
+            drawMaskContext(game);
+            game.frameNo = 0;
+        }
+        render(game);
+        renderCrosshair();
+        renderPlayerHealth(game);
+        updateEntities();
+        updateBullets();
+        updatePlayerMovement();
+        updateMaskContext();
     }
-    render(game);
-    renderCrosshair();
-    renderPlayerHealth(game);
-    updateEntities();
-    updateBullets();
-    updatePlayerMovement();
-    updateMaskContext();
 }
 
 let updateMaskContext = () => {
