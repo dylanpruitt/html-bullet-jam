@@ -5,9 +5,16 @@ let keys;
 
 let startGame = () => {
     loadAssets();
-    generateMap();
-    player = playerConstructor(spawnX, spawnY);
-    game.start();
+    let interval = setInterval(() => {
+        if (imagesLoaded < totalImages) {
+            console.log(" >> " + imagesLoaded + "/" + totalImages);
+        } else {
+            clearInterval(interval);
+            generateMap();
+            player = playerConstructor(spawnX, spawnY);
+            game.start();
+        }
+    }, 20);
 }
 
 let game = {

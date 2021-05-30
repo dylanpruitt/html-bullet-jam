@@ -30,5 +30,4 @@ let addAssetsFromConstructorArray = (array) => {
         image.src = object.imagePath;
         assets.set(object.imagePath, image);
     }
-    console.log(imagesLoaded + " / " + totalImages);
 }

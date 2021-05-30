@@ -5,10 +5,9 @@ let emptyTile = (x, y) => {
         width: 16,
         height: 16,
         collidable: false,
-        image: new Image(),
+        image: assets.get("images/tiles/empty.png"),
         imagePath: "images/tiles/empty.png",
     }
-    tile.image.src = tile.imagePath;
     return tile;   
 }
 
@@ -19,10 +18,9 @@ let grassTile = (x, y) => {
         width: 16,
         height: 16,
         collidable: false,
-        image: new Image(),
+        image: assets.get("images/tiles/grass-tile-1.png"),
         imagePath: "images/tiles/grass-tile-1.png",
     }
-    tile.image.src = tile.imagePath;
     return tile;   
 }
 
@@ -33,10 +31,9 @@ let grassTileShort = (x, y) => {
         width: 16,
         height: 16,
         collidable: false,
-        image: new Image(),
+        image: assets.get("images/tiles/grass-tile-2.png"),
         imagePath: "images/tiles/grass-tile-2.png",
     }
-    tile.image.src = tile.imagePath;
     return tile;   
 }
 
@@ -47,10 +44,9 @@ let grassTileTall = (x, y) => {
         width: 16,
         height: 16,
         collidable: false,
-        image: new Image(),
+        image: assets.get("images/tiles/grass-tile-3.png"),
         imagePath: "images/tiles/grass-tile-3.png",
     }
-    tile.image.src = tile.imagePath;
     return tile;   
 }
 
@@ -61,10 +57,9 @@ let rockTile = (x, y) => {
         width: 16,
         height: 16,
         collidable: true,
-        image: new Image(),
+        image: assets.get("images/tiles/rock-tile.png"),
         imagePath: "images/tiles/rock-tile.png",
     }
-    tile.image.src = tile.imagePath;
     return tile;   
 }
 
@@ -75,10 +70,9 @@ let blendGrassSandTile = (x, y) => {
         width: 16,
         height: 16,
         collidable: false,
-        image: new Image(),
+        image: assets.get("images/tiles/blend-grass-sand.png"),
         imagePath: "images/tiles/blend-grass-sand.png",
     }
-    tile.image.src = tile.imagePath;
     return tile;   
 }
 
@@ -89,10 +83,9 @@ let sandTile = (x, y) => {
         width: 16,
         height: 16,
         collidable: false,
-        image: new Image(),
+        image: assets.get("images/tiles/sand-tile-1.png"),
         imagePath: "images/tiles/sand-tile-1.png",
     } 
-    tile.image.src = tile.imagePath;
     return tile;   
 }
 
@@ -103,10 +96,9 @@ let floorTile = (x, y) => {
         width: 16,
         height: 16,
         collidable: false,
-        image: new Image(),
+        image: assets.get("images/tiles/floor-tile-1.png"),
         imagePath: "images/tiles/floor-tile-1.png",
     }
-    tile.image.src = tile.imagePath;
     return tile;   
 }
 
@@ -117,10 +109,9 @@ let rockWallTile = (x, y) => {
         width: 16,
         height: 16,
         collidable: true,
-        image: new Image(),
+        image: assets.get("images/tiles/rock-wall-tile-1.png"),
         imagePath: "images/tiles/rock-wall-tile-1.png",
     }
-    tile.image.src = tile.imagePath;
     return tile;   
 }
 
@@ -130,11 +121,10 @@ let wallTile = (x, y) => {
         y: y,
         width: 16,
         height: 16,
-        collidable: false,
-        image: new Image(),
+        collidable: true,
+        image: assets.get("images/tiles/wall-tile-1.png"),
         imagePath: "images/tiles/wall-tile-1.png",
     }
-    tile.image.src = tile.imagePath;
     return tile;   
 }
 
