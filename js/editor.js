@@ -49,7 +49,8 @@ let setupEditor = () => {
  *  the selected tile to whatever tile corresponds to the clicked element.
  */
 let setupTilePicker = () => {
-    $("#tile-picker").width("32px").height(game.canvas.height);
+    $("#object-picker").width("32px").height(game.canvas.height);
+    $("#object-picker").html("");
     for (let i = 0; i < tileset.length; i++) {
         let tileSelector = $("<div></div>").width("20px").height("20px");
         tileSelector.id = "tile-selector-" + i;
@@ -61,7 +62,31 @@ let setupTilePicker = () => {
             selection = i;
         });
         tileImage.appendTo(tileSelector);
-        tileSelector.appendTo("#tile-picker");
+        tileSelector.appendTo("#object-picker");
+    }
+}
+
+/**
+ * This function creates the "entity picker", and creates an element for each entity 
+ *  inside of the DIV. When any of these elements is clicked, the editor will set
+ *  the selected entity to whatever entity corresponds to the clicked element.
+ */
+ let setupEntityPicker = () => {
+    $("#object-picker").width("32px").height(game.canvas.height);
+    $("#object-picker").html("");
+    for (let i = 0; i < entityConstructors.length; i++) {
+        let entity = entityConstructors[i]();
+        let entitySelector = $("<div></div>").width(entity.width * 2).height(entity.height * 2);
+        entitySelector.id = "entity-selector-" + i;
+        entitySelector.className = "entity-selector";
+        let entityImageSource = entity.image.src;
+        let entityImage = $("<img></img>").attr("src", entityImageSource).width(entity.width * 2).height(entity.height * 2);
+        entityImage.click(function () {
+            console.log("Selected entity " + i);
+            selection = i;
+        });
+        entityImage.appendTo(entitySelector);
+        entitySelector.appendTo("#object-picker");
     }
 }
 
@@ -323,7 +348,7 @@ game.canvas.addEventListener("click", function(e) {
     } else if (editorMode === "entityEdit") {
         x = mouseX - xOffset;
         y = mouseY - yOffset;
-        entities.push(wolfConstructor(x, y));
+        entities.push(entityConstructors[selection](x, y));
     }
 });
 
@@ -468,4 +493,11 @@ $('html').keydown(function(e) {
  */
 let setEditorMode = (mode) => {
     editorMode = mode;
+    if (editorMode === "tileEdit" || editorMode === "tileFill") {
+        setupTilePicker();
+        selection = 0;
+    } else if (editorMode === "entityEdit") {
+        setupEntityPicker();
+        selection = 0;
+    }
 }
