@@ -32,3 +32,42 @@ let basicWeapon = (parent) => {
     weapon.image.src = "images/bullets/bullet.png";
     return weapon;
 }
+
+let grassTrapWeapon = (parent) => {
+    let weapon = {
+        range: 40,
+        speedCap: 2.5,
+        cooldownFrames: 0,
+        width: 5,
+        height: 5,
+        image: new Image(),
+        update: () => {
+            if (weapon.cooldownFrames > 0) {
+                weapon.cooldownFrames--;
+            }
+        },
+        onFire: (cursorX, cursorY) => {
+            let bullet = grassTrapBullet(parent.x, parent.y, weapon.speedCap, weapon.speedCap, parent.name);
+            bullets.push(bullet);
+            bullet = grassTrapBullet(parent.x, parent.y, -weapon.speedCap, weapon.speedCap, parent.name);
+            bullets.push(bullet);
+            bullet = grassTrapBullet(parent.x, parent.y, weapon.speedCap, -weapon.speedCap, parent.name);
+            bullets.push(bullet);
+            bullet = grassTrapBullet(parent.x, parent.y, -weapon.speedCap, -weapon.speedCap, parent.name);
+            bullets.push(bullet);
+        },
+        getProjectileSpeed: (cursorX, cursorY) => {
+            let xDistance = cursorX - parent.x;
+            let yDistance = cursorY - parent.y;
+            let angle = Math.atan(yDistance / xDistance);
+
+            let xSpeed = weapon.speedCap * Math.cos(angle);
+            let ySpeed = weapon.speedCap * Math.sin(angle);
+            if (xDistance < 0) { xSpeed *= -1; ySpeed *= -1; }
+
+            return [xSpeed, ySpeed];
+        }
+    }
+    weapon.image.src = "images/bullets/trap-bullet.png";
+    return weapon;    
+}

@@ -43,10 +43,10 @@ let playerConstructor = (x, y) => {
             if (Math.abs(entity.speedY) <= 0.05) { entity.speedY = 0; }
         },
         collidingWith: (object) => {
-            return (entity.x < object.x < entity.x + entity.width 
-                || entity.x < object.x + object.width < entity.x + entity.width
-                || entity.y < object.y < entity.y + entity.height
-                || entity.y < object.y + object.height < entity.y + entity.height);
+            return (((entity.x < object.x && object.x < (entity.x + entity.width)) 
+                || (entity.x < (object.x + object.width) && (object.x + object.width) < (entity.x + entity.width)))
+                && ((entity.y < object.y && object.y < (entity.y + entity.height))
+                || (entity.y < (object.y + object.height) && (object.y + object.height) < (entity.y + entity.height))));
         }
     }
     entity.image.src = "images/entities/player.png";
@@ -154,7 +154,48 @@ let wolfConstructor = (x, y) => {
     return entity;   
 }
 
-let entityConstructors = [wolfConstructor];
+let grassTrapConstructor = (x, y) => {
+    let entity = {
+        name: "Grass Trap",
+        health: 1,
+        maxHealth: 1,
+        x: x,
+        y: y,
+        speedX: 0,
+        speedY: 0,
+        width: 7,
+        height: 7,
+        image: new Image(),
+        imagePath: "images/entities/grass-trap.png",
+        aiState: "idle",
+        aiGoalX: x,
+        aiGoalY: y,
+        framesIdle: 120,
+        equippedWeapon: {},
+        update: (player) => {
+            entity.updateAI(player);
+            entity.equippedWeapon.update();
+        },
+        updateAI: (player) => {
+            let distanceFromPlayer = Math.sqrt(Math.pow(player.x - entity.x, 2) + Math.pow(player.y - entity.y, 2));
+            if (distanceFromPlayer < 40) {
+                entity.equippedWeapon.onFire(player.x, player.y);
+                entity.health = 0;
+            }
+        },
+        collidingWith: (object) => {
+            return (((entity.x < object.x && object.x < (entity.x + entity.width)) 
+                || (entity.x < (object.x + object.width) && (object.x + object.width) < (entity.x + entity.width)))
+                && ((entity.y < object.y && object.y < (entity.y + entity.height))
+                || (entity.y < (object.y + object.height) && (object.y + object.height) < (entity.y + entity.height))));
+        }
+    }
+    entity.image.src = entity.imagePath;
+    entity.equippedWeapon = grassTrapWeapon(entity);
+    return entity;   
+}
+
+let entityConstructors = [wolfConstructor, grassTrapConstructor];
 
 let getEntityConstructorIndexFromName = (name) => {
     let NOT_FOUND = -1;
