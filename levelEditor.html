@@ -40,6 +40,7 @@
                     spawnX: spawnX,
                     spawnY: spawnY,
                     tiles: tileArray,
+                    boxes: boundingBoxes,
                     entities: entities,
                 };
                 let filename = prompt("Enter a map name:");
@@ -64,6 +65,7 @@
                         tileArray[i].image = new Image();
                         tileArray[i].image.src = tileArray[i].imagePath;
                     }
+                    boundingBoxes = fileContent.boxes;
                     entities = fileContent.entities;
                     for (let i = 0; i < entities.length; i++) {
                         let index = getEntityConstructorIndexFromName(entities[i].name);

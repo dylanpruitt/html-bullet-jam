@@ -1,5 +1,5 @@
-let xOffset = 0;
-let yOffset = 0;
+let xOffset = Math.floor(spawnX / 240) * -80;
+let yOffset = Math.floor(spawnY / 240) * -80;
 
 let drawEntity = (entity, ctx) => {
     ctx.drawImage(entity.image, 

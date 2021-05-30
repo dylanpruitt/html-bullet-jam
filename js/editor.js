@@ -106,10 +106,6 @@ let setupTilePicker = () => {
  */
 let updateMap = () => {
     game.clear();
-    if (game.frameNo == 50) {
-        drawMaskContext(game);
-        game.frameNo = 0;
-    }
     render(game);
     renderCrosshair();
     renderTileMarkers();

@@ -32,7 +32,6 @@ let game = {
         this.context.scale(SCALE, SCALE);
         this.maskContext = this.maskCanvas.getContext('2d');
         document.body.insertBefore(this.canvas, document.body.childNodes[0]);
-        this.frameNo = 0;
         this.interval = setInterval(updateGame, 20);
     },
     clear : function() {
@@ -105,12 +104,7 @@ let removeDeadBullets = () => {
 
 function updateGame() {
     if (imagesLoaded == totalImages) {
-        game.frameNo++;
         game.clear();
-        if (game.frameNo == 50) {
-            drawMaskContext(game);
-            game.frameNo = 0;
-        }
         render(game);
         renderCrosshair();
         renderPlayerHealth(game);

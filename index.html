@@ -21,5 +21,39 @@
         <script src="js/entity.js"></script>
         <script src="js/render.js"></script>
         <script src="js/game.js"></script>
+        <script>
+            let loadMap = () => {
+                let importedFile = document.getElementById('map-file').files[0];
+
+                let reader = new FileReader();
+                reader.onload = function() {
+                    let fileContent = JSON.parse(reader.result);
+                    console.log(fileContent);
+                    spawnX = fileContent.spawnX;
+                    player.x = spawnX;
+                    spawnY = fileContent.spawnY;
+                    player.y = spawnY;
+                    MAP_WIDTH = fileContent.MAP_WIDTH;
+                    MAP_HEIGHT = fileContent.MAP_HEIGHT;
+                    tileArray = fileContent.tiles;
+                    for (let i = 0; i < tileArray.length; i++) {
+                        tileArray[i].image = new Image();
+                        tileArray[i].image.src = tileArray[i].imagePath;
+                    }
+                    boundingBoxes = fileContent.boxes;
+                    entities = fileContent.entities;
+                    for (let i = 0; i < entities.length; i++) {
+                        let index = getEntityConstructorIndexFromName(entities[i].name);
+                        if (index !== -1) {
+                            entities[i] = entityConstructors[index](entities[i].x, entities[i].y);
+                        }
+                    }
+
+                };
+                reader.readAsText(importedFile);
+                drawMaskContext(game);
+            }
+        </script>
+        <input id="map-file" type="file"></input><br>
     </body>
 </html>
