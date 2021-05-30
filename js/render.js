@@ -14,6 +14,20 @@ let render = function (game) {
     ctx.drawImage(game.maskCanvas, 0, 0);
 }
 
+let renderPlayerHealth = (game) => {
+    game.context.beginPath();
+    game.context.rect(0, 230, 240, 10);
+    game.context.fillStyle = "gray";
+    game.context.fill();
+    game.context.beginPath();
+    game.context.rect(0, 230, (240 * (player.health / player.maxHealth)), 10);
+    game.context.fillStyle = "red";
+    game.context.fill();
+    game.context.fillStyle = "black";
+    game.context.font = "bold 8px Arial";
+    game.context.fillText("HP " + player.health, 5, 237.5);
+}
+
 let drawMaskContext = (game) => {
     let t0 = performance.now();
     game.maskContext.clearRect(0, 0, game.maskCanvas.width, game.maskCanvas.height);

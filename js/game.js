@@ -103,6 +103,7 @@ function updateGame() {
     }
     render(game);
     renderCrosshair();
+    renderPlayerHealth(game);
     updateEntities();
     updateBullets();
     updatePlayerMovement();
