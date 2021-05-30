@@ -4,6 +4,7 @@ let mouseY;
 let keys;
 
 let startGame = () => {
+    loadAssets();
     generateMap();
     player = playerConstructor(spawnX, spawnY);
     game.start();

@@ -12,6 +12,7 @@ let basicBullet = (x, y, speedX, speedY, creatorName) => {
         width: 4,
         height: 4,
         image: new Image(),
+        imagePath: "images/bullets/bullet.png",
         framesActive: 0,
         maxFramesActive: 60,
         update: () => {
@@ -52,6 +53,7 @@ let grassTrapBullet = (x, y, speedX, speedY, creatorName) => {
         width: 5,
         height: 5,
         image: new Image(),
+        imagePath: "images/bullets/trap-bullet.png",
         framesActive: 0,
         maxFramesActive: 75,
         update: () => {
@@ -79,3 +81,5 @@ let grassTrapBullet = (x, y, speedX, speedY, creatorName) => {
     bullet.image.src = "images/bullets/trap-bullet.png";
     return bullet;
 }
+
+let bulletConstructors = [basicBullet, grassTrapBullet];

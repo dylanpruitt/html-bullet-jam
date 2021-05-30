@@ -6,6 +6,7 @@ let basicWeapon = (parent) => {
         width: 4,
         height: 4,
         image: new Image(),
+        imagePath: "images/bullets/bullet.png",
         update: () => {
             if (weapon.cooldownFrames > 0) {
                 weapon.cooldownFrames--;
@@ -41,6 +42,7 @@ let grassTrapWeapon = (parent) => {
         width: 5,
         height: 5,
         image: new Image(),
+        imagePath: "images/bullets/trap-bullet.png",
         update: () => {
             if (weapon.cooldownFrames > 0) {
                 weapon.cooldownFrames--;
@@ -71,3 +73,5 @@ let grassTrapWeapon = (parent) => {
     weapon.image.src = "images/bullets/trap-bullet.png";
     return weapon;    
 }
+
+let weaponConstructors = [basicWeapon, grassTrapWeapon];
