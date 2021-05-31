@@ -117,11 +117,11 @@ function updateGame() {
 
 let updateMaskContext = () => {
     let updateMask = false;
-    if (player.x + xOffset > 160 && xOffset >-(MAP_WIDTH * TILE_SIZE * SCALE - game.canvas.width) / 2) {
+    if (player.x + xOffset > 160 && xOffset > -(MAP_WIDTH * TILE_SIZE * SCALE - game.canvas.width) / 2) {
         xOffset -= Math.abs(player.speedX);
         updateMask = true;
     }
-    if (player.y + yOffset > 160 && yOffset > -(MAP_WIDTH * TILE_SIZE * SCALE - game.canvas.width) / 2) {
+    if (player.y + yOffset > 160 && yOffset > -(MAP_HEIGHT * TILE_SIZE * SCALE - game.canvas.height) / 2) {
         yOffset -= Math.abs(player.speedY);
         updateMask = true;
     }

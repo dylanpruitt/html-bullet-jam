@@ -35,6 +35,14 @@
                     player.y = spawnY;
                     MAP_WIDTH = fileContent.MAP_WIDTH;
                     MAP_HEIGHT = fileContent.MAP_HEIGHT;
+                    xOffset = Math.floor(spawnX / 240) * -240;
+                    if (xOffset < 0 && xOffset < -(MAP_WIDTH * TILE_SIZE * SCALE - game.canvas.width) / 2) {
+                        xOffset = -(MAP_WIDTH * TILE_SIZE * SCALE - game.canvas.width) / 2;
+                    }
+                    yOffset = Math.floor(spawnY / 240) * -240; 
+                    if (yOffset < 0 && yOffset < -(MAP_HEIGHT * TILE_SIZE * SCALE - game.canvas.height) / 2) {
+                        yOffset = -(MAP_HEIGHT * TILE_SIZE * SCALE - game.canvas.height) / 2;
+                    }
                     tileArray = fileContent.tiles;
                     for (let i = 0; i < tileArray.length; i++) {
                         tileArray[i].image = new Image();
@@ -50,7 +58,7 @@
                     }
 
                 };
-                reader.readAsText(importedFile);
+                reader.readAsText(importedFile);      
                 drawMaskContext(game);
             }
         </script>
