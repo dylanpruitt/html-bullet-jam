@@ -128,5 +128,57 @@ let wallTile = (x, y) => {
     return tile;   
 }
 
+let brickWallTile = (x, y) => {
+    let tile = {
+        x: x,
+        y: y,
+        width: 16,
+        height: 16,
+        collidable: true,
+        image: assets.get("images/tiles/brick-wall-1.png"),
+        imagePath: "images/tiles/brick-wall-1.png",
+    }
+    return tile;   
+}
+
+let brickWallTile2 = (x, y) => {
+    let tile = {
+        x: x,
+        y: y,
+        width: 16,
+        height: 16,
+        collidable: true,
+        image: assets.get("images/tiles/brick-wall-2.png"),
+        imagePath: "images/tiles/brick-wall-2.png",
+    }
+    return tile;   
+}
+
+let greenFloorTile = (x, y) => {
+    let tile = {
+        x: x,
+        y: y,
+        width: 16,
+        height: 16,
+        collidable: false,
+        image: assets.get("images/tiles/green-floor-tile.png"),
+        imagePath: "images/tiles/green-floor-tile.png",
+    }
+    return tile;   
+}
+
+let waterFloorTile = (x, y) => {
+    let tile = {
+        x: x,
+        y: y,
+        width: 16,
+        height: 16,
+        collidable: false,
+        image: assets.get("images/tiles/floor-water.png"),
+        imagePath: "images/tiles/floor-water.png",
+    }
+    return tile;   
+}
+
 let tileset = [emptyTile, grassTile, grassTileShort, grassTileTall, rockTile, blendGrassSandTile, sandTile,
-                floorTile, rockWallTile, wallTile];
+                floorTile, rockWallTile, wallTile, brickWallTile, brickWallTile2, greenFloorTile, waterFloorTile];

@@ -498,7 +498,7 @@ $('html').keydown(function(e) {
  */
 let setEditorMode = (mode) => {
     editorMode = mode;
-    if (editorMode === "tileEdit" || editorMode === "tileFill") {
+    if (editorMode === "tileEdit") {
         setupTilePicker();
         selection = 0;
     } else if (editorMode === "entityEdit") {
