@@ -23,8 +23,20 @@
         <script src="js/game.js"></script>
         <script>
             let loadMap = (path) => {
-                let mapContents = $.getJSON(path);
-                console.log(mapContents);
+                let data = fetch(path);
+                console.log(data);
+                fetch(path)
+                    .then((response) => {
+                        return response.json()
+                    })
+                    .then((data) => {
+                        // Work with JSON data here
+                        console.log("D:" + data)
+                    })
+                    .catch((err) => {
+                        console.log(err);
+                    })
+
                 // let importedFile = document.getElementById('map-file').files[0];
 
                 // let reader = new FileReader();
