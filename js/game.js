@@ -2,6 +2,8 @@ let player;
 let mouseX;
 let mouseY;
 let keys;
+let autofire = false;
+let inventory;
 
 let startGame = () => {
     loadAssets();
@@ -12,6 +14,7 @@ let startGame = () => {
             clearInterval(interval);
             generateMap();
             player = playerConstructor(spawnX, spawnY);
+            inventory = [basicWeapon(player), shotgun(player)];
             game.start();
             drawMaskContext(game);
         }
@@ -115,6 +118,13 @@ function updateGame() {
         updateMaskContext();
         updateMapTransitions();
         stopGameOnPlayerDeath();
+        updatePlayerAutofire();
+    }
+}
+
+let updatePlayerAutofire = () => {
+    if (player.equippedWeapon.cooldownFrames == 0 && autofire) {
+        player.equippedWeapon.onFire(mouseX - xOffset, mouseY - yOffset);
     }
 }
 
@@ -123,6 +133,7 @@ let stopGameOnPlayerDeath = () => {
         game.clear();
         game.context.font = "bold 24px Arial";
         game.context.fillText("YOU DIED", 15, 135);
+        game.stop();
     }
 }
 
@@ -331,6 +342,38 @@ game.canvas.addEventListener("click", fireWeapon);
 $('html').keydown(function(e) {
     keys = (keys || []);
     keys[e.keyCode] = true;
+
+    let Q = 81, q = 113;
+    let E = 69, lower_e = 101;
+    let R = 82, r = 114;
+
+    if(keys[Q] || keys[q]) {
+        if (player.activeWeaponIndex == 0) {
+            player.activeWeaponIndex = inventory.length - 1;
+        } else {
+            player.activeWeaponIndex--;
+        }
+
+        player.equippedWeapon = inventory[player.activeWeaponIndex];
+        game.context.font = "14px Arial";
+        console.log(player.equippedWeapon.name);
+    }
+
+    if(keys[E] || keys[lower_e]) {
+        if (player.activeWeaponIndex == inventory.length - 1) {
+            player.activeWeaponIndex = 0;
+        } else {
+            player.activeWeaponIndex++;
+        }
+
+        player.equippedWeapon = inventory[player.activeWeaponIndex];
+        game.context.font = "14px Arial";
+        console.log(player.equippedWeapon.name);
+    }
+
+    if (keys[R] || keys[r]) {
+        autofire = !autofire;
+    }
 });
 
 document.addEventListener("keyup", function (e) {
