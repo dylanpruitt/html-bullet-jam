@@ -1,5 +1,30 @@
 let entities = [];
 
+const entityProperties = (entity) => ({
+    updatePosition: () => {
+        let entityX = entity.x;
+        let entityY = entity.y;
+
+        entity.x += entity.speedX;
+        entity.y += entity.speedY;
+
+        for (let i = 0; i < boundingBoxes.length; i++) {
+            if (entityCollidingWithBounds(entity, boundingBoxes[i])) {
+                entity.x = entityX;
+                entity.y = entityY;
+                entity.speedX = 0;
+                entity.speedY = 0;
+            }
+        }
+    },
+    collidingWith: (object) => {
+        return (((entity.x < object.x && object.x < (entity.x + entity.width)) 
+            || (entity.x < (object.x + object.width) && (object.x + object.width) < (entity.x + entity.width)))
+            && ((entity.y < object.y && object.y < (entity.y + entity.height))
+            || (entity.y < (object.y + object.height) && (object.y + object.height) < (entity.y + entity.height))));
+    }
+});
+
 let playerConstructor = (x, y) => {
     let entity = {
         name: "Player",
@@ -19,22 +44,6 @@ let playerConstructor = (x, y) => {
             entity.updateSpeed();
             entity.equippedWeapon.update();
         },
-        updatePosition: () => {
-            let entityX = entity.x;
-            let entityY = entity.y;
-
-            entity.x += entity.speedX;
-            entity.y += entity.speedY;
-
-            for (let i = 0; i < boundingBoxes.length; i++) {
-                if (entityCollidingWithBounds(entity, boundingBoxes[i])) {
-                    entity.x = entityX;
-                    entity.y = entityY;
-                    entity.speedX = 0;
-                    entity.speedY = 0;
-                }
-            }
-        },
         updateSpeed: () => {
             if (entity.speedX > 0) { entity.speedX -= 0.05; }
             if (entity.speedY > 0) { entity.speedY -= 0.05; }
@@ -52,7 +61,7 @@ let playerConstructor = (x, y) => {
     }
     entity.image.src = "images/entities/player.png";
     entity.equippedWeapon = basicWeapon(entity);
-    return entity;
+    return Object.assign(entity, entityProperties(entity));
 }
 
 let wolfConstructor = (x, y) => {
@@ -78,22 +87,6 @@ let wolfConstructor = (x, y) => {
             entity.updateAI(player);
             entity.updatePosition();
             entity.equippedWeapon.update();
-        },
-        updatePosition: () => {
-            let entityX = entity.x;
-            let entityY = entity.y;
-
-            entity.x += entity.speedX;
-            entity.y += entity.speedY;
-            
-            for (let i = 0; i < boundingBoxes.length; i++) {
-                if (entityCollidingWithBounds(entity, boundingBoxes[i])) {
-                    entity.x = entityX;
-                    entity.y = entityY;
-                    entity.speedX = 0;
-                    entity.speedY = 0;
-                }
-            }
         },
         updateAI: (player) => {
             let distanceFromPlayer = Math.sqrt(Math.pow(player.x - entity.x, 2) + Math.pow(player.y - entity.y, 2));
@@ -143,15 +136,10 @@ let wolfConstructor = (x, y) => {
                 entity.equippedWeapon.onFire(player.x, player.y);
             }
         },
-        collidingWith: (object) => {
-            return (((entity.x < object.x && object.x < (entity.x + entity.width)) 
-                || (entity.x < (object.x + object.width) && (object.x + object.width) < (entity.x + entity.width)))
-                && ((entity.y < object.y && object.y < (entity.y + entity.height))
-                || (entity.y < (object.y + object.height) && (object.y + object.height) < (entity.y + entity.height))));
-        }
+        
     }
     entity.equippedWeapon = basicWeapon(entity);
-    return entity;   
+    return Object.assign(entity, entityProperties(entity));
 }
 
 let grassTrapConstructor = (x, y) => {
@@ -183,15 +171,9 @@ let grassTrapConstructor = (x, y) => {
                 entity.health = 0;
             }
         },
-        collidingWith: (object) => {
-            return (((entity.x < object.x && object.x < (entity.x + entity.width)) 
-                || (entity.x < (object.x + object.width) && (object.x + object.width) < (entity.x + entity.width)))
-                && ((entity.y < object.y && object.y < (entity.y + entity.height))
-                || (entity.y < (object.y + object.height) && (object.y + object.height) < (entity.y + entity.height))));
-        }
     }
     entity.equippedWeapon = grassTrapWeapon(entity);
-    return entity;   
+    return Object.assign(entity, entityProperties(entity));
 }
 
 let entityConstructors = [wolfConstructor, grassTrapConstructor];

@@ -1,3 +1,22 @@
+const weaponProperties = (weapon, parent) => ({
+    update: () => {
+        if (weapon.cooldownFrames > 0) {
+            weapon.cooldownFrames--;
+        }
+    },
+    getProjectileSpeed: (cursorX, cursorY) => {
+        let xDistance = cursorX - parent.x;
+        let yDistance = cursorY - parent.y;
+        let angle = Math.atan(yDistance / xDistance);
+
+        let xSpeed = weapon.speedCap * Math.cos(angle);
+        let ySpeed = weapon.speedCap * Math.sin(angle);
+        if (xDistance < 0) { xSpeed *= -1; ySpeed *= -1; }
+
+        return [xSpeed, ySpeed];
+    }
+});
+
 let basicWeapon = (parent) => {
     let weapon = {
         name: "Basic Weapon",
@@ -8,30 +27,14 @@ let basicWeapon = (parent) => {
         height: 4,
         image: assets.get("images/bullets/bullet.png"),
         imagePath: "images/bullets/bullet.png",
-        update: () => {
-            if (weapon.cooldownFrames > 0) {
-                weapon.cooldownFrames--;
-            }
-        },
         onFire: (cursorX, cursorY) => {
             let projectileSpeeds = weapon.getProjectileSpeed(cursorX, cursorY);
             let bullet = basicBullet(parent.x, parent.y, projectileSpeeds[0], projectileSpeeds[1], parent.name);
             bullets.push(bullet);
             weapon.cooldownFrames = 45;
         },
-        getProjectileSpeed: (cursorX, cursorY) => {
-            let xDistance = cursorX - parent.x;
-            let yDistance = cursorY - parent.y;
-            let angle = Math.atan(yDistance / xDistance);
-
-            let xSpeed = weapon.speedCap * Math.cos(angle);
-            let ySpeed = weapon.speedCap * Math.sin(angle);
-            if (xDistance < 0) { xSpeed *= -1; ySpeed *= -1; }
-
-            return [xSpeed, ySpeed];
-        }
     }
-    return weapon;
+    return Object.assign(weapon, weaponProperties(weapon, parent));
 }
 
 let shotgun = (parent) => {
@@ -44,30 +47,14 @@ let shotgun = (parent) => {
         height: 4,
         image: assets.get("images/bullets/bullet.png"),
         imagePath: "images/bullets/bullet.png",
-        update: () => {
-            if (weapon.cooldownFrames > 0) {
-                weapon.cooldownFrames--;
-            }
-        },
         onFire: (cursorX, cursorY) => {
             let projectileSpeeds = weapon.getProjectileSpeed(cursorX, cursorY);
             let bullet = shotgunBullet(parent.x, parent.y, projectileSpeeds[0], projectileSpeeds[1], parent.name);
             bullets.push(bullet);
             weapon.cooldownFrames = 45;
         },
-        getProjectileSpeed: (cursorX, cursorY) => {
-            let xDistance = cursorX - parent.x;
-            let yDistance = cursorY - parent.y;
-            let angle = Math.atan(yDistance / xDistance);
-
-            let xSpeed = weapon.speedCap * Math.cos(angle);
-            let ySpeed = weapon.speedCap * Math.sin(angle);
-            if (xDistance < 0) { xSpeed *= -1; ySpeed *= -1; }
-
-            return [xSpeed, ySpeed];
-        }
     }
-    return weapon;
+    return Object.assign(weapon, weaponProperties(weapon, parent));
 }
 
 let grassTrapWeapon = (parent) => {
@@ -79,11 +66,6 @@ let grassTrapWeapon = (parent) => {
         height: 5,
         image: assets.get("images/bullets/trap-bullet.png"),
         imagePath: "images/bullets/trap-bullet.png",
-        update: () => {
-            if (weapon.cooldownFrames > 0) {
-                weapon.cooldownFrames--;
-            }
-        },
         onFire: (cursorX, cursorY) => {
             let bullet = grassTrapBullet(parent.x, parent.y, weapon.speedCap, weapon.speedCap, parent.name);
             bullets.push(bullet);
@@ -94,19 +76,8 @@ let grassTrapWeapon = (parent) => {
             bullet = grassTrapBullet(parent.x, parent.y, -weapon.speedCap, -weapon.speedCap, parent.name);
             bullets.push(bullet);
         },
-        getProjectileSpeed: (cursorX, cursorY) => {
-            let xDistance = cursorX - parent.x;
-            let yDistance = cursorY - parent.y;
-            let angle = Math.atan(yDistance / xDistance);
-
-            let xSpeed = weapon.speedCap * Math.cos(angle);
-            let ySpeed = weapon.speedCap * Math.sin(angle);
-            if (xDistance < 0) { xSpeed *= -1; ySpeed *= -1; }
-
-            return [xSpeed, ySpeed];
-        }
     }
-    return weapon;    
+    return Object.assign(weapon, weaponProperties(weapon, parent));
 }
 
 let weaponConstructors = [basicWeapon, shotgun, grassTrapWeapon];
