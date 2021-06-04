@@ -23,69 +23,49 @@
         <script src="js/game.js"></script>
         <script>
             let loadMap = (path) => {
-                let data = fetch(path);
-                console.log(data);
-                fetch(path)
-                    .then((response) => {
-                        return response.json()
-                    })
-                    .then((data) => {
-                        // Work with JSON data here
-                        console.log("D:" + data)
-                    })
-                    .catch((err) => {
-                        console.log(err);
-                    })
-
-                // let importedFile = document.getElementById('map-file').files[0];
-
-                // let reader = new FileReader();
-                // reader.onload = function() {
-                //     let fileContent = JSON.parse(reader.result);
-                //     console.log(fileContent);
-                //     spawnX = fileContent.spawnX;
-                //     player.x = spawnX;
-                //     spawnY = fileContent.spawnY;
-                //     player.y = spawnY;
-                //     MAP_WIDTH = fileContent.MAP_WIDTH;
-                //     MAP_HEIGHT = fileContent.MAP_HEIGHT;
-                //     xOffset = Math.floor(spawnX / 240) * -240;
-                //     if (xOffset < 0 && xOffset < -(MAP_WIDTH * TILE_SIZE * SCALE - game.canvas.width) / 2) {
-                //         xOffset = -(MAP_WIDTH * TILE_SIZE * SCALE - game.canvas.width) / 2;
-                //     }
-                //     yOffset = Math.floor(spawnY / 240) * -240; 
-                //     if (yOffset < 0 && yOffset < -(MAP_HEIGHT * TILE_SIZE * SCALE - game.canvas.height) / 2) {
-                //         yOffset = -(MAP_HEIGHT * TILE_SIZE * SCALE - game.canvas.height) / 2;
-                //     }
-                //     tileArray = fileContent.tiles;
-                //     imagesLoaded = 0;
-                //     totalImages = tileArray.length;
-                //     for (let i = 0; i < tileArray.length; i++) {
-                //         tileArray[i].image = new Image();
-                //         tileArray[i].image.addEventListener("load", function() {
-                //             imagesLoaded++;
-                //         }, false);
-                //         tileArray[i].image.src = tileArray[i].imagePath;
-                //     }
-                //     boundingBoxes = fileContent.boxes;
-                //     entities = fileContent.entities;
-                //     for (let i = 0; i < entities.length; i++) {
-                //         let index = getEntityConstructorIndexFromName(entities[i].name);
-                //         if (index !== -1) {
-                //             entities[i] = entityConstructors[index](entities[i].x, entities[i].y);
-                //         }
-                //     }
-
-                // };
-                // reader.readAsText(importedFile);      
+                $.getJSON(path, function(data) {
+                    console.log(data);
+                    spawnX = data.spawnX;
+                    player.x = spawnX;
+                    spawnY = data.spawnY;
+                    player.y = spawnY;
+                    MAP_WIDTH = data.MAP_WIDTH;
+                    MAP_HEIGHT = data.MAP_HEIGHT;
+                    xOffset = Math.floor(spawnX / 240) * -240;
+                    if (xOffset < 0 && xOffset < -(MAP_WIDTH * TILE_SIZE * SCALE - game.canvas.width) / 2) {
+                        xOffset = -(MAP_WIDTH * TILE_SIZE * SCALE - game.canvas.width) / 2;
+                    }
+                    yOffset = Math.floor(spawnY / 240) * -240; 
+                    if (yOffset < 0 && yOffset < -(MAP_HEIGHT * TILE_SIZE * SCALE - game.canvas.height) / 2) {
+                        yOffset = -(MAP_HEIGHT * TILE_SIZE * SCALE - game.canvas.height) / 2;
+                    }
+                    tileArray = data.tiles;
+                    imagesLoaded = 0;
+                    totalImages = tileArray.length;
+                    for (let i = 0; i < tileArray.length; i++) {
+                        tileArray[i].image = new Image();
+                        tileArray[i].image.addEventListener("load", function() {
+                            imagesLoaded++;
+                        }, false);
+                        tileArray[i].image.src = tileArray[i].imagePath;
+                    }
+                    boundingBoxes = data.boxes;
+                    entities = data.entities;
+                    for (let i = 0; i < entities.length; i++) {
+                        let index = getEntityConstructorIndexFromName(entities[i].name);
+                        if (index !== -1) {
+                            entities[i] = entityConstructors[index](entities[i].x, entities[i].y);
+                        }
+                    }
+                });    
             }
 
             let transitionToMap = (newMapPath) => {
                 // save map data
                 // save player data
                 game.paused = true;
-                // load new map (UPDATE TO LOAD BY PATH LOCALLY)
-                loadMap();
+
+                loadMap(newMapPath);
                 interval = setInterval(() => {
                     if (imagesLoaded < totalImages) {
                         console.log(" >> " + imagesLoaded + "/" + totalImages);
