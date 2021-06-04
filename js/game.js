@@ -114,6 +114,15 @@ function updateGame() {
         updatePlayerMovement();
         updateMaskContext();
         updateMapTransitions();
+        stopGameOnPlayerDeath();
+    }
+}
+
+let stopGameOnPlayerDeath = () => {
+    if (player.health <= 0) {
+        game.clear();
+        game.context.font = "bold 24px Arial";
+        game.context.fillText("YOU DIED", 15, 135);
     }
 }
 
