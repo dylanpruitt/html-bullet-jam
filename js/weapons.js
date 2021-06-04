@@ -1,5 +1,6 @@
 let basicWeapon = (parent) => {
     let weapon = {
+        name: "Basic Weapon",
         range: 60,
         speedCap: 3.2,
         cooldownFrames: 45,

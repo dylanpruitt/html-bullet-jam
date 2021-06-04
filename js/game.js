@@ -154,7 +154,7 @@ let updateMaskContext = () => {
         updateMask = true;
         if (yOffset > 0) { yOffset = 0; }
     }
-    if (updateMask) {
+    if (updateMask && (player.speedX !== 0 || player.speedY !== 0)) {
         drawMaskContext(game);
     }
 }           
