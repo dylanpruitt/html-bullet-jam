@@ -21,7 +21,17 @@ let tileArray = [
     1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1,
 ];
 let boundingBoxes = [];
-let transitionBoxes = [];
+let transitionBoxes = [
+    {
+        minX: 0,
+        maxX: 16,
+        minY: 64,
+        maxY: 128,
+        height: 64,
+        width: 16,
+        path: "/maps/grass_hallway.json"
+    }
+];
 
 let MAP_WIDTH = 20;
 let MAP_HEIGHT = 20;

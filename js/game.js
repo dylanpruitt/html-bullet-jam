@@ -113,6 +113,15 @@ function updateGame() {
         updateBullets();
         updatePlayerMovement();
         updateMaskContext();
+        updateMapTransitions();
+    }
+}
+
+let updateMapTransitions = () => {
+    for (let i = 0; i < transitionBoxes.length; i++) {
+        if (entityCollidingWithBounds(player, transitionBoxes[i])) {
+            transitionToMap(transitionBoxes[i].path);
+        }
     }
 }
 
@@ -240,6 +249,62 @@ let updatePlayerMovement = () => {
         }
     }
 }            
+
+let loadMap = (path) => {
+    $.getJSON(path, function(data) {
+        console.log("data: " + data);
+        spawnX = data.spawnX;
+        player.x = spawnX;
+        spawnY = data.spawnY;
+        player.y = spawnY;
+        MAP_WIDTH = data.MAP_WIDTH;
+        MAP_HEIGHT = data.MAP_HEIGHT;
+        xOffset = Math.floor(spawnX / 240) * -240;
+        if (xOffset < 0 && xOffset < -(MAP_WIDTH * TILE_SIZE * SCALE - game.canvas.width) / 2) {
+            xOffset = -(MAP_WIDTH * TILE_SIZE * SCALE - game.canvas.width) / 2;
+        }
+        yOffset = Math.floor(spawnY / 240) * -240; 
+        if (yOffset < 0 && yOffset < -(MAP_HEIGHT * TILE_SIZE * SCALE - game.canvas.height) / 2) {
+            yOffset = -(MAP_HEIGHT * TILE_SIZE * SCALE - game.canvas.height) / 2;
+        }
+        tileArray = data.tiles;
+        totalImages = tileArray.length;
+        for (let i = 0; i < tileArray.length; i++) {
+            tileArray[i].image = new Image();
+            tileArray[i].image.addEventListener("load", function() {
+                imagesLoaded++;
+            }, false);
+            tileArray[i].image.src = tileArray[i].imagePath;
+        }
+        boundingBoxes = data.boxes;
+        entities = data.entities;
+        for (let i = 0; i < entities.length; i++) {
+            let index = getEntityConstructorIndexFromName(entities[i].name);
+            if (index !== -1) {
+                entities[i] = entityConstructors[index](entities[i].x, entities[i].y);
+            }
+        }
+    });    
+}
+
+let transitionToMap = (newMapPath) => {
+    game.paused = true;
+
+    imagesLoaded = 0;
+    loadMap(newMapPath);
+    interval = setInterval(() => {
+        if (imagesLoaded < totalImages) {
+            console.log(" >> " + imagesLoaded + "/" + totalImages);
+            game.clear();
+            game.context.font = "bold 24px Arial";
+            game.context.fillText("LOADING " + imagesLoaded + "/" + totalImages, 5, 135);
+        } else {
+            clearInterval(interval);
+            game.paused = false;
+            drawMaskContext(game);
+        }
+    }, 20);                
+}
             
 game.canvas.addEventListener("mousemove", function(e) {
     getCursorPosition(e);
