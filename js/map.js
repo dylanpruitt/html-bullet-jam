@@ -21,6 +21,7 @@ let tileArray = [
     1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1,
 ];
 let boundingBoxes = [];
+let transitionBoxes = [];
 
 let MAP_WIDTH = 20;
 let MAP_HEIGHT = 20;

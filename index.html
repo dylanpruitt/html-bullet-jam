@@ -22,44 +22,70 @@
         <script src="js/render.js"></script>
         <script src="js/game.js"></script>
         <script>
-            let loadMap = () => {
-                let importedFile = document.getElementById('map-file').files[0];
+            let loadMap = (path) => {
+                let mapContents = $.getJSON(path);
+                console.log(mapContents);
+                // let importedFile = document.getElementById('map-file').files[0];
 
-                let reader = new FileReader();
-                reader.onload = function() {
-                    let fileContent = JSON.parse(reader.result);
-                    console.log(fileContent);
-                    spawnX = fileContent.spawnX;
-                    player.x = spawnX;
-                    spawnY = fileContent.spawnY;
-                    player.y = spawnY;
-                    MAP_WIDTH = fileContent.MAP_WIDTH;
-                    MAP_HEIGHT = fileContent.MAP_HEIGHT;
-                    xOffset = Math.floor(spawnX / 240) * -240;
-                    if (xOffset < 0 && xOffset < -(MAP_WIDTH * TILE_SIZE * SCALE - game.canvas.width) / 2) {
-                        xOffset = -(MAP_WIDTH * TILE_SIZE * SCALE - game.canvas.width) / 2;
-                    }
-                    yOffset = Math.floor(spawnY / 240) * -240; 
-                    if (yOffset < 0 && yOffset < -(MAP_HEIGHT * TILE_SIZE * SCALE - game.canvas.height) / 2) {
-                        yOffset = -(MAP_HEIGHT * TILE_SIZE * SCALE - game.canvas.height) / 2;
-                    }
-                    tileArray = fileContent.tiles;
-                    for (let i = 0; i < tileArray.length; i++) {
-                        tileArray[i].image = new Image();
-                        tileArray[i].image.src = tileArray[i].imagePath;
-                    }
-                    boundingBoxes = fileContent.boxes;
-                    entities = fileContent.entities;
-                    for (let i = 0; i < entities.length; i++) {
-                        let index = getEntityConstructorIndexFromName(entities[i].name);
-                        if (index !== -1) {
-                            entities[i] = entityConstructors[index](entities[i].x, entities[i].y);
-                        }
-                    }
+                // let reader = new FileReader();
+                // reader.onload = function() {
+                //     let fileContent = JSON.parse(reader.result);
+                //     console.log(fileContent);
+                //     spawnX = fileContent.spawnX;
+                //     player.x = spawnX;
+                //     spawnY = fileContent.spawnY;
+                //     player.y = spawnY;
+                //     MAP_WIDTH = fileContent.MAP_WIDTH;
+                //     MAP_HEIGHT = fileContent.MAP_HEIGHT;
+                //     xOffset = Math.floor(spawnX / 240) * -240;
+                //     if (xOffset < 0 && xOffset < -(MAP_WIDTH * TILE_SIZE * SCALE - game.canvas.width) / 2) {
+                //         xOffset = -(MAP_WIDTH * TILE_SIZE * SCALE - game.canvas.width) / 2;
+                //     }
+                //     yOffset = Math.floor(spawnY / 240) * -240; 
+                //     if (yOffset < 0 && yOffset < -(MAP_HEIGHT * TILE_SIZE * SCALE - game.canvas.height) / 2) {
+                //         yOffset = -(MAP_HEIGHT * TILE_SIZE * SCALE - game.canvas.height) / 2;
+                //     }
+                //     tileArray = fileContent.tiles;
+                //     imagesLoaded = 0;
+                //     totalImages = tileArray.length;
+                //     for (let i = 0; i < tileArray.length; i++) {
+                //         tileArray[i].image = new Image();
+                //         tileArray[i].image.addEventListener("load", function() {
+                //             imagesLoaded++;
+                //         }, false);
+                //         tileArray[i].image.src = tileArray[i].imagePath;
+                //     }
+                //     boundingBoxes = fileContent.boxes;
+                //     entities = fileContent.entities;
+                //     for (let i = 0; i < entities.length; i++) {
+                //         let index = getEntityConstructorIndexFromName(entities[i].name);
+                //         if (index !== -1) {
+                //             entities[i] = entityConstructors[index](entities[i].x, entities[i].y);
+                //         }
+                //     }
 
-                };
-                reader.readAsText(importedFile);      
-                drawMaskContext(game);
+                // };
+                // reader.readAsText(importedFile);      
+            }
+
+            let transitionToMap = (newMapPath) => {
+                // save map data
+                // save player data
+                game.paused = true;
+                // load new map (UPDATE TO LOAD BY PATH LOCALLY)
+                loadMap();
+                interval = setInterval(() => {
+                    if (imagesLoaded < totalImages) {
+                        console.log(" >> " + imagesLoaded + "/" + totalImages);
+                        game.clear();
+                        game.context.font = "bold 24px Arial";
+                        game.context.fillText("LOADING " + imagesLoaded + "/" + totalImages, 5, 135);
+                    } else {
+                        clearInterval(interval);
+                        game.paused = false;
+                        drawMaskContext(game);
+                    }
+                }, 20);                
             }
         </script>
         <input id="map-file" type="file"></input><br>

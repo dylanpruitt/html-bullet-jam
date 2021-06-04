@@ -33,6 +33,7 @@ let game = {
         this.maskContext = this.maskCanvas.getContext('2d');
         document.body.insertBefore(this.canvas, document.body.childNodes[0]);
         this.interval = setInterval(updateGame, 20);
+        this.paused = false;
     },
     clear : function() {
         this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
@@ -103,7 +104,7 @@ let removeDeadBullets = () => {
 }         
 
 function updateGame() {
-    if (imagesLoaded == totalImages) {
+    if (imagesLoaded == totalImages && !game.paused) {
         game.clear();
         render(game);
         renderCrosshair();
