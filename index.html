@@ -24,7 +24,7 @@
         <script>
             let loadMap = (path) => {
                 $.getJSON(path, function(data) {
-                    console.log(data);
+                    console.log("data: " + data);
                     spawnX = data.spawnX;
                     player.x = spawnX;
                     spawnY = data.spawnY;
@@ -40,7 +40,6 @@
                         yOffset = -(MAP_HEIGHT * TILE_SIZE * SCALE - game.canvas.height) / 2;
                     }
                     tileArray = data.tiles;
-                    imagesLoaded = 0;
                     totalImages = tileArray.length;
                     for (let i = 0; i < tileArray.length; i++) {
                         tileArray[i].image = new Image();
@@ -65,6 +64,7 @@
                 // save player data
                 game.paused = true;
 
+                imagesLoaded = 0;
                 loadMap(newMapPath);
                 interval = setInterval(() => {
                     if (imagesLoaded < totalImages) {
