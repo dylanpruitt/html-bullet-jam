@@ -14,6 +14,20 @@ const weaponProperties = (weapon, parent) => ({
         if (xDistance < 0) { xSpeed *= -1; ySpeed *= -1; }
 
         return [xSpeed, ySpeed];
+    },
+    spreadFire: (cursorX, cursorY, spreadAngle, numBullets) => {
+        let xDistance = cursorX - parent.x;
+        let yDistance = cursorY - parent.y;
+        let baseAngle = Math.atan(yDistance / xDistance);
+        for (let i = 0; i < numBullets; i++) {
+            let spreadRadians = (spreadAngle * 180 / Math.PI) % (Math.PI * 2);
+            let angle = baseAngle + Math.floor(Math.random() * spreadRadians - (spreadRadians / 2));
+            console.log(baseAngle + " > " + angle + " " + spreadRadians);
+            let xSpeed = weapon.speedCap * Math.cos(angle);
+            let ySpeed = weapon.speedCap * Math.sin(angle);
+            let bullet = basicBullet(parent.x, parent.y, xSpeed, ySpeed, parent.name);
+            bullets.push(bullet);
+        }
     }
 });
 
@@ -42,15 +56,13 @@ let shotgun = (parent) => {
         name: "Shotgun",
         range: 60,
         speedCap: 5,
-        cooldownFrames: 60,
+        cooldownFrames: 75,
         width: 4,
         height: 4,
         image: assets.get("images/bullets/bullet.png"),
         imagePath: "images/bullets/bullet.png",
         onFire: (cursorX, cursorY) => {
-            let projectileSpeeds = weapon.getProjectileSpeed(cursorX, cursorY);
-            let bullet = shotgunBullet(parent.x, parent.y, projectileSpeeds[0], projectileSpeeds[1], parent.name);
-            bullets.push(bullet);
+            weapon.spreadFire(cursorX, cursorY, 90, 4);
             weapon.cooldownFrames = 45;
         },
     }
