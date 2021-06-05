@@ -20,11 +20,16 @@ const weaponProperties = (weapon, parent) => ({
         let yDistance = cursorY - parent.y;
         let baseAngle = Math.atan(yDistance / xDistance);
         for (let i = 0; i < numBullets; i++) {
-            let spreadRadians = (spreadAngle * 180 / Math.PI) % (Math.PI * 2);
-            let angle = baseAngle + Math.floor(Math.random() * spreadRadians - (spreadRadians / 2));
-            console.log(baseAngle + " > " + angle + " " + spreadRadians);
+            let spreadRadians = Math.PI * (spreadAngle / 180);
+            let angle = baseAngle + Math.random() * spreadRadians - (spreadRadians / 2);
+            if (angle < 0) {
+                angle = 2 * Math.PI + angle;
+            }
             let xSpeed = weapon.speedCap * Math.cos(angle);
             let ySpeed = weapon.speedCap * Math.sin(angle);
+            if (xDistance < 0) { xSpeed *= -1; ySpeed *= -1; }
+
+            //// MORE THAN BASIC BULLETS SHOULD BE COVERED!
             let bullet = basicBullet(parent.x, parent.y, xSpeed, ySpeed, parent.name);
             bullets.push(bullet);
         }
@@ -36,7 +41,7 @@ let basicWeapon = (parent) => {
         name: "Basic Weapon",
         range: 60,
         speedCap: 3.2,
-        cooldownFrames: 45,
+        cooldownFrames: 25,
         width: 4,
         height: 4,
         image: assets.get("images/bullets/bullet.png"),
@@ -45,7 +50,7 @@ let basicWeapon = (parent) => {
             let projectileSpeeds = weapon.getProjectileSpeed(cursorX, cursorY);
             let bullet = basicBullet(parent.x, parent.y, projectileSpeeds[0], projectileSpeeds[1], parent.name);
             bullets.push(bullet);
-            weapon.cooldownFrames = 45;
+            weapon.cooldownFrames = 25;
         },
     }
     return Object.assign(weapon, weaponProperties(weapon, parent));
@@ -56,14 +61,14 @@ let shotgun = (parent) => {
         name: "Shotgun",
         range: 60,
         speedCap: 5,
-        cooldownFrames: 75,
+        cooldownFrames: 100,
         width: 4,
         height: 4,
         image: assets.get("images/bullets/bullet.png"),
         imagePath: "images/bullets/bullet.png",
         onFire: (cursorX, cursorY) => {
             weapon.spreadFire(cursorX, cursorY, 90, 4);
-            weapon.cooldownFrames = 45;
+            weapon.cooldownFrames = 100;
         },
     }
     return Object.assign(weapon, weaponProperties(weapon, parent));
