@@ -6,13 +6,19 @@ const entityProperties = (entity) => ({
         let entityY = entity.y;
 
         entity.x += entity.speedX;
-        entity.y += entity.speedY;
 
         for (let i = 0; i < boundingBoxes.length; i++) {
             if (entityCollidingWithBounds(entity, boundingBoxes[i])) {
                 entity.x = entityX;
-                entity.y = entityY;
                 entity.speedX = 0;
+            }
+        }
+
+        entity.y += entity.speedY;
+
+        for (let i = 0; i < boundingBoxes.length; i++) {
+            if (entityCollidingWithBounds(entity, boundingBoxes[i])) {
+                entity.y = entityY;
                 entity.speedY = 0;
             }
         }
