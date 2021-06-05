@@ -41,13 +41,14 @@
                     spawnY: spawnY,
                     tiles: tileArray,
                     boxes: boundingBoxes,
+                    transitionBoxes: transitionBoxes,
                     entities: entities,
                 };
                 let filename = prompt("Enter a map name:");
                 download(JSON.stringify(data), filename + ".json", "application/json");
             }
 
-            let loadMap = () => {
+            loadMap = () => {
                 let importedFile = document.getElementById('map-file').files[0];
 
                 let reader = new FileReader();
@@ -66,6 +67,7 @@
                         tileArray[i].image.src = tileArray[i].imagePath;
                     }
                     boundingBoxes = fileContent.boxes;
+                    transitionBoxes = fileContent.transitionBoxes;
                     entities = fileContent.entities;
                     for (let i = 0; i < entities.length; i++) {
                         let index = getEntityConstructorIndexFromName(entities[i].name);

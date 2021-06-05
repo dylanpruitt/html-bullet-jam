@@ -107,6 +107,7 @@ let setupTilePicker = () => {
 let updateMap = () => {
     game.clear();
     render(game);
+    renderTransitionBoxes();
     renderCrosshair();
     renderTileMarkers();
     updateMaskContext();
@@ -116,6 +117,15 @@ let updateMap = () => {
     if (mouseLock) {
         game.context.font = "8px Arial";
         game.context.fillText("MOUSE LOCK", 2, 235);
+    }
+}
+
+let renderTransitionBoxes = () => {
+    for (let i = 0; i < transitionBoxes.length; i++) {
+        let ctx = game.context;
+        let box = transitionBoxes[i];
+        ctx.strokeStyle = "#FF0000";
+        ctx.strokeRect(box.minX + xOffset, box.minY + yOffset, box.width, box.height);     
     }
 }
 
@@ -350,6 +360,24 @@ game.canvas.addEventListener("click", function(e) {
             markedIndices = [];
             editorMode = "selection";
         }
+    } else if (editorMode === "transition") {
+        markedIndices.push(getTileIndexFromCursor());
+        if (markedIndices.length == 2) {
+            let path = prompt("Enter the filepath for the map to transition to:");
+            let transitionBox = {
+                minX: markedIndices[0] % MAP_WIDTH * TILE_SIZE,
+                maxX: markedIndices[1] % MAP_WIDTH * TILE_SIZE,
+                minY: Math.floor(markedIndices[0] / MAP_WIDTH) * TILE_SIZE,
+                maxY: Math.floor(markedIndices[1] / MAP_WIDTH) * TILE_SIZE,
+                path: path
+            };
+            transitionBox.height = transitionBox.maxY - transitionBox.minY;
+            transitionBox.width = transitionBox.maxX - transitionBox.minX;
+            transitionBoxes.push(transitionBox);
+            drawMaskContext(game);
+            markedIndices = [];
+            editorMode = "selection";
+        }
     } else if (editorMode === "entityEdit") {
         x = mouseX - xOffset;
         y = mouseY - yOffset;
@@ -471,6 +499,7 @@ $('html').keydown(function(e) {
 
     let F = 70, f = 102;
     let C = 67, c = 99;
+    let L = 76, l = 108;
     let M = 77, m = 109;
 
     if (keys[C] || keys[c]) {
@@ -485,6 +514,13 @@ $('html').keydown(function(e) {
             setEditorMode("selection");
         } else {
             setEditorMode("tileFill");
+        }
+    }
+    if (keys[L] || keys[l]) {
+        if (editorMode === "transition") {
+            setEditorMode("selection");
+        } else {
+            setEditorMode("transition");
         }
     }
     if (keys[M] || keys[m]) {

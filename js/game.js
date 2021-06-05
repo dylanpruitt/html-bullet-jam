@@ -297,6 +297,7 @@ let loadMap = (path) => {
             tileArray[i].image.src = tileArray[i].imagePath;
         }
         boundingBoxes = data.boxes;
+        transitionBoxes = data.transitionBoxes;
         entities = data.entities;
         for (let i = 0; i < entities.length; i++) {
             let index = getEntityConstructorIndexFromName(entities[i].name);
