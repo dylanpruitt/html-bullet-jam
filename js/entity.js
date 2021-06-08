@@ -182,7 +182,107 @@ let grassTrapConstructor = (x, y) => {
     return Object.assign(entity, entityProperties(entity));
 }
 
-let entityConstructors = [wolfConstructor, grassTrapConstructor];
+let sheepConstructor = (x, y) => {
+    let entity = {
+        name: "Sheep",
+        health: 5,
+        maxHealth: 5,
+        x: x,
+        y: y,
+        speedX: 0,
+        speedY: 0,
+        speedCap: 3,
+        width: 12,
+        height: 12,
+        image: assets.get("images/entities/sheep.png"),
+        imagePath: "images/entities/sheep.png",
+        aiState: "idle",
+        aiGoalX: x,
+        aiGoalY: y,
+        framesIdle: 120,
+        equippedWeapon: {},
+        update: (player) => {
+            entity.updateAI(player);
+            entity.updatePosition();
+        },
+        updateAI: (player) => {
+            let distanceFromPlayer = Math.sqrt(Math.pow(player.x - entity.x, 2) + Math.pow(player.y - entity.y, 2));
+            if (distanceFromPlayer > 80) {
+                entity.idleAI();
+            } else {
+                entity.panicAI(player);
+            }
+
+            if (Math.abs(entity.x - entity.aiGoalX) <= 1) { 
+                entity.x = entity.aiGoalX; 
+                entity.speedX = 0;
+            }
+            if (Math.abs(entity.y - entity.aiGoalY) <= 1) { 
+                entity.y = entity.aiGoalY; 
+                entity.speedY = 0;
+            }
+        },
+        idleAI: () => {
+            if (entity.aiGoalX == 0 || entity.aiGoalY == 0 
+                || (entity.x == entity.aiGoalX && entity.y == entity.aiGoalY)) {     
+                if (entity.x == entity.aiGoalX && entity.y == entity.aiGoalY) {
+                    entity.framesIdle++;
+                }
+                if (entity.framesIdle == 150) {
+                    entity.aiGoalX = Math.floor((Math.random() * 60) - 30 + entity.x);
+                    entity.aiGoalY = Math.floor((Math.random() * 60) - 30 + entity.y);
+                    entity.framesIdle = 0;
+                }
+            }
+ 
+            if (entity.x > entity.aiGoalX) { entity.speedX = -1; }
+            if (entity.y > entity.aiGoalY) { entity.speedY = -1; }
+            if (entity.x < entity.aiGoalX) { entity.speedX = 1; }
+            if (entity.y < entity.aiGoalY) { entity.speedY = 1; }
+        },
+        panicAI: (player) => {
+            entity.aiGoalX = Math.floor((Math.random() * 10) - 5 + player.x);
+            entity.aiGoalY = Math.floor((Math.random() * 10) - 5 + player.y);
+
+            if (entity.x > entity.aiGoalX) { entity.speedX = 1.3; }
+            if (entity.y > entity.aiGoalY) { entity.speedY = 1.3; }
+            if (entity.x < entity.aiGoalX) { entity.speedX = -1.3; }
+            if (entity.y < entity.aiGoalY) { entity.speedY = -1.3; }
+        },
+        
+    }
+    entity.equippedWeapon = basicWeapon(entity);
+    return Object.assign(entity, entityProperties(entity));
+}
+
+let crateConstructor = (x, y) => {
+    let entity = {
+        name: "Crate",
+        health: 8,
+        maxHealth: 8,
+        x: x,
+        y: y,
+        speedX: 0,
+        speedY: 0,
+        speedCap: 3,
+        width: 14,
+        height: 14,
+        image: assets.get("images/entities/crate.png"),
+        imagePath: "images/entities/crate.png",
+        aiState: "idle",
+        aiGoalX: x,
+        aiGoalY: y,
+        framesIdle: 120,
+        equippedWeapon: {},
+        update: (player) => {
+            entity.updatePosition();
+        }, 
+    }
+    entity.equippedWeapon = basicWeapon(entity);
+    return Object.assign(entity, entityProperties(entity));
+}
+
+let entityConstructors = [wolfConstructor, grassTrapConstructor, sheepConstructor, crateConstructor];
 
 let getEntityConstructorIndexFromName = (name) => {
     let NOT_FOUND = -1;
