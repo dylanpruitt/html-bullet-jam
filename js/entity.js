@@ -200,6 +200,7 @@ let grassTrapConstructor = (x, y) => {
         updateAI: () => {
             let targetDistance = entity.getClosestTargetDistance();
             if (targetDistance < 20) {
+                let targetIndex = entity.getClosestTargetIndex();
                 entity.equippedWeapon.onFire(entities[targetIndex].x, entities[targetIndex].y);
                 entity.health = 0;
             }
