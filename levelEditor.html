@@ -34,6 +34,7 @@
             }
 
             let saveMap = () => {
+                boundingBoxes = generateBoundGroups(tileArray);
                 let data = {
                     MAP_WIDTH: MAP_WIDTH,
                     MAP_HEIGHT: MAP_HEIGHT,
