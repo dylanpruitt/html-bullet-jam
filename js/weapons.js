@@ -15,7 +15,7 @@ const weaponProperties = (weapon, parent) => ({
 
         return [xSpeed, ySpeed];
     },
-    spreadFire: (cursorX, cursorY, spreadAngle, numBullets) => {
+    spreadFire: (cursorX, cursorY, bulletType, spreadAngle, numBullets) => {
         let xDistance = cursorX - parent.x;
         let yDistance = cursorY - parent.y;
         let baseAngle = Math.atan(yDistance / xDistance);
@@ -30,7 +30,7 @@ const weaponProperties = (weapon, parent) => ({
             if (xDistance < 0) { xSpeed *= -1; ySpeed *= -1; }
 
             //// MORE THAN BASIC BULLETS SHOULD BE COVERED!
-            let bullet = basicBullet(parent.x, parent.y, xSpeed, ySpeed, parent.name);
+            let bullet = bulletType(parent.x, parent.y, xSpeed, ySpeed, parent.name);
             bullets.push(bullet);
         }
     }
@@ -67,7 +67,7 @@ let shotgun = (parent) => {
         image: assets.get("images/bullets/bullet.png"),
         imagePath: "images/bullets/bullet.png",
         onFire: (cursorX, cursorY) => {
-            weapon.spreadFire(cursorX, cursorY, 90, 4);
+            weapon.spreadFire(cursorX, cursorY, basicBullet, 90, 4);
             weapon.cooldownFrames = 100;
         },
     }
@@ -84,14 +84,7 @@ let grassTrapWeapon = (parent) => {
         image: assets.get("images/bullets/trap-bullet.png"),
         imagePath: "images/bullets/trap-bullet.png",
         onFire: (cursorX, cursorY) => {
-            let bullet = grassTrapBullet(parent.x, parent.y, weapon.speedCap, weapon.speedCap, parent.name);
-            bullets.push(bullet);
-            bullet = grassTrapBullet(parent.x, parent.y, -weapon.speedCap, weapon.speedCap, parent.name);
-            bullets.push(bullet);
-            bullet = grassTrapBullet(parent.x, parent.y, weapon.speedCap, -weapon.speedCap, parent.name);
-            bullets.push(bullet);
-            bullet = grassTrapBullet(parent.x, parent.y, -weapon.speedCap, -weapon.speedCap, parent.name);
-            bullets.push(bullet);
+            weapon.spreadFire(cursorX, cursorY, grassTrapBullet, 360, 8);
         },
     }
     return Object.assign(weapon, weaponProperties(weapon, parent));
