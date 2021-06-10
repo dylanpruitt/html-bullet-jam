@@ -292,7 +292,8 @@ let loadMap = (path) => {
         }
         boundingBoxes = data.boxes;
         transitionBoxes = data.transitionBoxes;
-        entities = data.entities;
+        entities[0] = player;
+        entities.push(data.entities);
         for (let i = 0; i < entities.length; i++) {
             let index = getEntityConstructorIndexFromName(entities[i].name);
             if (index !== -1) {
