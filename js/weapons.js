@@ -97,4 +97,32 @@ let grassTrapWeapon = (parent) => {
     return Object.assign(weapon, weaponProperties(weapon, parent));
 }
 
-let weaponConstructors = [basicWeapon, shotgun, grassTrapWeapon];
+let switcherooWeapon = (parent) => {
+    let weapon = {
+        name: "Switcheroo",
+        range: 100,
+        speedCap: 1,
+        cooldownFrames: 250,
+        width: 4,
+        height: 4,
+        image: assets.get("images/bullets/bullet.png"),
+        imagePath: "images/bullets/bullet.png",
+        onFire: (cursorX, cursorY) => {
+            let targetDistance = parent.getClosestTargetDistance();
+            let targetIndex = parent.getClosestTargetIndex();
+
+            if (targetDistance <= weapon.range) {
+                let target = entities[targetIndex];
+                let tempX = parent.x, tempY = parent.y;
+
+                parent.x = target.x;
+                parent.y = target.y;
+                target.x = tempX;
+                target.y = tempY;
+            }
+        },
+    }
+    return Object.assign(weapon, weaponProperties(weapon, parent));
+}
+
+let weaponConstructors = [basicWeapon, shotgun, grassTrapWeapon, switcherooWeapon];

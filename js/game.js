@@ -15,7 +15,7 @@ let startGame = () => {
             player = playerConstructor(spawnX, spawnY);
             entities.push(player);
             generateMap();
-            inventory = [basicWeapon(player), shotgun(player)];
+            inventory = [basicWeapon(player), shotgun(player), switcherooWeapon(player)];
             game.start();
             drawMaskContext(game);
         }

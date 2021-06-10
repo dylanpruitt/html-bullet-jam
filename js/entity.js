@@ -239,7 +239,6 @@ let sheepConstructor = (x, y) => {
             if (entity.getClosestTargetDistance() > 80) {
                 entity.idleAI();
             } else {
-                console.log("!!!");
                 entity.panicAI();
             }
 
