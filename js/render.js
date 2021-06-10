@@ -15,17 +15,15 @@ let render = function (game) {
 }
 
 let renderPlayerHealth = (game) => {
+    game.context.font = "bold 12px Consolas";
+    game.context.fillText(player.health, 220, 15);
+    game.context.fillText(player.maxHealth, 220, 30);
     game.context.beginPath();
-    game.context.rect(0, 230, 240, 10);
-    game.context.fillStyle = "gray";
-    game.context.fill();
-    game.context.beginPath();
-    game.context.rect(0, 230, (240 * (player.health / player.maxHealth)), 10);
-    game.context.fillStyle = "red";
-    game.context.fill();
+    game.context.moveTo(217,19);
+    game.context.lineTo(237,19);
     game.context.fillStyle = "black";
-    game.context.font = "bold 8px Arial";
-    game.context.fillText("HP " + player.health, 5, 237.5);
+    game.context.lineWidth = 2;
+    game.context.stroke();
 }
 
 let drawMaskContext = (game) => {

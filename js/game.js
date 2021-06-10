@@ -187,14 +187,14 @@ let renderCrosshair = () => {
 
 let renderPlayerWeapons = () => {
     game.context.font = "bold 8px Arial";
-    game.context.fillText(player.equippedWeapon.name, 5, 205);
+    game.context.fillText(player.equippedWeapon.name, 5, 225);
 
     let previousIndex = player.activeWeaponIndex - 1; if (previousIndex < 0) { previousIndex = inventory.length - 1; }
     let nextIndex = player.activeWeaponIndex + 1; if (nextIndex >= inventory.length) { nextIndex = 0; }
 
     game.context.font = "6px Arial";
-    game.context.fillText("[Q] " + inventory[previousIndex].name, 5, 195);
-    game.context.fillText("[E] " + inventory[nextIndex].name, 5, 215);
+    game.context.fillText("[Q] " + inventory[previousIndex].name, 5, 215);
+    game.context.fillText("[E] " + inventory[nextIndex].name, 5, 235);
 }
 
 let getCursorDistanceFromPlayer = () => {
