@@ -28,6 +28,27 @@ const entityProperties = (entity) => ({
             || (entity.x < (object.x + object.width) && (object.x + object.width) < (entity.x + entity.width)))
             && ((entity.y < object.y && object.y < (entity.y + entity.height))
             || (entity.y < (object.y + object.height) && (object.y + object.height) < (entity.y + entity.height))));
+    },
+    getClosestTargetDistance: () => {
+        let closestDistance = 10000;
+        for (let i = 0; i < entities.length; i++) {
+            let distanceFromEntity = Math.sqrt(Math.pow(entity.x - entities[i].x, 2) + Math.pow(entity.y - entities[i].y, 2));
+            if (distanceFromEntity < closestDistance && entity.faction !== entities[i].faction) {
+                closestDistance = distanceFromEntity;
+            }
+        }
+        return closestDistance;
+    },
+    getClosestTargetIndex: () => {
+        let closestDistance = 10000, targetIndex = 0;
+        for (let i = 0; i < entities.length; i++) {
+            let distanceFromEntity = Math.sqrt(Math.pow(entity.x - entities[i].x, 2) + Math.pow(entity.y - entities[i].y, 2));
+            if (distanceFromEntity < closestDistance && entity.faction !== entities[i].faction) {
+                closestDistance = distanceFromEntity;
+                targetIndex = i;
+            }
+        }
+        return targetIndex;
     }
 });
 
@@ -89,19 +110,21 @@ let wolfConstructor = (x, y) => {
         aiState: "idle",
         aiGoalX: x,
         aiGoalY: y,
+        targetIndex: 0,
         framesIdle: 120,
         equippedWeapon: {},
-        update: (player) => {
-            entity.updateAI(player);
+        update: () => {
+            entity.updateAI();
             entity.updatePosition();
             entity.equippedWeapon.update();
         },
-        updateAI: (player) => {
-            let distanceFromPlayer = Math.sqrt(Math.pow(player.x - entity.x, 2) + Math.pow(player.y - entity.y, 2));
-            if (distanceFromPlayer > 60) {
+        updateAI: () => {
+            entity.targetIndex = entity.getClosestTargetIndex();
+            let targetDistance = entity.getClosestTargetDistance();
+            if (targetDistance > 60) {
                 entity.idleAI();
             } else {
-                entity.chaseAI(player);
+                entity.chaseAI();
             }
 
             if (Math.abs(entity.x - entity.aiGoalX) <= 1) { 
@@ -131,9 +154,10 @@ let wolfConstructor = (x, y) => {
             if (entity.x < entity.aiGoalX) { entity.speedX = 1; }
             if (entity.y < entity.aiGoalY) { entity.speedY = 1; }
         },
-        chaseAI: (player) => {
-            entity.aiGoalX = Math.floor((Math.random() * 10) - 5 + player.x);
-            entity.aiGoalY = Math.floor((Math.random() * 10) - 5 + player.y);
+        chaseAI: () => {
+            let target = entities[entity.targetIndex];
+            entity.aiGoalX = Math.floor((Math.random() * 10) - 5 + target.x);
+            entity.aiGoalY = Math.floor((Math.random() * 10) - 5 + target.y);
 
             if (entity.x > entity.aiGoalX) { entity.speedX = -1.3; }
             if (entity.y > entity.aiGoalY) { entity.speedY = -1.3; }
@@ -141,7 +165,7 @@ let wolfConstructor = (x, y) => {
             if (entity.y < entity.aiGoalY) { entity.speedY = 1.3; }
 
             if (entity.equippedWeapon.cooldownFrames == 0) {
-                entity.equippedWeapon.onFire(player.x, player.y);
+                entity.equippedWeapon.onFire(target.x, target.y);
             }
         },
         
@@ -169,14 +193,14 @@ let grassTrapConstructor = (x, y) => {
         aiGoalY: y,
         framesIdle: 120,
         equippedWeapon: {},
-        update: (player) => {
-            entity.updateAI(player);
+        update: () => {
+            entity.updateAI();
             entity.equippedWeapon.update();
         },
-        updateAI: (player) => {
-            let distanceFromPlayer = Math.sqrt(Math.pow(player.x - entity.x, 2) + Math.pow(player.y - entity.y, 2));
-            if (distanceFromPlayer < 40) {
-                entity.equippedWeapon.onFire(player.x, player.y);
+        updateAI: () => {
+            let targetDistance = entity.getClosestTargetDistance();
+            if (targetDistance < 20) {
+                entity.equippedWeapon.onFire(entities[targetIndex].x, entities[targetIndex].y);
                 entity.health = 0;
             }
         },
@@ -203,18 +227,19 @@ let sheepConstructor = (x, y) => {
         aiState: "idle",
         aiGoalX: x,
         aiGoalY: y,
+        targetIndex: 0,
         framesIdle: 120,
         equippedWeapon: {},
-        update: (player) => {
-            entity.updateAI(player);
+        update: () => {
+            entity.updateAI();
             entity.updatePosition();
         },
-        updateAI: (player) => {
-            let distanceFromPlayer = Math.sqrt(Math.pow(player.x - entity.x, 2) + Math.pow(player.y - entity.y, 2));
-            if (distanceFromPlayer > 80) {
+        updateAI: () => {
+            if (entity.getClosestTargetDistance() > 80) {
                 entity.idleAI();
             } else {
-                entity.panicAI(player);
+                console.log("!!!");
+                entity.panicAI();
             }
 
             if (Math.abs(entity.x - entity.aiGoalX) <= 1) { 
@@ -244,14 +269,15 @@ let sheepConstructor = (x, y) => {
             if (entity.x < entity.aiGoalX) { entity.speedX = 1; }
             if (entity.y < entity.aiGoalY) { entity.speedY = 1; }
         },
-        panicAI: (player) => {
-            entity.aiGoalX = Math.floor((Math.random() * 10) - 5 + player.x);
-            entity.aiGoalY = Math.floor((Math.random() * 10) - 5 + player.y);
+        panicAI: () => {
+            let target = entities[entity.targetIndex];
+            if (entity.x > target.x) { entity.speedX = 1.2; }
+            if (entity.y > target.y) { entity.speedY = 1.2; }
+            if (entity.x < target.x) { entity.speedX = -1.2; }
+            if (entity.y < target.y) { entity.speedY = -1.2; }
 
-            if (entity.x > entity.aiGoalX) { entity.speedX = 1.3; }
-            if (entity.y > entity.aiGoalY) { entity.speedY = 1.3; }
-            if (entity.x < entity.aiGoalX) { entity.speedX = -1.3; }
-            if (entity.y < entity.aiGoalY) { entity.speedY = -1.3; }
+            entity.aiGoalX = entity.x + entity.speedX;
+            entity.aiGoalY = entity.y + entity.speedY;
         },
         
     }
@@ -278,7 +304,7 @@ let crateConstructor = (x, y) => {
         aiGoalY: y,
         framesIdle: 120,
         equippedWeapon: {},
-        update: (player) => {
+        update: () => {
             entity.updatePosition();
         }, 
     }

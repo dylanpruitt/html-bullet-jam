@@ -50,7 +50,7 @@ let game = {
 let updateEntities = () => {
     for (let i = 0; i < entities.length; i++) {
         drawEntity(entities[i], game.context);
-        entities[i].update(player);
+        entities[i].update();
     }
 
     removeDeadEntities();
