@@ -113,6 +113,9 @@ let switcherooWeapon = (parent) => {
                 target.x = tempX;
                 target.y = tempY;
             }
+
+            weapon.cooldownFrames = 250;
+
         },
     }
     return Object.assign(weapon, weaponProperties(weapon, parent));
