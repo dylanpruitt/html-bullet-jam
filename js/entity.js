@@ -34,6 +34,7 @@ const entityProperties = (entity) => ({
 let playerConstructor = (x, y) => {
     let entity = {
         name: "Player",
+        faction: "player",
         health: 20,
         maxHealth: 20,
         x: x,
@@ -73,6 +74,7 @@ let playerConstructor = (x, y) => {
 let wolfConstructor = (x, y) => {
     let entity = {
         name: "Wolf",
+        faction: "enemy",
         health: 13,
         maxHealth: 13,
         x: x,
@@ -151,6 +153,7 @@ let wolfConstructor = (x, y) => {
 let grassTrapConstructor = (x, y) => {
     let entity = {
         name: "Grass Trap",
+        faction: "trap",
         health: 1,
         maxHealth: 1,
         x: x,
@@ -185,6 +188,7 @@ let grassTrapConstructor = (x, y) => {
 let sheepConstructor = (x, y) => {
     let entity = {
         name: "Sheep",
+        faction: "neutral",
         health: 5,
         maxHealth: 5,
         x: x,

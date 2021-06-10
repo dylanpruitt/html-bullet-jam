@@ -12,8 +12,9 @@ let startGame = () => {
             console.log(" >> " + imagesLoaded + "/" + totalImages);
         } else {
             clearInterval(interval);
-            generateMap();
             player = playerConstructor(spawnX, spawnY);
+            entities.push(player);
+            generateMap();
             inventory = [basicWeapon(player), shotgun(player)];
             game.start();
             drawMaskContext(game);
@@ -47,9 +48,6 @@ let game = {
 }
 
 let updateEntities = () => {
-    player.update();
-    drawEntity(player, game.context);
-
     for (let i = 0; i < entities.length; i++) {
         drawEntity(entities[i], game.context);
         entities[i].update(player);
@@ -80,10 +78,6 @@ let updateBullets = () => {
             if (entities[j].collidingWith(bullets[i])) { 
                 bullets[i].onCollide(entities[j]);
             }
-        }
-
-        if (player.collidingWith(bullets[i])) { 
-            bullets[i].onCollide(player);
         }
 
         for (let j = 0; j < boundingBoxes.length; j++) {
