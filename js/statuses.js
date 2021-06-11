@@ -1,26 +1,19 @@
-const statusProperties = (parent) => ({
-    framesLeft: 100,
-    update: () => {
-        framesLeft--;
-    },
-    onStatusEnd: () => {
-
-    },
-});
-
 let dashConstructor = (parent, cursorX, cursorY) => {
     let status = {
         name: "Dash",
         originalSpeedCap: parent.speedCap,
+        framesLeft: 50,
         update: () => {
-            framesLeft--;
+            status.framesLeft--;
+            parent.speedX *= 0.95;
+            parent.speedY *= 0.95;
         },
         onStatusEnd: () => {
             parent.speedCap = status.originalSpeedCap;
         },
     }
 
-    parent.speedCap = status.originalSpeedCap * 4;
+    parent.speedCap = status.originalSpeedCap * 2.5;
     
     let xDistance = cursorX - parent.x;
     let yDistance = cursorY - parent.y;
@@ -30,5 +23,5 @@ let dashConstructor = (parent, cursorX, cursorY) => {
     parent.speedY = parent.speedCap * Math.sin(angle);
     if (xDistance < 0) { parent.speedX *= -1; parent.speedY *= -1; }
 
-    return Object.assign(status, statusProperties(parent));
+    return status;
 }

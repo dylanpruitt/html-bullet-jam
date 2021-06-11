@@ -50,6 +50,19 @@ const entityProperties = (entity) => ({
             }
         }
         return targetIndex;
+    },
+    updateStatuses: () => {
+        let temp = [];
+        for (let i = 0; i < entity.statuses.length; i++) {
+            if (entity.statuses[i].framesLeft > 0) {
+                temp.push(entity.statuses[i]);
+                entity.statuses[i].update();
+            } else {
+                entity.statuses[i].onStatusEnd();
+            }
+        }
+
+        entity.statuses = temp;
     }
 });
 
@@ -59,6 +72,7 @@ let playerConstructor = (x, y) => {
         faction: "player",
         health: 20,
         maxHealth: 20,
+        controlEnabled: true,
         x: x,
         y: y,
         speedX: 0,
@@ -71,6 +85,7 @@ let playerConstructor = (x, y) => {
         update: () => {
             entity.updatePosition();
             entity.updateSpeed();
+            entity.updateStatuses();
             entity.equippedWeapon.update();
         },
         updateSpeed: () => {
@@ -117,6 +132,7 @@ let wolfConstructor = (x, y) => {
         update: () => {
             entity.updateAI();
             entity.updatePosition();
+            entity.updateStatuses();
             entity.equippedWeapon.update();
         },
         updateAI: () => {
@@ -234,6 +250,7 @@ let sheepConstructor = (x, y) => {
         equippedWeapon: {},
         update: () => {
             entity.updateAI();
+            entity.updateStatuses();
             entity.updatePosition();
         },
         updateAI: () => {

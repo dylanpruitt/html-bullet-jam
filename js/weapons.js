@@ -121,4 +121,24 @@ let switcherooWeapon = (parent) => {
     return Object.assign(weapon, weaponProperties(weapon, parent));
 }
 
-let weaponConstructors = [basicWeapon, shotgun, grassTrapWeapon, switcherooWeapon];
+let dashWeapon = (parent) => {
+    let weapon = {
+        name: "Dash",
+        range: 100,
+        speedCap: 1,
+        cooldownFrames: 125,
+        width: 4,
+        height: 4,
+        image: assets.get("images/bullets/bullet.png"),
+        imagePath: "images/bullets/bullet.png",
+        onFire: (cursorX, cursorY) => {
+            parent.statuses.push(dashConstructor(parent, cursorX, cursorY));
+
+            weapon.cooldownFrames = 125;
+
+        },
+    }
+    return Object.assign(weapon, weaponProperties(weapon, parent));
+}
+
+let weaponConstructors = [basicWeapon, shotgun, grassTrapWeapon, switcherooWeapon, dashWeapon];
