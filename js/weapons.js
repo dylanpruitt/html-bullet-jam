@@ -134,7 +134,6 @@ let dashWeapon = (parent) => {
             parent.statuses.push(dashConstructor(parent));
 
             weapon.cooldownFrames = 125;
-
         },
     }
     return Object.assign(weapon, weaponProperties(weapon, parent));
@@ -160,4 +159,24 @@ let machineGun = (parent) => {
     return Object.assign(weapon, weaponProperties(weapon, parent));
 }
 
-let weaponConstructors = [basicWeapon, shotgun, grassTrapWeapon, switcherooWeapon, dashWeapon, machineGun];
+let frenzyWeapon = (parent) => {
+    let weapon = {
+        name: "Frenzy",
+        range: 73,
+        speedCap: 6,
+        cooldownFrames: 500,
+        width: 4,
+        height: 4,
+        image: assets.get("images/bullets/bullet.png"),
+        imagePath: "images/bullets/bullet.png",
+        onFire: (cursorX, cursorY) => {
+            let projectileSpeeds = weapon.getProjectileSpeed(cursorX, cursorY);
+            let bullet = frenzyBullet(parent.x, parent.y, projectileSpeeds[0], projectileSpeeds[1], parent.faction);
+            bullets.push(bullet);
+            weapon.cooldownFrames = 500;
+        },
+    }
+    return Object.assign(weapon, weaponProperties(weapon, parent));
+}
+
+let weaponConstructors = [basicWeapon, shotgun, grassTrapWeapon, switcherooWeapon, dashWeapon, machineGun, frenzyWeapon];

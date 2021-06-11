@@ -108,4 +108,45 @@ let machineGunBullet = (x, y, speedX, speedY, creatorFaction) => {
     return Object.assign(bullet, bulletProperties(bullet));
 }
 
-let bulletConstructors = [basicBullet, shotgunBullet, grassTrapBullet, machineGunBullet];
+let frenzyBullet = (x, y, speedX, speedY, creatorFaction) => {
+    let bullet = {
+        damage: 0,
+        creatorFaction: creatorFaction,
+        x: x,
+        y: y,
+        speedX: speedX,
+        speedY: speedY,
+        speedCap: 6,
+        acceleration: 0.92,
+        width: 4,
+        height: 4,
+        image: assets.get("images/bullets/frenzy.png"),
+        imagePath: "images/bullets/frenzy.png",
+        framesActive: 0,
+        maxFramesActive: 100,
+        update: () => {
+            bullet.updatePosition();
+            bullet.updateSpeed();
+            bullet.framesActive++;
+        },
+        updatePosition: () => {
+            bullet.x += bullet.speedX;
+            bullet.y += bullet.speedY;
+        },
+        updateSpeed: () => {
+            bullet.speedX *= bullet.acceleration;
+            bullet.speedY *= bullet.acceleration;
+            if (Math.abs(bullet.speedX) < 0.1) { bullet.speedX = 0; }
+            if (Math.abs(bullet.speedY) < 0.1) { bullet.speedY = 0; }
+        },
+        onCollide: (entity) => {
+            if (entity.faction !== bullet.creatorFaction) {
+                entity.statuses.push(frenzyConstructor(entity));
+                bullet.framesActive = bullet.maxFramesActive;
+            }
+        }
+    }
+    return bullet;
+}
+
+let bulletConstructors = [basicBullet, shotgunBullet, grassTrapBullet, machineGunBullet, frenzyBullet];

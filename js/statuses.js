@@ -41,3 +41,20 @@ let freezeConstructor = (parent, frames) => {
 
     return status;
 }
+
+let frenzyConstructor = (parent) => {
+    let status = {
+        name: "Frenzy",
+        originalFaction: parent.faction,
+        framesLeft: 500,
+        update: () => {
+            status.framesLeft--;
+        },
+        onStatusEnd: () => {
+            parent.faction = status.originalFaction;
+        },
+    }
+
+    parent.faction = "frenzy";
+    return status;
+}
