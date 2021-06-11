@@ -70,8 +70,8 @@ let playerConstructor = (x, y) => {
     let entity = {
         name: "Player",
         faction: "player",
-        health: 20,
-        maxHealth: 20,
+        health: 100,
+        maxHealth: 100,
         controlEnabled: true,
         x: x,
         y: y,

@@ -16,8 +16,8 @@ let render = function (game) {
 
 let renderPlayerHealth = (game) => {
     game.context.font = "bold 12px Consolas";
-    game.context.fillText(player.health, 220, 15);
-    game.context.fillText(player.maxHealth, 220, 30);
+    game.context.fillText(player.health, 222 - 2 * Math.floor(Math.log10(player.health)), 15);
+    game.context.fillText(player.maxHealth, 222 - 2 * Math.floor(Math.log10(player.maxHealth)), 30);
     game.context.beginPath();
     game.context.moveTo(217,19);
     game.context.lineTo(237,19);
