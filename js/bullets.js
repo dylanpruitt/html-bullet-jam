@@ -29,7 +29,7 @@ const bulletProperties = (bullet) => ({
 let basicBullet = (x, y, speedX, speedY, creatorName) => {
     let bullet = {
         creatorName: creatorName,
-        damage: 3,
+        damage: 15,
         x: x,
         y: y,
         speedX: speedX,
@@ -50,13 +50,13 @@ let basicBullet = (x, y, speedX, speedY, creatorName) => {
 let shotgunBullet = (x, y, speedX, speedY, creatorName) => {
     let bullet = {
         creatorName: creatorName,
-        damage: 3,
+        damage: 30,
         x: x,
         y: y,
         speedX: speedX,
         speedY: speedY,
-        speedCap: 2,
-        acceleration: 0.80,
+        speedCap: 5,
+        acceleration: 0.87,
         width: 4,
         height: 4,
         image: assets.get("images/bullets/bullet.png"),
@@ -70,7 +70,7 @@ let shotgunBullet = (x, y, speedX, speedY, creatorName) => {
 let grassTrapBullet = (x, y, speedX, speedY, creatorName) => {
     let bullet = {
         creatorName: creatorName,
-        damage: 1,
+        damage: 25,
         x: x,
         y: y,
         speedX: speedX,

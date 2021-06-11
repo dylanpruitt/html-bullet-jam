@@ -112,8 +112,8 @@ let wolfConstructor = (x, y) => {
     let entity = {
         name: "Wolf",
         faction: "enemy",
-        health: 13,
-        maxHealth: 13,
+        health: 65,
+        maxHealth: 65,
         x: x,
         y: y,
         speedX: 0,
@@ -231,8 +231,8 @@ let sheepConstructor = (x, y) => {
     let entity = {
         name: "Sheep",
         faction: "neutral",
-        health: 5,
-        maxHealth: 5,
+        health: 35,
+        maxHealth: 35,
         x: x,
         y: y,
         speedX: 0,
@@ -306,8 +306,8 @@ let sheepConstructor = (x, y) => {
 let crateConstructor = (x, y) => {
     let entity = {
         name: "Crate",
-        health: 8,
-        maxHealth: 8,
+        health: 60,
+        maxHealth: 60,
         x: x,
         y: y,
         speedX: 0,

@@ -67,7 +67,7 @@ let shotgun = (parent) => {
         image: assets.get("images/bullets/bullet.png"),
         imagePath: "images/bullets/bullet.png",
         onFire: (cursorX, cursorY) => {
-            weapon.spreadFire(cursorX, cursorY, basicBullet, 90, 4);
+            weapon.spreadFire(cursorX, cursorY, shotgunBullet, 90, 4);
             weapon.cooldownFrames = 100;
         },
     }
@@ -132,7 +132,7 @@ let dashWeapon = (parent) => {
         image: assets.get("images/bullets/bullet.png"),
         imagePath: "images/bullets/bullet.png",
         onFire: (cursorX, cursorY) => {
-            parent.statuses.push(dashConstructor(parent, cursorX, cursorY));
+            parent.statuses.push(dashConstructor(parent));
 
             weapon.cooldownFrames = 125;
 
