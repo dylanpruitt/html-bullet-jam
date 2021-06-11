@@ -1,6 +1,7 @@
 let entities = [];
 
 const entityProperties = (entity) => ({
+    statuses: [],
     updatePosition: () => {
         let entityX = entity.x;
         let entityY = entity.y;
