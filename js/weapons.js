@@ -29,8 +29,7 @@ const weaponProperties = (weapon, parent) => ({
             let ySpeed = weapon.speedCap * Math.sin(angle);
             if (xDistance < 0) { xSpeed *= -1; ySpeed *= -1; }
 
-            //// MORE THAN BASIC BULLETS SHOULD BE COVERED!
-            let bullet = bulletType(parent.x, parent.y, xSpeed, ySpeed, parent.name);
+            let bullet = bulletType(parent.x, parent.y, xSpeed, ySpeed, parent.faction);
             bullets.push(bullet);
         }
     }
@@ -48,7 +47,7 @@ let basicWeapon = (parent) => {
         imagePath: "images/bullets/bullet.png",
         onFire: (cursorX, cursorY) => {
             let projectileSpeeds = weapon.getProjectileSpeed(cursorX, cursorY);
-            let bullet = basicBullet(parent.x, parent.y, projectileSpeeds[0], projectileSpeeds[1], parent.name);
+            let bullet = basicBullet(parent.x, parent.y, projectileSpeeds[0], projectileSpeeds[1], parent.faction);
             bullets.push(bullet);
             weapon.cooldownFrames = 25;
         },
@@ -141,4 +140,24 @@ let dashWeapon = (parent) => {
     return Object.assign(weapon, weaponProperties(weapon, parent));
 }
 
-let weaponConstructors = [basicWeapon, shotgun, grassTrapWeapon, switcherooWeapon, dashWeapon];
+let machineGun = (parent) => {
+    let weapon = {
+        name: "Machine Gun",
+        range: 73,
+        speedCap: 4,
+        cooldownFrames: 10,
+        width: 4,
+        height: 4,
+        image: assets.get("images/bullets/bullet.png"),
+        imagePath: "images/bullets/bullet.png",
+        onFire: (cursorX, cursorY) => {
+            let projectileSpeeds = weapon.getProjectileSpeed(cursorX, cursorY);
+            let bullet = basicBullet(parent.x, parent.y, projectileSpeeds[0], projectileSpeeds[1], parent.faction);
+            bullets.push(bullet);
+            weapon.cooldownFrames = 10;
+        },
+    }
+    return Object.assign(weapon, weaponProperties(weapon, parent));
+}
+
+let weaponConstructors = [basicWeapon, shotgun, grassTrapWeapon, switcherooWeapon, dashWeapon, machineGun];

@@ -330,7 +330,59 @@ let crateConstructor = (x, y) => {
     return Object.assign(entity, entityProperties(entity));
 }
 
-let entityConstructors = [wolfConstructor, grassTrapConstructor, sheepConstructor, crateConstructor];
+let turretConstructor = (x, y) => {
+    let entity = {
+        name: "Autoturret",
+        health: 180,
+        maxHealth: 180,
+        x: x,
+        y: y,
+        speedX: 0,
+        speedY: 0,
+        speedCap: 3,
+        width: 16,
+        height: 16,
+        image: assets.get("images/entities/autoturret.png"),
+        imagePath: "images/entities/autoturret.png",
+        aiState: "idle",
+        aiGoalX: x,
+        aiGoalY: y,
+        targetIndex: 0,
+        framesIdle: 120,
+        equippedWeapon: {},
+        update: () => {
+            entity.updateAI();
+            entity.updatePosition();
+            entity.updateStatuses();
+            entity.equippedWeapon.update();
+        },
+        updateAI: () => {
+            if (entity.getClosestTargetDistance() <= 70) {
+                entity.attackAI();
+            }
+
+            if (Math.abs(entity.x - entity.aiGoalX) <= 1) { 
+                entity.x = entity.aiGoalX; 
+                entity.speedX = 0;
+            }
+            if (Math.abs(entity.y - entity.aiGoalY) <= 1) { 
+                entity.y = entity.aiGoalY; 
+                entity.speedY = 0;
+            }
+        },
+        attackAI: () => {
+            let target = entities[entity.targetIndex];
+
+            if (entity.equippedWeapon.cooldownFrames == 0) {
+                entity.equippedWeapon.onFire(target.x, target.y);
+            }
+        },
+    }
+    entity.equippedWeapon = machineGun(entity);
+    return Object.assign(entity, entityProperties(entity));
+}
+
+let entityConstructors = [wolfConstructor, grassTrapConstructor, sheepConstructor, crateConstructor, turretConstructor];
 
 let getEntityConstructorIndexFromName = (name) => {
     let NOT_FOUND = -1;

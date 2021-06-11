@@ -17,7 +17,7 @@ const bulletProperties = (bullet) => ({
         if (Math.abs(bullet.speedY) < 0.1) { bullet.speedY = 0; }
     },
     onCollide: (entity) => {
-        if (entity.name !== bullet.creatorName) {
+        if (entity.faction !== bullet.creatorFaction) {
             bullet.framesActive = bullet.maxFramesActive;
             entity.health -= bullet.damage;
         }
@@ -26,10 +26,10 @@ const bulletProperties = (bullet) => ({
 
 
 
-let basicBullet = (x, y, speedX, speedY, creatorName) => {
+let basicBullet = (x, y, speedX, speedY, creatorFaction) => {
     let bullet = {
-        creatorName: creatorName,
         damage: 15,
+        creatorFaction: creatorFaction,
         x: x,
         y: y,
         speedX: speedX,
@@ -47,10 +47,10 @@ let basicBullet = (x, y, speedX, speedY, creatorName) => {
     return Object.assign(bullet, bulletProperties(bullet));
 }
 
-let shotgunBullet = (x, y, speedX, speedY, creatorName) => {
+let shotgunBullet = (x, y, speedX, speedY, creatorFaction) => {
     let bullet = {
-        creatorName: creatorName,
         damage: 30,
+        creatorFaction: creatorFaction,
         x: x,
         y: y,
         speedX: speedX,
@@ -67,10 +67,10 @@ let shotgunBullet = (x, y, speedX, speedY, creatorName) => {
     return Object.assign(bullet, bulletProperties(bullet));
 }
 
-let grassTrapBullet = (x, y, speedX, speedY, creatorName) => {
+let grassTrapBullet = (x, y, speedX, speedY, creatorFaction) => {
     let bullet = {
-        creatorName: creatorName,
         damage: 25,
+        creatorFaction: creatorFaction,
         x: x,
         y: y,
         speedX: speedX,
@@ -87,4 +87,25 @@ let grassTrapBullet = (x, y, speedX, speedY, creatorName) => {
     return Object.assign(bullet, bulletProperties(bullet));
 }
 
-let bulletConstructors = [basicBullet, shotgunBullet, grassTrapBullet];
+let machineGunBullet = (x, y, speedX, speedY, creatorFaction) => {
+    let bullet = {
+        damage: 3,
+        creatorFaction: creatorFaction,
+        x: x,
+        y: y,
+        speedX: speedX,
+        speedY: speedY,
+        speedCap: 4,
+        acceleration: 0.92,
+        width: 4,
+        height: 4,
+        image: assets.get("images/bullets/bullet.png"),
+        imagePath: "images/bullets/bullet.png",
+        framesActive: 0,
+        maxFramesActive: 60,
+
+    }
+    return Object.assign(bullet, bulletProperties(bullet));
+}
+
+let bulletConstructors = [basicBullet, shotgunBullet, grassTrapBullet, machineGunBullet];
