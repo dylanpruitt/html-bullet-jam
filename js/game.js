@@ -48,6 +48,11 @@ let game = {
 }
 
 let updateEntities = () => {
+    for (let i = 0; i < backgroundEntities.length; i++) {
+        drawEntity(backgroundEntities[i], game.context);
+        backgroundEntities[i].update();
+    }
+
     for (let i = 0; i < entities.length; i++) {
         drawEntity(entities[i], game.context);
         entities[i].update();
@@ -311,6 +316,13 @@ let loadMap = (path) => {
             let index = getEntityConstructorIndexFromName(entities[i].name);
             if (index !== -1) {
                 entities[i] = entityConstructors[index](entities[i].x, entities[i].y);
+            }
+        }
+        backgroundEntities = fileContent.backgroundEntities;
+        for (let i = 0; i < backgroundEntities.length; i++) {
+            let index = getEntityConstructorIndexFromName(backgroundEntities[i].name);
+            if (index !== -1) {
+                backgroundEntities[i] = entityConstructors[index](backgroundEntities[i].x, backgroundEntities[i].y);
             }
         }
     });    

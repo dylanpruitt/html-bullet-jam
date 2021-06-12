@@ -22,6 +22,27 @@ let dashConstructor = (parent) => {
     return status;
 }
 
+let slowConstructor = (parent) => {
+    let status = {
+        name: "Slow",
+        originalSpeedCap: parent.speedCap,
+        framesLeft: 25,
+        update: () => {
+            status.framesLeft--;
+        },
+        onStatusEnd: () => {
+            parent.speedCap = status.originalSpeedCap;
+        },
+    }
+
+    parent.speedCap = status.originalSpeedCap / 2;
+
+    parent.speedX /= 2;
+    parent.speedY /= 2;
+
+    return status;
+}
+
 let freezeConstructor = (parent, frames) => {
     let status = {
         name: "Frozen",

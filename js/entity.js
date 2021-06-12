@@ -1,4 +1,5 @@
 let entities = [];
+let backgroundEntities = [];
 
 const entityProperties = (entity) => ({
     statuses: [],
@@ -112,13 +113,14 @@ let wolfConstructor = (x, y) => {
     let entity = {
         name: "Wolf",
         faction: "enemy",
+        background: false,
         health: 65,
         maxHealth: 65,
         x: x,
         y: y,
         speedX: 0,
         speedY: 0,
-        speedCap: 3,
+        speedCap: 1.3,
         width: 16,
         height: 12,
         image: assets.get("images/entities/wolf.png"),
@@ -166,20 +168,20 @@ let wolfConstructor = (x, y) => {
                 }
             }
  
-            if (entity.x > entity.aiGoalX) { entity.speedX = -1; }
-            if (entity.y > entity.aiGoalY) { entity.speedY = -1; }
-            if (entity.x < entity.aiGoalX) { entity.speedX = 1; }
-            if (entity.y < entity.aiGoalY) { entity.speedY = 1; }
+            if (entity.x > entity.aiGoalX) { entity.speedX = -entity.speedCap * 0.80; }
+            if (entity.y > entity.aiGoalY) { entity.speedY = -entity.speedCap * 0.80; }
+            if (entity.x < entity.aiGoalX) { entity.speedX = entity.speedCap * 0.80; }
+            if (entity.y < entity.aiGoalY) { entity.speedY = entity.speedCap * 0.80; }
         },
         chaseAI: () => {
             let target = entities[entity.targetIndex];
             entity.aiGoalX = Math.floor((Math.random() * 10) - 5 + target.x);
             entity.aiGoalY = Math.floor((Math.random() * 10) - 5 + target.y);
 
-            if (entity.x > entity.aiGoalX) { entity.speedX = -1.3; }
-            if (entity.y > entity.aiGoalY) { entity.speedY = -1.3; }
-            if (entity.x < entity.aiGoalX) { entity.speedX = 1.3; }
-            if (entity.y < entity.aiGoalY) { entity.speedY = 1.3; }
+            if (entity.x > entity.aiGoalX) { entity.speedX = -entity.speedCap; }
+            if (entity.y > entity.aiGoalY) { entity.speedY = -entity.speedCap; }
+            if (entity.x < entity.aiGoalX) { entity.speedX = entity.speedCap; }
+            if (entity.y < entity.aiGoalY) { entity.speedY = entity.speedCap; }
 
             if (entity.equippedWeapon.cooldownFrames == 0) {
                 entity.equippedWeapon.onFire(target.x, target.y);
@@ -195,6 +197,7 @@ let grassTrapConstructor = (x, y) => {
     let entity = {
         name: "Grass Trap",
         faction: "trap",
+        background: true,
         health: 1,
         maxHealth: 1,
         x: x,
@@ -231,13 +234,14 @@ let sheepConstructor = (x, y) => {
     let entity = {
         name: "Sheep",
         faction: "neutral",
+        background: false,
         health: 35,
         maxHealth: 35,
         x: x,
         y: y,
         speedX: 0,
         speedY: 0,
-        speedCap: 3,
+        speedCap: 1.2,
         width: 12,
         height: 12,
         image: assets.get("images/entities/sheep.png"),
@@ -282,17 +286,17 @@ let sheepConstructor = (x, y) => {
                 }
             }
  
-            if (entity.x > entity.aiGoalX) { entity.speedX = -1; }
-            if (entity.y > entity.aiGoalY) { entity.speedY = -1; }
-            if (entity.x < entity.aiGoalX) { entity.speedX = 1; }
-            if (entity.y < entity.aiGoalY) { entity.speedY = 1; }
+            if (entity.x > entity.aiGoalX) { entity.speedX = -entity.speedCap * 0.8; }
+            if (entity.y > entity.aiGoalY) { entity.speedY = -entity.speedCap * 0.8; }
+            if (entity.x < entity.aiGoalX) { entity.speedX = entity.speedCap * 0.8; }
+            if (entity.y < entity.aiGoalY) { entity.speedY = entity.speedCap * 0.8; }
         },
         panicAI: () => {
             let target = entities[entity.targetIndex];
-            if (entity.x > target.x) { entity.speedX = 1.2; }
-            if (entity.y > target.y) { entity.speedY = 1.2; }
-            if (entity.x < target.x) { entity.speedX = -1.2; }
-            if (entity.y < target.y) { entity.speedY = -1.2; }
+            if (entity.x > target.x) { entity.speedX = entity.speedCap; }
+            if (entity.y > target.y) { entity.speedY = entity.speedCap; }
+            if (entity.x < target.x) { entity.speedX = -entity.speedCap; }
+            if (entity.y < target.y) { entity.speedY = -entity.speedCap; }
 
             entity.aiGoalX = entity.x + entity.speedX;
             entity.aiGoalY = entity.y + entity.speedY;
@@ -307,6 +311,7 @@ let crateConstructor = (x, y) => {
     let entity = {
         name: "Crate",
         faction: "neutral",
+        background: false,
         health: 60,
         maxHealth: 60,
         x: x,
@@ -335,6 +340,7 @@ let turretConstructor = (x, y) => {
     let entity = {
         name: "Autoturret",
         faction: "enemy",
+        background: false,
         health: 180,
         maxHealth: 180,
         x: x,
@@ -384,7 +390,51 @@ let turretConstructor = (x, y) => {
     return Object.assign(entity, entityProperties(entity));
 }
 
-let entityConstructors = [wolfConstructor, grassTrapConstructor, sheepConstructor, crateConstructor, turretConstructor];
+let spikeConstructor = (x, y) => {
+    let entity = {
+        name: "Spike Trap",
+        faction: "trap",
+        background: true,
+        health: 9000,
+        maxHealth: 9000,
+        x: x,
+        y: y,
+        speedX: 0,
+        speedY: 0,
+        speedCap: 3,
+        width: 16,
+        height: 16,
+        image: assets.get("images/entities/spike.png"),
+        imagePath: "images/entities/spike.png",
+        aiState: "idle",
+        aiGoalX: x,
+        aiGoalY: y,
+        targetIndex: 0,
+        cooldown: 0,
+        equippedWeapon: {},
+        update: () => {
+            let entitiesDamaged = false;
+            let ATTACK_DAMAGE = 5;
+            for (let i = 0; i < entities.length; i++) {
+                if (entity.collidingWith(entities[i]) && entity.cooldown < 1) {
+                    entitiesDamaged = true;
+                    entities[i].health -= ATTACK_DAMAGE;
+                }
+            }
+
+            if (entitiesDamaged) {
+                entity.cooldown = 25;
+            } else {
+                entity.cooldown--;
+            }
+        },
+    }
+    entity.equippedWeapon = basicWeapon(entity);
+    return Object.assign(entity, entityProperties(entity));
+}
+
+let entityConstructors = [wolfConstructor, grassTrapConstructor, sheepConstructor, crateConstructor, turretConstructor,
+                            spikeConstructor];
 
 let getEntityConstructorIndexFromName = (name) => {
     let NOT_FOUND = -1;

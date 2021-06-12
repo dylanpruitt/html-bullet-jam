@@ -381,7 +381,12 @@ game.canvas.addEventListener("click", function(e) {
     } else if (editorMode === "entityEdit") {
         x = mouseX - xOffset;
         y = mouseY - yOffset;
-        entities.push(entityConstructors[selection](x, y));
+        let entity = entityConstructors[selection](x, y);
+        if (entity.background) {
+            backgroundEntities.push(entity);
+        } else {
+            entities.push(entity);
+        }
     }
 });
 
