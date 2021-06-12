@@ -155,25 +155,26 @@ let updateMapTransitions = () => {
 
 let updateMaskContext = () => {
     let updateMask = false;
-    if (player.x + xOffset > 160 && xOffset > -(MAP_WIDTH * TILE_SIZE * SCALE - game.canvas.width) / 2) {
+    if (player.x + xOffset > 140 && xOffset > -(MAP_WIDTH * TILE_SIZE * SCALE - game.canvas.width) / 2) {
         xOffset -= Math.abs(player.speedX);
         updateMask = true;
     }
-    if (player.y + yOffset > 160 && yOffset > -(MAP_HEIGHT * TILE_SIZE * SCALE - game.canvas.height) / 2) {
+    if (player.y + yOffset > 140 && yOffset > -(MAP_HEIGHT * TILE_SIZE * SCALE - game.canvas.height) / 2) {
         yOffset -= Math.abs(player.speedY);
         updateMask = true;
     }
-    if (player.x + xOffset < 80 && xOffset < 0) {
+    if (player.x + xOffset < 100 && xOffset < 0) {
         xOffset += Math.abs(player.speedX);
         updateMask = true;
         if (xOffset > 0) { xOffset = 0; }
     }
-    if (player.y + yOffset < 80 && yOffset < 0) {
+    if (player.y + yOffset < 100 && yOffset < 0) {
         yOffset += Math.abs(player.speedY);
         updateMask = true;
         if (yOffset > 0) { yOffset = 0; }
     }
-    if (updateMask && (player.speedX !== 0 || player.speedY !== 0)) {
+
+    if (updateMask) {
         drawMaskContext(game);
     }
 }           
