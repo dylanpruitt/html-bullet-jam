@@ -69,6 +69,14 @@ let removeDeadEntities = () => {
         }
     }
     entities = temp;
+
+    temp = [];
+    for (let i = 0; i < backgroundEntities.length; i++) {
+        if (backgroundEntities[i].health > 0) {
+            temp.push(backgroundEntities[i]);   
+        }
+    }
+    backgroundEntities = temp;
 }
 
 let updateBullets = () => {
