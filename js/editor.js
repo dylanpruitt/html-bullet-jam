@@ -170,6 +170,10 @@ let renderTileMarkers = () => {
  * This function renders all of the entities in the game.
  */
 let renderEntities = () => {
+    for (let i = 0; i < backgroundEntities.length; i++) {
+        drawEntity(backgroundEntities[i], game.context);
+    }
+
     for (let i = 0; i < entities.length; i++) {
         drawEntity(entities[i], game.context);
     }
