@@ -198,6 +198,7 @@ let renderPlayerWeapons = () => {
     let nextIndex = player.activeWeaponIndex + 1; if (nextIndex >= inventory.length) { nextIndex = 0; }
 
     game.context.font = "6px Arial";
+    game.context.fillStyle = "white";
     game.context.fillText("[Q] " + inventory[previousIndex].name, 5, 215);
     game.context.fillText("[E] " + inventory[nextIndex].name, 5, 235);
 }

@@ -16,14 +16,9 @@ let render = function (game) {
 
 let renderPlayerHealth = (game) => {
     game.context.font = "bold 12px Consolas";
+    game.context.fillStyle = "white";
     game.context.fillText(player.health, 222 - 2 * Math.floor(Math.log10(player.health)), 15);
     game.context.fillText(player.maxHealth, 222 - 2 * Math.floor(Math.log10(player.maxHealth)), 30);
-    game.context.beginPath();
-    game.context.moveTo(217,19);
-    game.context.lineTo(237,19);
-    game.context.fillStyle = "black";
-    game.context.lineWidth = 2;
-    game.context.stroke();
 }
 
 let drawMaskContext = (game) => {
