@@ -76,41 +76,41 @@ let blendGrassSandTile = (x, y) => {
     return tile;   
 }
 
-let sandTile = (x, y) => {
+let dungeonFloor1 = (x, y) => {
     let tile = {
         x: x,
         y: y,
         width: 16,
         height: 16,
         collidable: false,
-        image: assets.get("images/tiles/sand-tile-1.png"),
-        imagePath: "images/tiles/sand-tile-1.png",
+        image: assets.get("images/tiles/dungeon-floor-1.png"),
+        imagePath: "images/tiles/dungeon-floor-1.png",
     } 
     return tile;   
 }
 
-let floorTile = (x, y) => {
+let dungeonFloor2 = (x, y) => {
     let tile = {
         x: x,
         y: y,
         width: 16,
         height: 16,
         collidable: false,
-        image: assets.get("images/tiles/floor-tile-1.png"),
-        imagePath: "images/tiles/floor-tile-1.png",
+        image: assets.get("images/tiles/dungeon-floor-2.png"),
+        imagePath: "images/tiles/dungeon-floor-2.png",
     }
     return tile;   
 }
 
-let rockWallTile = (x, y) => {
+let dungeonWall1 = (x, y) => {
     let tile = {
         x: x,
         y: y,
         width: 16,
         height: 16,
         collidable: true,
-        image: assets.get("images/tiles/rock-wall-tile-1.png"),
-        imagePath: "images/tiles/rock-wall-tile-1.png",
+        image: assets.get("images/tiles/dungeon-wall-1.png"),
+        imagePath: "images/tiles/dungeon-wall-1.png",
     }
     return tile;   
 }
@@ -180,5 +180,5 @@ let waterFloorTile = (x, y) => {
     return tile;   
 }
 
-let tileset = [emptyTile, grassTile, grassTileShort, grassTileTall, rockTile, blendGrassSandTile, sandTile,
-                floorTile, rockWallTile, wallTile, brickWallTile, brickWallTile2, greenFloorTile, waterFloorTile];
+let tileset = [emptyTile, grassTile, grassTileShort, grassTileTall, rockTile, blendGrassSandTile, dungeonFloor1,
+                dungeonFloor2, dungeonWall1, wallTile, brickWallTile, brickWallTile2, greenFloorTile, waterFloorTile];
