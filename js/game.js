@@ -319,7 +319,7 @@ let loadMap = (path) => {
                 entities[i] = entityConstructors[index](entities[i].x, entities[i].y);
             }
         }
-        backgroundEntities = fileContent.backgroundEntities;
+        backgroundEntities = data.backgroundEntities;
         for (let i = 0; i < backgroundEntities.length; i++) {
             let index = getEntityConstructorIndexFromName(backgroundEntities[i].name);
             if (index !== -1) {
