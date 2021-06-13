@@ -445,7 +445,7 @@ let armorConstructor = (x, y) => {
         y: y,
         speedX: 0,
         speedY: 0,
-        speedCap: 1.3,
+        speedCap: 0.6,
         width: 24,
         height: 24,
         image: assets.get("images/entities/armor.png"),
