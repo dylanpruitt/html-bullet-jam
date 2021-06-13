@@ -20,6 +20,7 @@ const bulletProperties = (bullet) => ({
         if (entity.faction !== bullet.creatorFaction) {
             bullet.framesActive = bullet.maxFramesActive;
             entity.health -= bullet.damage;
+            screenText.push(damageMessage(bullet.damage, entity.x + xOffset, entity.y + yOffset));
         }
     }
 });

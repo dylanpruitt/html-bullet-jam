@@ -27,3 +27,26 @@ let locationMessage = (message, x, y) => {
     return Object.assign(text, textProperties(text));
     ;
 }
+
+let damageMessage = (message, x, y) => {
+    let text = {
+        message: message,
+        x: x,
+        y: y,
+        fontSize: "6px",
+        color: "red",
+        opacity: 1,
+        waitFrames: 50,
+        fadeFrames: 0,
+        totalFadeFrames: 0,
+        update: () => {
+            if (text.waitFrames > 0) {
+                text.waitFrames--;
+                text.y -= 0.2;
+            }
+        },
+    };
+
+    return text;
+    ;
+}
