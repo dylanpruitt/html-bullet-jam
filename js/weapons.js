@@ -164,7 +164,7 @@ let frenzyWeapon = (parent) => {
         name: "Frenzy",
         range: 73,
         speedCap: 6,
-        cooldownFrames: 500,
+        cooldownFrames: 150,
         width: 4,
         height: 4,
         image: assets.get("images/bullets/bullet.png"),
@@ -173,7 +173,7 @@ let frenzyWeapon = (parent) => {
             let projectileSpeeds = weapon.getProjectileSpeed(cursorX, cursorY);
             let bullet = frenzyBullet(parent.x, parent.y, projectileSpeeds[0], projectileSpeeds[1], parent.faction);
             bullets.push(bullet);
-            weapon.cooldownFrames = 500;
+            weapon.cooldownFrames = 150;
         },
     }
     return Object.assign(weapon, weaponProperties(weapon, parent));
@@ -184,7 +184,7 @@ let slowWeapon = (parent) => {
         name: "Slow",
         range: 73,
         speedCap: 6,
-        cooldownFrames: 500,
+        cooldownFrames: 75,
         width: 4,
         height: 4,
         image: assets.get("images/bullets/bullet.png"),

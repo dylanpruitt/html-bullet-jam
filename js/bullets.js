@@ -118,7 +118,7 @@ let frenzyBullet = (x, y, speedX, speedY, creatorFaction) => {
         speedX: speedX,
         speedY: speedY,
         speedCap: 6,
-        acceleration: 0.92,
+        acceleration: 0.93,
         width: 5,
         height: 5,
         image: assets.get("images/bullets/frenzy.png"),

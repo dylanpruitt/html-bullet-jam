@@ -370,9 +370,9 @@ game.canvas.addEventListener("click", function(e) {
             let path = prompt("Enter the filepath for the map to transition to:");
             let transitionBox = {
                 minX: markedIndices[0] % MAP_WIDTH * TILE_SIZE,
-                maxX: markedIndices[1] % MAP_WIDTH * TILE_SIZE,
+                maxX: (markedIndices[1] % MAP_WIDTH + 1) * TILE_SIZE,
                 minY: Math.floor(markedIndices[0] / MAP_WIDTH) * TILE_SIZE,
-                maxY: Math.floor(markedIndices[1] / MAP_WIDTH) * TILE_SIZE,
+                maxY: (Math.floor(markedIndices[1] / MAP_WIDTH) + 1) * TILE_SIZE,
                 path: path
             };
             transitionBox.height = transitionBox.maxY - transitionBox.minY;

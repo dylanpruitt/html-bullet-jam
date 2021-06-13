@@ -445,7 +445,7 @@ let armorConstructor = (x, y) => {
         y: y,
         speedX: 0,
         speedY: 0,
-        speedCap: 0.6,
+        speedCap: 0.8,
         width: 24,
         height: 24,
         image: assets.get("images/entities/armor.png"),
@@ -465,7 +465,7 @@ let armorConstructor = (x, y) => {
         updateAI: () => {
             entity.targetIndex = entity.getClosestTargetIndex();
             let targetDistance = entity.getClosestTargetDistance();
-            if (targetDistance > 70) {
+            if (targetDistance > 90) {
                 entity.idleAI();
             } else {
                 entity.chaseAI();

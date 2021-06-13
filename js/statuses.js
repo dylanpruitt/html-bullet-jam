@@ -67,7 +67,7 @@ let frenzyConstructor = (parent) => {
     let status = {
         name: "Frenzy",
         originalFaction: parent.faction,
-        framesLeft: 500,
+        framesLeft: 125,
         update: () => {
             status.framesLeft--;
         },
