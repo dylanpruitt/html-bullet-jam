@@ -71,8 +71,8 @@ let playerConstructor = (x, y) => {
     let entity = {
         name: "Player",
         faction: "player",
-        health: 100,
-        maxHealth: 100,
+        health: 250,
+        maxHealth: 250,
         controlEnabled: true,
         x: x,
         y: y,
@@ -419,6 +419,7 @@ let spikeConstructor = (x, y) => {
                 if (entity.collidingWith(entities[i]) && entity.cooldown < 1) {
                     entitiesDamaged = true;
                     entities[i].health -= ATTACK_DAMAGE;
+                    screenText.push(damageMessage(ATTACK_DAMAGE, entities[i].x + xOffset, entities[i].y + yOffset));
                 }
             }
 
@@ -444,7 +445,7 @@ let armorConstructor = (x, y) => {
         y: y,
         speedX: 0,
         speedY: 0,
-        speedCap: 1.5,
+        speedCap: 1.3,
         width: 24,
         height: 24,
         image: assets.get("images/entities/armor.png"),
@@ -464,7 +465,7 @@ let armorConstructor = (x, y) => {
         updateAI: () => {
             entity.targetIndex = entity.getClosestTargetIndex();
             let targetDistance = entity.getClosestTargetDistance();
-            if (targetDistance > 90) {
+            if (targetDistance > 70) {
                 entity.idleAI();
             } else {
                 entity.chaseAI();

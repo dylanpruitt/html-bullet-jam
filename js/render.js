@@ -26,7 +26,6 @@ let renderScreenText = (game) => {
         game.context.font = "bold " + screenText[i].fontSize + " Arial";
         game.context.fillStyle = screenText[i].color;
         game.context.globalAplha = screenText[i].opacity;
-        console.log(game.context.globalAplha);
         game.context.fillText(screenText[i].message, screenText[i].x, screenText[i].y);
     }
 
