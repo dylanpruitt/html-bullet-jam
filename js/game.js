@@ -120,14 +120,28 @@ function updateGame() {
         renderCrosshair();
         renderPlayerHealth(game);
         renderPlayerWeapons();
+        renderScreenText(game);
         updateEntities();
         updateBullets();
         updatePlayerMovement();
         updateMaskContext();
         updateMapTransitions();
+        updateScreenText();
         stopGameOnPlayerDeath();
         updatePlayerAutofire();
     }
+}
+
+let updateScreenText = () => {
+    let temp = [];
+    for (let i = 0; i < screenText.length; i++) {
+        screenText[i].update();
+        if (screenText[i].waitFrames > 0 || screenText[i].fadeFrames > 0) {
+            temp.push(screenText[i]);
+        }
+    }
+
+    screenText = temp;
 }
 
 let updatePlayerAutofire = () => {

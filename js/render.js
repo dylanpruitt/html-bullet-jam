@@ -21,6 +21,18 @@ let renderPlayerHealth = (game) => {
     game.context.fillText(player.maxHealth, 222 - 2 * Math.floor(Math.log10(player.maxHealth)), 30);
 }
 
+let renderScreenText = (game) => {
+    for (let i = 0; i < screenText.length; i++) {
+        game.context.font = "bold " + screenText[i].fontSize + " Arial";
+        game.context.fillStyle = screenText[i].color;
+        game.context.globalAplha = screenText[i].opacity;
+        console.log(game.context.globalAplha);
+        game.context.fillText(screenText[i].message, screenText[i].x, screenText[i].y);
+    }
+
+    game.context.globalAplha = 1;
+}
+
 let drawMaskContext = (game) => {
     let t0 = performance.now();
     game.maskContext.clearRect(0, 0, game.maskCanvas.width, game.maskCanvas.height);
