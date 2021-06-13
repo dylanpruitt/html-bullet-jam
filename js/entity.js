@@ -433,8 +433,92 @@ let spikeConstructor = (x, y) => {
     return Object.assign(entity, entityProperties(entity));
 }
 
+let armorConstructor = (x, y) => {
+    let entity = {
+        name: "Armor",
+        faction: "enemy",
+        background: false,
+        health: 240,
+        maxHealth: 240,
+        x: x,
+        y: y,
+        speedX: 0,
+        speedY: 0,
+        speedCap: 1.5,
+        width: 24,
+        height: 24,
+        image: assets.get("images/entities/armor.png"),
+        imagePath: "images/entities/armor.png",
+        aiState: "idle",
+        aiGoalX: x,
+        aiGoalY: y,
+        targetIndex: 0,
+        framesIdle: 120,
+        equippedWeapon: {},
+        update: () => {
+            entity.updateAI();
+            entity.updatePosition();
+            entity.updateStatuses();
+            entity.equippedWeapon.update();
+        },
+        updateAI: () => {
+            entity.targetIndex = entity.getClosestTargetIndex();
+            let targetDistance = entity.getClosestTargetDistance();
+            if (targetDistance > 90) {
+                entity.idleAI();
+            } else {
+                entity.chaseAI();
+            }
+
+            if (Math.abs(entity.x - entity.aiGoalX) <= 1) { 
+                entity.x = entity.aiGoalX; 
+                entity.speedX = 0;
+            }
+            if (Math.abs(entity.y - entity.aiGoalY) <= 1) { 
+                entity.y = entity.aiGoalY; 
+                entity.speedY = 0;
+            }
+        },
+        idleAI: () => {
+            if (entity.aiGoalX == 0 || entity.aiGoalY == 0 
+                || (entity.x == entity.aiGoalX && entity.y == entity.aiGoalY)) {     
+                if (entity.x == entity.aiGoalX && entity.y == entity.aiGoalY) {
+                    entity.framesIdle++;
+                }
+                if (entity.framesIdle == 150) {
+                    entity.aiGoalX = Math.floor((Math.random() * 60) - 30 + entity.x);
+                    entity.aiGoalY = Math.floor((Math.random() * 60) - 30 + entity.y);
+                    entity.framesIdle = 0;
+                }
+            }
+ 
+            if (entity.x > entity.aiGoalX) { entity.speedX = -entity.speedCap * 0.80; }
+            if (entity.y > entity.aiGoalY) { entity.speedY = -entity.speedCap * 0.80; }
+            if (entity.x < entity.aiGoalX) { entity.speedX = entity.speedCap * 0.80; }
+            if (entity.y < entity.aiGoalY) { entity.speedY = entity.speedCap * 0.80; }
+        },
+        chaseAI: () => {
+            let target = entities[entity.targetIndex];
+            entity.aiGoalX = target.x;
+            entity.aiGoalY = target.y;
+
+            if (entity.x > entity.aiGoalX) { entity.speedX = -entity.speedCap; }
+            if (entity.y > entity.aiGoalY) { entity.speedY = -entity.speedCap; }
+            if (entity.x < entity.aiGoalX) { entity.speedX = entity.speedCap; }
+            if (entity.y < entity.aiGoalY) { entity.speedY = entity.speedCap; }
+
+            if (entity.equippedWeapon.cooldownFrames == 0) {
+                entity.equippedWeapon.onFire(target.x, target.y);
+            }
+        },
+        
+    }
+    entity.equippedWeapon = shotgun(entity);
+    return Object.assign(entity, entityProperties(entity));
+}
+
 let entityConstructors = [wolfConstructor, grassTrapConstructor, sheepConstructor, crateConstructor, turretConstructor,
-                            spikeConstructor];
+                            spikeConstructor, armorConstructor];
 
 let getEntityConstructorIndexFromName = (name) => {
     let NOT_FOUND = -1;
