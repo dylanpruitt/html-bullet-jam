@@ -16,6 +16,7 @@ let startGame = () => {
             entities.push(player);
             generateMap();
             inventory = [shotgun(player), slowWeapon(player), dashWeapon(player), switcherooWeapon(player), frenzyWeapon(player)];
+            player.equippedWeapon = inventory[0];
             game.start();
             drawMaskContext(game);
         }
@@ -214,16 +215,31 @@ let renderCrosshair = () => {
 }
 
 let renderPlayerWeapons = () => {
+    let message = player.equippedWeapon.name;
+    if (player.equippedWeapon.cooldownFrames > 0) {
+        message += ` (${(player.equippedWeapon.cooldownFrames / 50).toFixed(1)} s)`;
+    }
+
     game.context.font = "bold 8px Arial";
-    game.context.fillText(player.equippedWeapon.name, 5, 225);
+    game.context.fillText(message, 5, 225);
 
     let previousIndex = player.activeWeaponIndex - 1; if (previousIndex < 0) { previousIndex = inventory.length - 1; }
     let nextIndex = player.activeWeaponIndex + 1; if (nextIndex >= inventory.length) { nextIndex = 0; }
 
     game.context.font = "6px Arial";
     game.context.fillStyle = "white";
-    game.context.fillText("[Q] " + inventory[previousIndex].name, 5, 215);
-    game.context.fillText("[E] " + inventory[nextIndex].name, 5, 235);
+
+    message = inventory[previousIndex].name;
+    if (inventory[previousIndex].cooldownFrames > 0) {
+        message += ` (${(inventory[previousIndex].cooldownFrames / 50).toFixed(1)} s)`;
+    }
+    game.context.fillText("[Q] " + message, 5, 215);
+
+    message = inventory[nextIndex].name;
+    if (inventory[nextIndex].cooldownFrames > 0) {
+        message += ` (${(inventory[nextIndex].cooldownFrames / 50).toFixed(1)} s)`;
+    }
+    game.context.fillText("[E] " + message, 5, 235);
 }
 
 let getCursorDistanceFromPlayer = () => {
