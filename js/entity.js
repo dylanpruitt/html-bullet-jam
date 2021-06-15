@@ -518,8 +518,44 @@ let armorConstructor = (x, y) => {
     return Object.assign(entity, entityProperties(entity));
 }
 
+let tntConstructor = (x, y) => {
+    let entity = {
+        name: "TNT",
+        faction: "trap" + (x * 5 + y),
+        background: true,
+        health: 100,
+        maxHealth: 100,
+        x: x,
+        y: y,
+        speedX: 0,
+        speedY: 0,
+        width: 16,
+        height: 16,
+        image: assets.get("images/entities/placeholder-tnt.png"),
+        imagePath: "images/entities/placeholder-tnt.png",
+        aiState: "idle",
+        aiGoalX: x,
+        aiGoalY: y,
+        framesIdle: 120,
+        equippedWeapon: {},
+        update: () => {
+            entity.updateAI();
+            entity.equippedWeapon.update();
+        },
+        updateAI: () => {
+            if (entity.health < entity.maxHealth) {
+                let targetIndex = entity.getClosestTargetIndex();
+                entity.equippedWeapon.onFire(entities[targetIndex].x, entities[targetIndex].y);
+                entity.health = 0;
+            }
+        },
+    }
+    entity.equippedWeapon = tntWeapon(entity);
+    return Object.assign(entity, entityProperties(entity));
+}
+
 let entityConstructors = [wolfConstructor, grassTrapConstructor, sheepConstructor, crateConstructor, turretConstructor,
-                            spikeConstructor, armorConstructor];
+                            spikeConstructor, armorConstructor, tntConstructor];
 
 let getEntityConstructorIndexFromName = (name) => {
     let NOT_FOUND = -1;

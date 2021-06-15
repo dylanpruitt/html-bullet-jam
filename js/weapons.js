@@ -114,7 +114,6 @@ let switcherooWeapon = (parent) => {
             }
 
             weapon.cooldownFrames = 250;
-
         },
     }
     return Object.assign(weapon, weaponProperties(weapon, parent));
@@ -199,4 +198,21 @@ let slowWeapon = (parent) => {
     return Object.assign(weapon, weaponProperties(weapon, parent));
 }
 
-let weaponConstructors = [basicWeapon, shotgun, grassTrapWeapon, switcherooWeapon, dashWeapon, machineGun, frenzyWeapon, slowWeapon];
+let tntWeapon = (parent) => {
+    let weapon = {
+        range: 40,
+        speedCap: 7,
+        cooldownFrames: 0,
+        width: 5,
+        height: 5,
+        image: assets.get("images/bullets/trap-bullet.png"),
+        imagePath: "images/bullets/trap-bullet.png",
+        onFire: (cursorX, cursorY) => {
+            weapon.spreadFire(cursorX, cursorY, tntBullet, 360, 16);
+        },
+    }
+    return Object.assign(weapon, weaponProperties(weapon, parent));
+}
+
+let weaponConstructors = [basicWeapon, shotgun, grassTrapWeapon, switcherooWeapon, dashWeapon, machineGun, frenzyWeapon, slowWeapon,
+    tntWeapon];

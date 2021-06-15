@@ -191,4 +191,25 @@ let slowBullet = (x, y, speedX, speedY, creatorFaction) => {
     return bullet;
 }
 
-let bulletConstructors = [basicBullet, shotgunBullet, grassTrapBullet, machineGunBullet, frenzyBullet, slowBullet];
+let tntBullet = (x, y, speedX, speedY, creatorFaction) => {
+    let bullet = {
+        damage: 10,
+        creatorFaction: creatorFaction,
+        x: x,
+        y: y,
+        speedX: speedX,
+        speedY: speedY,
+        speedCap: 7,
+        acceleration: 0.95,
+        width: 4,
+        height: 4,
+        image: assets.get("images/bullets/bullet.png"),
+        imagePath: "images/bullets/bullet.png",
+        framesActive: 0,
+        maxFramesActive: 50,
+
+    }
+    return Object.assign(bullet, bulletProperties(bullet));
+}
+
+let bulletConstructors = [basicBullet, shotgunBullet, grassTrapBullet, machineGunBullet, frenzyBullet, slowBullet, tntBullet];
