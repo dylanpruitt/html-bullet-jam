@@ -214,5 +214,29 @@ let tntWeapon = (parent) => {
     return Object.assign(weapon, weaponProperties(weapon, parent));
 }
 
+let trapWeapon = (parent) => {
+    let weapon = {
+        name: "Spawn TNT",
+        range: 80,
+        speedCap: 1,
+        cooldownFrames: 0,
+        width: 4,
+        height: 4,
+        image: assets.get("images/bullets/bullet.png"),
+        imagePath: "images/bullets/bullet.png",
+        onFire: (cursorX, cursorY) => {
+            let xDistance = cursorX - parent.x;
+            let yDistance = cursorY - parent.y;
+            let distance = Math.sqrt(Math.pow(xDistance, 2) + Math.pow(yDistance, 2));
+
+            if (distance < weapon.range && weapon.cooldownFrames == 0) {
+                entities.push(tntConstructor(cursorX, cursorY));
+                weapon.cooldownFrames = 125;
+            }
+        },
+    }
+    return Object.assign(weapon, weaponProperties(weapon, parent));
+}
+
 let weaponConstructors = [basicWeapon, shotgun, grassTrapWeapon, switcherooWeapon, dashWeapon, machineGun, frenzyWeapon, slowWeapon,
-    tntWeapon];
+    tntWeapon, trapWeapon];
