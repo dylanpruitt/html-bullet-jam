@@ -29,7 +29,9 @@ const weaponProperties = (weapon, parent) => ({
             let ySpeed = weapon.speedCap * Math.sin(angle);
             if (xDistance < 0) { xSpeed *= -1; ySpeed *= -1; }
 
-            let bullet = bulletType(parent.x, parent.y, xSpeed, ySpeed, parent.faction);
+            let spawnX = parent.x + (parent.width / 2) - 1;
+            let spawnY = parent.y + (parent.height / 2) - 1;
+            let bullet = bulletType(spawnX, spawnY, xSpeed, ySpeed, parent.faction);
             bullets.push(bullet);
         }
     }
@@ -47,7 +49,9 @@ let basicWeapon = (parent) => {
         imagePath: "images/bullets/bullet.png",
         onFire: (cursorX, cursorY) => {
             let projectileSpeeds = weapon.getProjectileSpeed(cursorX, cursorY);
-            let bullet = basicBullet(parent.x, parent.y, projectileSpeeds[0], projectileSpeeds[1], parent.faction);
+            let spawnX = parent.x + (parent.width / 2) - 1;
+            let spawnY = parent.y + (parent.height / 2) - 1;
+            let bullet = basicBullet(spawnX, spawnY, projectileSpeeds[0], projectileSpeeds[1], parent.faction);
             bullets.push(bullet);
             weapon.cooldownFrames = 25;
         },
@@ -150,7 +154,9 @@ let machineGun = (parent) => {
         imagePath: "images/bullets/bullet.png",
         onFire: (cursorX, cursorY) => {
             let projectileSpeeds = weapon.getProjectileSpeed(cursorX, cursorY);
-            let bullet = basicBullet(parent.x, parent.y, projectileSpeeds[0], projectileSpeeds[1], parent.faction);
+            let spawnX = parent.x + (parent.width / 2) - 1;
+            let spawnY = parent.y + (parent.height / 2) - 1;
+            let bullet = basicBullet(spawnX, spawnY, projectileSpeeds[0], projectileSpeeds[1], parent.faction);
             bullets.push(bullet);
             weapon.cooldownFrames = 10;
         },
@@ -170,7 +176,9 @@ let frenzyWeapon = (parent) => {
         imagePath: "images/bullets/bullet.png",
         onFire: (cursorX, cursorY) => {
             let projectileSpeeds = weapon.getProjectileSpeed(cursorX, cursorY);
-            let bullet = frenzyBullet(parent.x, parent.y, projectileSpeeds[0], projectileSpeeds[1], parent.faction);
+            let spawnX = parent.x + (parent.width / 2) - 1;
+            let spawnY = parent.y + (parent.height / 2) - 1;
+            let bullet = frenzyBullet(spawnX, spawnY, projectileSpeeds[0], projectileSpeeds[1], parent.faction);
             bullets.push(bullet);
             weapon.cooldownFrames = 150;
         },
@@ -190,7 +198,9 @@ let freezeWeapon = (parent) => {
         imagePath: "images/bullets/bullet.png",
         onFire: (cursorX, cursorY) => {
             let projectileSpeeds = weapon.getProjectileSpeed(cursorX, cursorY);
-            let bullet = freezeBullet(parent.x, parent.y, projectileSpeeds[0], projectileSpeeds[1], parent.faction);
+            let spawnX = parent.x + (parent.width / 2) - 1;
+            let spawnY = parent.y + (parent.height / 2) - 1;
+            let bullet = freezeBullet(spawnX, spawnY, projectileSpeeds[0], projectileSpeeds[1], parent.faction);
             bullets.push(bullet);
             weapon.cooldownFrames = 75;
         },
