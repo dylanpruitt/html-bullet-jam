@@ -150,7 +150,7 @@ let frenzyBullet = (x, y, speedX, speedY, creatorFaction) => {
     return bullet;
 }
 
-let slowBullet = (x, y, speedX, speedY, creatorFaction) => {
+let freezeBullet = (x, y, speedX, speedY, creatorFaction) => {
     let bullet = {
         damage: 0,
         creatorFaction: creatorFaction,
@@ -183,7 +183,7 @@ let slowBullet = (x, y, speedX, speedY, creatorFaction) => {
         },
         onCollide: (entity) => {
             if (entity.faction !== bullet.creatorFaction) {
-                entity.statuses.push(slowConstructor(entity));
+                entity.statuses.push(freezeConstructor(entity, 50));
                 bullet.framesActive = bullet.maxFramesActive;
             }
         }
@@ -212,4 +212,4 @@ let tntBullet = (x, y, speedX, speedY, creatorFaction) => {
     return Object.assign(bullet, bulletProperties(bullet));
 }
 
-let bulletConstructors = [basicBullet, shotgunBullet, grassTrapBullet, machineGunBullet, frenzyBullet, slowBullet, tntBullet];
+let bulletConstructors = [basicBullet, shotgunBullet, grassTrapBullet, machineGunBullet, frenzyBullet, freezeBullet, tntBullet];

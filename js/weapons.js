@@ -178,9 +178,9 @@ let frenzyWeapon = (parent) => {
     return Object.assign(weapon, weaponProperties(weapon, parent));
 }
 
-let slowWeapon = (parent) => {
+let freezeWeapon = (parent) => {
     let weapon = {
-        name: "Slow",
+        name: "Freeze",
         range: 73,
         speedCap: 6,
         cooldownFrames: 0,
@@ -190,7 +190,7 @@ let slowWeapon = (parent) => {
         imagePath: "images/bullets/bullet.png",
         onFire: (cursorX, cursorY) => {
             let projectileSpeeds = weapon.getProjectileSpeed(cursorX, cursorY);
-            let bullet = slowBullet(parent.x, parent.y, projectileSpeeds[0], projectileSpeeds[1], parent.faction);
+            let bullet = freezeBullet(parent.x, parent.y, projectileSpeeds[0], projectileSpeeds[1], parent.faction);
             bullets.push(bullet);
             weapon.cooldownFrames = 75;
         },
@@ -238,5 +238,5 @@ let trapWeapon = (parent) => {
     return Object.assign(weapon, weaponProperties(weapon, parent));
 }
 
-let weaponConstructors = [basicWeapon, shotgun, grassTrapWeapon, switcherooWeapon, dashWeapon, machineGun, frenzyWeapon, slowWeapon,
+let weaponConstructors = [basicWeapon, shotgun, grassTrapWeapon, switcherooWeapon, dashWeapon, machineGun, frenzyWeapon, freezeWeapon,
     tntWeapon, trapWeapon];
