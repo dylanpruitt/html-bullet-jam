@@ -23,5 +23,18 @@
         <script src="js/entity.js"></script>
         <script src="js/render.js"></script>
         <script src="js/game.js"></script>
+        <br><button id="test-setup" onclick="playtestSetup()">Setup Playtest</button>
+        <br><p>How to play:<br><b>W A S D</b> - move player
+            <br></b><b>Q</b>/<b>E</b> - switch weapons
+            <br><b>R</b> - toggle autofire
+            <br><b>MOUSE</b> to aim and shoot</p>
+        <script>
+            let playtestSetup = () => {
+                if (imagesLoaded == totalImages) {
+                    console.log("Setting up playtest environment...");
+                    transitionToMap("/maps/test_dungeon_1.json");
+                }
+            }
+        </script>
     </body>
 </html>
