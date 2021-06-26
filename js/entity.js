@@ -366,6 +366,7 @@ let turretConstructor = (x, y) => {
         },
         updateAI: () => {
             if (entity.getClosestTargetDistance() <= 70) {
+                entity.targetIndex = entity.getClosestTargetIndex();
                 entity.attackAI();
             }
 
