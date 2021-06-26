@@ -25,7 +25,6 @@ let locationMessage = (message, x, y) => {
     };
 
     return Object.assign(text, textProperties(text));
-    ;
 }
 
 let damageMessage = (message, x, y) => {
@@ -48,5 +47,4 @@ let damageMessage = (message, x, y) => {
     };
 
     return text;
-    ;
 }
