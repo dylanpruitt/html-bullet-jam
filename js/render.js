@@ -15,10 +15,14 @@ let render = function (game) {
 }
 
 let renderPlayerHealth = (game) => {
-    game.context.font = "bold 12px Consolas";
-    game.context.fillStyle = "#0067ff";
-    game.context.fillText(player.health, 222 - 2 * Math.floor(Math.log10(player.health)), 15);
-    game.context.fillText(player.maxHealth, 222 - 2 * Math.floor(Math.log10(player.maxHealth)), 30);
+    game.context.font = "bold 7px Arial";
+    if (player.health / player.maxHealth <= 0.25) {
+        game.context.fillStyle = "#ff0000";
+    } else {
+        game.context.fillStyle = "#ffffff";
+    }
+    let textWidth = game.context.measureText(player.health).width;
+    game.context.fillText(player.health, player.x + xOffset + (player.width - textWidth) / 2, player.y + 15 + yOffset);
 }
 
 let renderScreenText = (game) => {
