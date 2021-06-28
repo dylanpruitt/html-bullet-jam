@@ -16,7 +16,7 @@ let render = function (game) {
 
 let renderPlayerHealth = (game) => {
     game.context.font = "bold 12px Consolas";
-    game.context.fillStyle = "white";
+    game.context.fillStyle = "#0067ff";
     game.context.fillText(player.health, 222 - 2 * Math.floor(Math.log10(player.health)), 15);
     game.context.fillText(player.maxHealth, 222 - 2 * Math.floor(Math.log10(player.maxHealth)), 30);
 }

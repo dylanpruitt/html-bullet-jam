@@ -221,13 +221,13 @@ let renderPlayerWeapons = () => {
     }
 
     game.context.font = "bold 8px Arial";
+    game.context.fillStyle = "#0067ff";
     game.context.fillText(message, 5, 225);
 
     let previousIndex = player.activeWeaponIndex - 1; if (previousIndex < 0) { previousIndex = inventory.length - 1; }
     let nextIndex = player.activeWeaponIndex + 1; if (nextIndex >= inventory.length) { nextIndex = 0; }
 
     game.context.font = "6px Arial";
-    game.context.fillStyle = "white";
 
     message = inventory[previousIndex].name;
     if (inventory[previousIndex].cooldownFrames > 0) {
