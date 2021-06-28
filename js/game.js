@@ -215,31 +215,26 @@ let renderCrosshair = () => {
 }
 
 let renderPlayerWeapons = () => {
-    let message = player.equippedWeapon.name;
-    if (player.equippedWeapon.cooldownFrames > 0) {
-        message += ` (${(player.equippedWeapon.cooldownFrames / 50).toFixed(1)} s)`;
+    let textWidth;
+
+    if (player.switchFrames > 0) {
+        player.switchFrames--;
+        game.context.font = "bold 7px Arial";
+        game.context.fillStyle = "white";
+        game.context.globalAplha = 1;
+        textWidth = game.context.measureText(player.equippedWeapon.name).width;
+        game.context.fillText(player.equippedWeapon.name, 
+            player.x + xOffset + (player.width - textWidth) / 2, 
+            player.y - 10 + yOffset);
     }
 
-    game.context.font = "bold 8px Arial";
-    game.context.fillStyle = "#0067ff";
-    game.context.fillText(message, 5, 225);
-
-    let previousIndex = player.activeWeaponIndex - 1; if (previousIndex < 0) { previousIndex = inventory.length - 1; }
-    let nextIndex = player.activeWeaponIndex + 1; if (nextIndex >= inventory.length) { nextIndex = 0; }
-
-    game.context.font = "6px Arial";
-
-    message = inventory[previousIndex].name;
-    if (inventory[previousIndex].cooldownFrames > 0) {
-        message += ` (${(inventory[previousIndex].cooldownFrames / 50).toFixed(1)} s)`;
+    let reloadTime = (player.equippedWeapon.cooldownFrames / 50).toFixed(1);
+    if (reloadTime > 0) {
+        textWidth = game.context.measureText(reloadTime).width;    
+        game.context.fillText(reloadTime, 
+            player.x + xOffset + (player.width - textWidth) / 2, 
+            player.y - 3 + yOffset);
     }
-    game.context.fillText("[Q] " + message, 5, 215);
-
-    message = inventory[nextIndex].name;
-    if (inventory[nextIndex].cooldownFrames > 0) {
-        message += ` (${(inventory[nextIndex].cooldownFrames / 50).toFixed(1)} s)`;
-    }
-    game.context.fillText("[E] " + message, 5, 235);
 }
 
 let getCursorDistanceFromPlayer = () => {
@@ -416,8 +411,7 @@ $('html').keydown(function(e) {
         }
 
         player.equippedWeapon = inventory[player.activeWeaponIndex];
-        game.context.font = "14px Arial";
-        console.log(player.equippedWeapon.name);
+        player.switchFrames = 50;
     }
 
     if(keys[E] || keys[lower_e]) {
@@ -428,8 +422,7 @@ $('html').keydown(function(e) {
         }
 
         player.equippedWeapon = inventory[player.activeWeaponIndex];
-        game.context.font = "14px Arial";
-        console.log(player.equippedWeapon.name);
+        player.switchFrames = 50;
     }
 
     if (keys[R] || keys[r]) {

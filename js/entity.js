@@ -83,6 +83,7 @@ let playerConstructor = (x, y) => {
         height: 8,
         image: new Image(),
         activeWeaponIndex: 0,
+        switchFrames: 0,
         update: () => {
             entity.updatePosition();
             entity.updateSpeed();
