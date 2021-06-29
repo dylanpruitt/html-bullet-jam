@@ -524,7 +524,7 @@ let tntConstructor = (x, y) => {
     let entity = {
         name: "TNT",
         faction: "trap" + (x * 5 + y),
-        background: true,
+        background: false,
         health: 100,
         maxHealth: 100,
         x: x,
