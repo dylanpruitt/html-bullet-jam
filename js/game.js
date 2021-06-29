@@ -118,11 +118,11 @@ function updateGame() {
     if (imagesLoaded == totalImages && !game.paused) {
         game.clear();
         render(game);
+        updateEntities();
         renderCrosshair();
         renderPlayerHealth(game);
         renderPlayerWeapons();
         renderScreenText(game);
-        updateEntities();
         updateBullets();
         updatePlayerMovement();
         updateMaskContext();

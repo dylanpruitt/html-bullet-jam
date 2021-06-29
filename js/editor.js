@@ -30,6 +30,11 @@ let MAX_SIZE = 255;
 let markedIndices = [];
 
 /**
+ * A variable storing if "snap to grid" is on (sets entity positions to align with tile grid).
+ */
+let snapToGrid = false;
+
+/**
  * This function sets up everything required for the map editor to function, 
  *  including the game loop and generating elements in HTML for user interface.
  */
@@ -81,7 +86,7 @@ let setupTilePicker = () => {
  *  the selected entity to whatever entity corresponds to the clicked element.
  */
  let setupEntityPicker = () => {
-    $("#object-picker").width("32px").height(game.canvas.height);
+    $("#object-picker").width("100px").height(game.canvas.height);
     $("#object-picker").html("");
     for (let i = 0; i < entityConstructors.length; i++) {
         let entity = entityConstructors[i]();
@@ -97,6 +102,13 @@ let setupTilePicker = () => {
         entityImage.appendTo(entitySelector);
         entitySelector.appendTo("#object-picker");
     }
+
+    let toggleSnap = $("<button>").html("Toggle Grid Snap");
+    toggleSnap.id = "toggle-snap";
+    toggleSnap.click(function () {
+        snapToGrid = !snapToGrid;
+    });
+    toggleSnap.appendTo("#object-picker");;
 }
 
 /**
@@ -113,6 +125,7 @@ let updateMap = () => {
     updateMaskContext();
     renderEntities();
     game.context.font = "8px Arial";
+    game.context.fillStyle = "white";
     game.context.fillText(editorMode, 195, 235);
     if (mouseLock) {
         game.context.font = "8px Arial";
@@ -386,6 +399,10 @@ game.canvas.addEventListener("click", function(e) {
         x = mouseX - xOffset;
         y = mouseY - yOffset;
         let entity = entityConstructors[selection](x, y);
+        if (snapToGrid) {
+            entity.x -= entity.x % 16;
+            entity.y -= entity.y % 16;
+        }
         if (entity.background) {
             backgroundEntities.push(entity);
         } else {
@@ -510,6 +527,7 @@ $('html').keydown(function(e) {
     let C = 67, c = 99;
     let L = 76, l = 108;
     let M = 77, m = 109;
+    let s = 115;
 
     if (keys[C] || keys[c]) {
         if (editorMode === "collisionFill") {
@@ -534,6 +552,9 @@ $('html').keydown(function(e) {
     }
     if (keys[M] || keys[m]) {
         mouseLock = !mouseLock;
+    }
+    if (keys[s]) {
+        snapToGrid = !snapToGrid;
     }
 });
 
