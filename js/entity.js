@@ -88,7 +88,7 @@ let playerConstructor = (x, y) => {
             entity.updatePosition();
             entity.updateSpeed();
             entity.updateStatuses();
-            entity.equippedWeapon.update();
+            entity.updateWeapons();
         },
         updateSpeed: () => {
             if (entity.speedX > 0) { entity.speedX -= 0.05; }
@@ -97,6 +97,11 @@ let playerConstructor = (x, y) => {
             if (entity.speedY < 0) { entity.speedY += 0.05; }
             if (Math.abs(entity.speedX) <= 0.05) { entity.speedX = 0; }
             if (Math.abs(entity.speedY) <= 0.05) { entity.speedY = 0; }
+        },
+        updateWeapons: () => {
+            for (let i = 0; i < inventory.length; i++) {
+                inventory[i].update();
+            }
         },
         collidingWith: (object) => {
             return (((entity.x < object.x && object.x < (entity.x + entity.width)) 

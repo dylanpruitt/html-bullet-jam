@@ -5,9 +5,9 @@ let dashConstructor = (parent) => {
         framesLeft: 50,
         update: () => {
             status.framesLeft--;
-            parent.speedX *= 0.95;
-            parent.speedY *= 0.95;
-            parent.speedCap *= 0.95;
+            parent.speedX *= 0.96;
+            parent.speedY *= 0.96;
+            parent.speedCap *= 0.96;
         },
         onStatusEnd: () => {
             parent.speedCap = status.originalSpeedCap;

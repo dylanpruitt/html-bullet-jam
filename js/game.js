@@ -4,6 +4,7 @@ let mouseY;
 let keys;
 let autofire = false;
 let inventory;
+let dash;
 
 let startGame = () => {
     loadAssets();
@@ -15,8 +16,9 @@ let startGame = () => {
             player = playerConstructor(spawnX, spawnY);
             entities.push(player);
             generateMap();
-            inventory = [shotgun(player), freezeWeapon(player), dashWeapon(player), switcherooWeapon(player), frenzyWeapon(player), trapWeapon(player)];
+            inventory = [shotgun(player), freezeWeapon(player), switcherooWeapon(player), frenzyWeapon(player), trapWeapon(player)];
             player.equippedWeapon = inventory[0];
+            dash = dashWeapon(player);
             game.start();
             drawMaskContext(game);
         }
@@ -128,6 +130,7 @@ function updateGame() {
         updateMaskContext();
         updateMapTransitions();
         updateScreenText();
+        dash.update();
         stopGameOnPlayerDeath();
         updatePlayerAutofire();
     }
@@ -401,6 +404,7 @@ $('html').keydown(function(e) {
 
     let Q = 81, q = 113;
     let E = 69, lower_e = 101;
+    let F = 70, f = 102;
     let R = 82, r = 114;
 
     if(keys[Q] || keys[q]) {
@@ -423,6 +427,12 @@ $('html').keydown(function(e) {
 
         player.equippedWeapon = inventory[player.activeWeaponIndex];
         player.switchFrames = 50;
+    }
+
+    if (keys[32]) {
+        if (dash.cooldownFrames == 0) {
+            dash.onFire();        
+        }
     }
 
     if (keys[R] || keys[r]) {
