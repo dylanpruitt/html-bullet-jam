@@ -64,6 +64,25 @@ const entityProperties = (entity) => ({
         }
 
         entity.statuses = temp;
+    },
+    getStatusIndexByName: (name) => {
+        let NOT_FOUND = -1;
+        for (let i = 0; i < entity.statuses.length; i++) {
+            if (entity.statuses[i].name === name) {
+                return i;
+            }
+        }
+
+        return NOT_FOUND;
+    },
+    addStatus: (statusConstructor, frames) => {
+        let status = statusConstructor(entity, frames);
+        let index = entity.getStatusIndexByName(status.name);
+        if (index > -1) {
+            entity.statuses[index].framesLeft += frames;
+        } else {
+            entity.statuses.push(status);
+        }
     }
 });
 

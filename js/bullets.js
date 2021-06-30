@@ -142,7 +142,7 @@ let frenzyBullet = (x, y, speedX, speedY, creatorFaction) => {
         },
         onCollide: (entity) => {
             if (entity.faction !== bullet.creatorFaction) {
-                entity.statuses.push(frenzyConstructor(entity));
+                entity.addStatus(frenzyConstructor, 125);
                 bullet.framesActive = bullet.maxFramesActive;
             }
         }
@@ -183,7 +183,7 @@ let freezeBullet = (x, y, speedX, speedY, creatorFaction) => {
         },
         onCollide: (entity) => {
             if (entity.faction !== bullet.creatorFaction) {
-                entity.statuses.push(freezeConstructor(entity, 50));
+                entity.addStatus(freezeConstructor, 60);
                 bullet.framesActive = bullet.maxFramesActive;
             }
         }

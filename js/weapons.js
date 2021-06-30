@@ -134,7 +134,7 @@ let dashWeapon = (parent) => {
         image: assets.get("images/bullets/bullet.png"),
         imagePath: "images/bullets/bullet.png",
         onFire: (cursorX, cursorY) => {
-            parent.statuses.push(dashConstructor(parent));
+            parent.addStatus(dashConstructor, 50);
 
             weapon.cooldownFrames = 125;
         },

@@ -1,8 +1,8 @@
-let dashConstructor = (parent) => {
+let dashConstructor = (parent, frames) => {
     let status = {
         name: "Dash",
         originalSpeedCap: parent.speedCap,
-        framesLeft: 50,
+        framesLeft: frames,
         update: () => {
             status.framesLeft--;
             parent.speedX *= 0.96;
@@ -18,27 +18,6 @@ let dashConstructor = (parent) => {
 
     parent.speedX *= 2.5;
     parent.speedY *= 2.5;
-
-    return status;
-}
-
-let slowConstructor = (parent) => {
-    let status = {
-        name: "Slow",
-        originalSpeedCap: parent.speedCap,
-        framesLeft: 25,
-        update: () => {
-            status.framesLeft--;
-        },
-        onStatusEnd: () => {
-            parent.speedCap = status.originalSpeedCap;
-        },
-    }
-
-    parent.speedCap = status.originalSpeedCap / 2;
-
-    parent.speedX /= 2;
-    parent.speedY /= 2;
 
     return status;
 }
@@ -63,11 +42,11 @@ let freezeConstructor = (parent, frames) => {
     return status;
 }
 
-let frenzyConstructor = (parent) => {
+let frenzyConstructor = (parent, frames) => {
     let status = {
         name: "Frenzy",
         originalFaction: parent.faction,
-        framesLeft: 125,
+        framesLeft: frames,
         update: () => {
             status.framesLeft--;
         },
