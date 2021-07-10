@@ -212,4 +212,52 @@ let tntBullet = (x, y, speedX, speedY, creatorFaction) => {
     return Object.assign(bullet, bulletProperties(bullet));
 }
 
-let bulletConstructors = [basicBullet, shotgunBullet, grassTrapBullet, machineGunBullet, frenzyBullet, freezeBullet, tntBullet];
+let disableBullet = (x, y, speedX, speedY, parentSpeedX, parentSpeedY, creatorFaction) => {
+    let bullet = {
+        damage: 0,
+        creatorFaction: creatorFaction,
+        x: x,
+        y: y,
+        speedX: speedX,
+        speedY: speedY,
+        speedCap: 10,
+        acceleration: 0.8,
+        width: 5,
+        height: 5,
+        image: assets.get("images/bullets/frenzy.png"),
+        imagePath: "images/bullets/frenzy.png",
+        framesActive: 0,
+        maxFramesActive: 50,
+        update: () => {
+            bullet.updatePosition();
+            bullet.updateSpeed();
+            bullet.framesActive++;
+        },
+        updatePosition: () => {
+            bullet.x += bullet.speedX;
+            bullet.y += bullet.speedY;
+        },
+        updateSpeed: () => {
+            bullet.speedX *= bullet.acceleration;
+            bullet.speedY *= bullet.acceleration;
+            if (Math.abs(bullet.speedX) < 0.1) { bullet.speedX = 0; }
+            if (Math.abs(bullet.speedY) < 0.1) { bullet.speedY = 0; }
+        },
+        onCollide: (entity) => {
+            if (entity.faction !== bullet.creatorFaction) {
+                let status = disableConstructor(entity, 75, parentSpeedX, parentSpeedY);
+                let index = entity.getStatusIndexByName(status.name);
+                if (index > -1) {
+                    entity.statuses[index].framesLeft += frames;
+                } else {
+                    entity.statuses.push(status);
+                }
+                bullet.framesActive = bullet.maxFramesActive;
+            }
+        }
+    }
+
+    return bullet;
+}
+
+let bulletConstructors = [basicBullet, shotgunBullet, grassTrapBullet, machineGunBullet, frenzyBullet, freezeBullet, tntBullet, disableBullet];

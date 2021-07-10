@@ -248,5 +248,27 @@ let trapWeapon = (parent) => {
     return Object.assign(weapon, weaponProperties(weapon, parent));
 }
 
+let flingWeapon = (parent) => {
+    let weapon = {
+        name: "Fling",
+        range: 80,
+        speedCap: 10,
+        cooldownFrames: 0,
+        width: 4,
+        height: 4,
+        image: assets.get("images/bullets/bullet.png"),
+        imagePath: "images/bullets/bullet.png",
+        onFire: (cursorX, cursorY) => {
+            let projectileSpeeds = weapon.getProjectileSpeed(cursorX, cursorY);
+            let spawnX = parent.x + (parent.width / 2) - 1;
+            let spawnY = parent.y + (parent.height / 2) - 1;
+            let bullet = disableBullet(spawnX, spawnY, projectileSpeeds[0], projectileSpeeds[1], parent.speedX, parent.speedY, parent.faction);
+            bullets.push(bullet);
+            weapon.cooldownFrames = 100;
+        },
+    }
+    return Object.assign(weapon, weaponProperties(weapon, parent));
+}
+
 let weaponConstructors = [basicWeapon, shotgun, grassTrapWeapon, switcherooWeapon, dashWeapon, machineGun, frenzyWeapon, freezeWeapon,
-    tntWeapon, trapWeapon];
+    tntWeapon, trapWeapon, flingWeapon];

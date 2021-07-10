@@ -141,6 +141,7 @@ let wolfConstructor = (x, y) => {
         background: false,
         health: 65,
         maxHealth: 65,
+        controlEnabled: true,
         x: x,
         y: y,
         speedX: 0,
@@ -157,7 +158,11 @@ let wolfConstructor = (x, y) => {
         framesIdle: 120,
         equippedWeapon: {},
         update: () => {
-            entity.updateAI();
+            if (entity.controlEnabled) {
+                entity.updateAI();
+            } else {
+                console.log("!");
+            }
             entity.updatePosition();
             entity.updateStatuses();
             entity.equippedWeapon.update();
@@ -225,6 +230,7 @@ let grassTrapConstructor = (x, y) => {
         background: true,
         health: 1,
         maxHealth: 1,
+        controlEnabled: true,
         x: x,
         y: y,
         speedX: 0,
@@ -262,6 +268,7 @@ let sheepConstructor = (x, y) => {
         background: false,
         health: 35,
         maxHealth: 35,
+        controlEnabled: true,
         x: x,
         y: y,
         speedX: 0,
@@ -278,7 +285,9 @@ let sheepConstructor = (x, y) => {
         framesIdle: 120,
         equippedWeapon: {},
         update: () => {
-            entity.updateAI();
+            if (entity.controlEnabled) {
+                entity.updateAI();
+            }
             entity.updateStatuses();
             entity.updatePosition();
         },
@@ -339,6 +348,7 @@ let crateConstructor = (x, y) => {
         background: false,
         health: 60,
         maxHealth: 60,
+        controlEnabled: true,
         x: x,
         y: y,
         speedX: 0,
@@ -368,6 +378,7 @@ let turretConstructor = (x, y) => {
         background: false,
         health: 180,
         maxHealth: 180,
+        controlEnabled: true,
         x: x,
         y: y,
         speedX: 0,
@@ -423,6 +434,7 @@ let spikeConstructor = (x, y) => {
         background: true,
         health: 9000,
         maxHealth: 9000,
+        controlEnabled: true,
         x: x,
         y: y,
         speedX: 0,
@@ -467,6 +479,7 @@ let armorConstructor = (x, y) => {
         background: false,
         health: 240,
         maxHealth: 240,
+        controlEnabled: true,
         x: x,
         y: y,
         speedX: 0,
@@ -551,6 +564,7 @@ let tntConstructor = (x, y) => {
         background: false,
         health: 100,
         maxHealth: 100,
+        controlEnabled: true,
         x: x,
         y: y,
         speedX: 0,
@@ -566,6 +580,8 @@ let tntConstructor = (x, y) => {
         equippedWeapon: {},
         update: () => {
             entity.updateAI();
+            entity._updatePosition();
+            entity.updateSpeed();
             entity.equippedWeapon.update();
         },
         updateAI: () => {
@@ -574,6 +590,47 @@ let tntConstructor = (x, y) => {
                 entity.equippedWeapon.onFire(entities[targetIndex].x, entities[targetIndex].y);
                 entity.health = 0;
             }
+        },
+        _updatePosition: () => {
+            let entityX = entity.x;
+            let entityY = entity.y;
+            let speedMagnitude = Math.sqrt(Math.pow(entity.speedX, 2) + Math.pow(entity.speedY, 2));
+            let collision = false;
+    
+            entity.x += entity.speedX;
+    
+            for (let i = 0; i < boundingBoxes.length; i++) {
+                if (entityCollidingWithBounds(entity, boundingBoxes[i])) {
+                    entity.x = entityX;
+                    entity.speedX = 0;
+                    collision = true;
+                }
+            }
+    
+            entity.y += entity.speedY;
+    
+            for (let i = 0; i < boundingBoxes.length; i++) {
+                if (entityCollidingWithBounds(entity, boundingBoxes[i])) {
+                    entity.y = entityY;
+                    entity.speedY = 0;
+                    collision = true;
+                }
+            }
+            
+            console.log(speedMagnitude);
+            if (collision && speedMagnitude > 5) {
+                let targetIndex = entity.getClosestTargetIndex();
+                entity.equippedWeapon.onFire(entities[targetIndex].x, entities[targetIndex].y);
+                entity.health = 0;
+            }
+        },
+        updateSpeed: () => {
+            if (entity.speedX > 0) { entity.speedX -= 0.1; }
+            if (entity.speedY > 0) { entity.speedY -= 0.1; }
+            if (entity.speedX < 0) { entity.speedX += 0.1; }
+            if (entity.speedY < 0) { entity.speedY += 0.1; }
+            if (Math.abs(entity.speedX) <= 0.1) { entity.speedX = 0; }
+            if (Math.abs(entity.speedY) <= 0.1) { entity.speedY = 0; }
         },
     }
     entity.equippedWeapon = tntWeapon(entity);

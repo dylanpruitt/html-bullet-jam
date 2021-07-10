@@ -58,3 +58,30 @@ let frenzyConstructor = (parent, frames) => {
     parent.faction = "frenzy";
     return status;
 }
+
+let disableConstructor = (parent, frames, speedX, speedY) => {
+    let status = {
+        name: "Disable",
+        originalSpeedCap: parent.speedCap,
+        framesLeft: frames,
+        update: () => {
+            status.framesLeft--;
+            parent.speedX *= 0.95;
+            parent.speedY *= 0.95;
+            parent.speedCap *= 0.95;
+        },
+        onStatusEnd: () => {
+            parent.speedCap = status.originalSpeedCap;
+            parent.controlEnabled = true;
+        },
+    }
+
+    parent.speedCap = status.originalSpeedCap * 2.5;
+
+    parent.speedX = speedX * 2;
+    parent.speedY = speedY * 2;
+
+    parent.controlEnabled = false;
+
+    return status;
+}
